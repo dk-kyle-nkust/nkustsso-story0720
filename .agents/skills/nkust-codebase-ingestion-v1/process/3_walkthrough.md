@@ -141,5 +141,8 @@
   4. **.NET 10 LTS 現代化相容性檢驗**：`Verify-UpgradeCompatibility.ps1` -> 0 棄用項目，符合 .NET 10 LTS 基準。
   5. **Mermaid 拓撲生成**：`Generate-MermaidTopology.ps1` -> 產出方案依賴圖。
   6. **Roslyn AST 語意掃描**：`CodebaseAstScanner` -> 完整剖析 Models (74 類別)、Services (87 類別)、ViewModels (26 類別)、Controllers (17 類別)。
-  7. **產出文件矩陣**：全數交付至 `output/` 與 `README/`。
+  7. **產出文件矩陣**：全數交付至 `output/` 與 `README/`：
+     - `output/README/PROJECT_ARCHITECTURE.md`：專案架構分層、5 大 SSO 憑證交換協定全時序圖與資安橫切防護規格書。
+     - `output/README/PROJECT_DATABASE.md`：雙模儲存架構、28 張主表 + 8 張會話票券表 Schema、校務唯讀模型與原子性事務機制規格書。
+     - 同步更新 `output/README.md` 建立全域索引連結。
 

@@ -97,6 +97,8 @@ graph TD
 - 📊 **[PROJECT_REPORT.md](README/PROJECT_REPORT.md)**：全景架構、SSO 憑證交換時序圖、風險邊際防禦與 5 大現代化重構建議。
 - 📦 **[PROJECT_BOM.md](README/PROJECT_BOM.md)**：全方案後端 8 大 NuGet 套件與前端 4 大離線 npm 套件之軟體物料清單。
 - 🚀 **[PROJECT_BOM_UPGRADE.md](README/PROJECT_BOM_UPGRADE.md)**：.NET 10 LTS 升級比對分析與已棄用 (Deprecated) 元件審查報告。
+- 🏛️ **[PROJECT_ARCHITECTURE.md](README/PROJECT_ARCHITECTURE.md)**：專案架構分層與五大 SSO 憑證交換機制規格書。
+- 🗄️ **[PROJECT_DATABASE.md](README/PROJECT_DATABASE.md)**：雙模資料庫結構、全資料表 Schema 與憑證交換原子交易機制規格書。
 
 ---
 
