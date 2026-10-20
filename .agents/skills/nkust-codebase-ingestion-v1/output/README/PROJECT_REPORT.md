@@ -52,14 +52,14 @@ graph TD
     OwnDB[("SSO 自有儲存<br/>(SQL Server / SQLite)")]:::db
     CampusDB[("外部校務 MSSQL<br/>(唯讀唯核 ICampusDatabaseFactory)")]:::db
 
-    User -->|1. 存取系統 /portal 或 SP| SP
-    SP -->|2. 重導向驗證 (OIDC / SAML / Ticket)| SSO
-    SSO -->|3. 查驗 Session / 輸入帳密| User
-    SSO -->|4. 校務帳密驗證 (唯讀)| CampusDB
-    SSO -->|5. 讀寫帳號、票券與會話| OwnDB
-    SSO -->|6. 簽發 60s 票券 / Code / Assertion| User
-    User -->|7. 攜帶票券返回 SP| SP
-    SP -->|8. 後端伺服器對伺服器兌換 (Redeem / Token)| SSO
+    User -->|"1. 存取系統 /portal 或 SP"| SP
+    SP -->|"2. 重導向驗證 (OIDC / SAML / Ticket)"| SSO
+    SSO -->|"3. 查驗 Session / 輸入帳密"| User
+    SSO -->|"4. 校務帳密驗證 (唯讀)"| CampusDB
+    SSO -->|"5. 讀寫帳號、票券與會話"| OwnDB
+    SSO -->|"6. 簽發 60s 票券 / Code / Assertion"| User
+    User -->|"7. 攜帶票券返回 SP"| SP
+    SP -->|"8. 後端伺服器對伺服器兌換 (Redeem / Token)"| SSO
 ```
 
 ### 2.1 Web API 單一登入與 60 秒動態票券交換時序圖 (Sequence Diagram)
