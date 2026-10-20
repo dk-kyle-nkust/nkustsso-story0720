@@ -1,0 +1,133 @@
+{
+  "Version": "2026-10-19 · v1.0",
+  "Items": [
+    {
+      "Id": "overview",
+      "Title": "串接方式與交付清單",
+      "Description": "先選接法，再交換設定",
+      "Category": "串接指南",
+      "FileName": "00_串接總覽.pdf",
+      "Pages": 2
+    },
+    {
+      "Id": "oidc",
+      "Title": "OIDC 單一登入",
+      "Description": "Authorization Code ＋ PKCE S256",
+      "Category": "串接指南",
+      "FileName": "01_OIDC單一登入.pdf",
+      "Pages": 3
+    },
+    {
+      "Id": "webapi",
+      "Title": "Web API 單一登入",
+      "Description": "JSON／一次性票券 ＋ PKCE；本專案自訂協定",
+      "Category": "串接指南",
+      "FileName": "02_WebAPI單一登入.pdf",
+      "Pages": 4
+    },
+    {
+      "Id": "saml",
+      "Title": "SAML 2.0 單一登入",
+      "Description": "接收系統是 SP；中央 SSO 是 IdP",
+      "Category": "串接指南",
+      "FileName": "03_SAML單一登入.pdf",
+      "Pages": 3
+    },
+    {
+      "Id": "json",
+      "Title": "JSON 帳密驗證 API",
+      "Description": "僅驗證帳密；不建立中央 SSO",
+      "Category": "串接指南",
+      "FileName": "04_JSON帳密驗證.pdf",
+      "Pages": 3
+    },
+    {
+      "Id": "soap",
+      "Title": "舊 SOAP 相容介面",
+      "Description": "SOAP 1.1／1.2；目前 9 個可執行方法",
+      "Category": "串接指南",
+      "FileName": "05_SOAP串接總覽.pdf",
+      "Pages": 3
+    },
+    {
+      "Id": "links",
+      "Title": "一般首頁連結",
+      "Description": "只開啟網站；不傳送登入身分",
+      "Category": "串接指南",
+      "FileName": "06_一般首頁連結.pdf",
+      "Pages": 1
+    },
+    {
+      "Id": "soap-KuasSSO_Certify2",
+      "Title": "使用者帳密驗證",
+      "Description": "KuasSSO_Certify2",
+      "Category": "SOAP 方法",
+      "FileName": "01_KuasSSO_Certify2.pdf",
+      "Pages": 2
+    },
+    {
+      "Id": "soap-KuasSSO_Certify1",
+      "Title": "舊校務票據驗證",
+      "Description": "KuasSSO_Certify1",
+      "Category": "SOAP 方法",
+      "FileName": "02_KuasSSO_Certify1.pdf",
+      "Pages": 2
+    },
+    {
+      "Id": "soap-KuasSSO_SchCardSearch",
+      "Title": "智慧卡帳密驗證",
+      "Description": "KuasSSO_SchCardSearch",
+      "Category": "SOAP 方法",
+      "FileName": "03_KuasSSO_SchCardSearch.pdf",
+      "Pages": 2
+    },
+    {
+      "Id": "soap-Get_Traffic_Stud",
+      "Title": "學生資料查詢",
+      "Description": "Get_Traffic_Stud",
+      "Category": "SOAP 方法",
+      "FileName": "04_Get_Traffic_Stud.pdf",
+      "Pages": 2
+    },
+    {
+      "Id": "soap-Get_Traffic_Stud_Temp",
+      "Title": "學生資料查詢（Temp）",
+      "Description": "Get_Traffic_Stud_Temp",
+      "Category": "SOAP 方法",
+      "FileName": "05_Get_Traffic_Stud_Temp.pdf",
+      "Pages": 2
+    },
+    {
+      "Id": "soap-Get_Traffic_Teach",
+      "Title": "教職員資料查詢",
+      "Description": "Get_Traffic_Teach",
+      "Category": "SOAP 方法",
+      "FileName": "06_Get_Traffic_Teach.pdf",
+      "Pages": 2
+    },
+    {
+      "Id": "soap-Get_Traffic_Teach_Temp",
+      "Title": "教職員資料查詢（Temp）",
+      "Description": "Get_Traffic_Teach_Temp",
+      "Category": "SOAP 方法",
+      "FileName": "07_Get_Traffic_Teach_Temp.pdf",
+      "Pages": 2
+    },
+    {
+      "Id": "soap-Get_Traffic_Pub",
+      "Title": "公用帳號資料查詢",
+      "Description": "Get_Traffic_Pub",
+      "Category": "SOAP 方法",
+      "FileName": "08_Get_Traffic_Pub.pdf",
+      "Pages": 2
+    },
+    {
+      "Id": "soap-NkustSSO_DocumentApplyPaymentSystemSearch",
+      "Title": "文件申請／繳費資料查詢",
+      "Description": "NkustSSO_DocumentApplyPaymentSystemSearch",
+      "Category": "SOAP 方法",
+      "FileName": "09_NkustSSO_DocumentApplyPaymentSystemSearch.pdf",
+      "Pages": 2
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+@* 登入完成後接續前往原服務。 *@
+@model string
+@{
+    ViewData["SupportsEnglish"] = true;
+    ViewData["Title"] = "登入成功";
+    ViewData["HideAccountNavigation"] = true;
+}
+<section class="panel">
+    <h1>登入成功</h1>
+    <p>正在前往服務。若頁面沒有自動開啟，請點選下方連結。</p>
+    <a class="button primary" id="login-continue" href="@Model">繼續前往服務</a>
+</section>
+@section scripts { <script src="/login-continue.js" asp-append-version="true" defer></script> }

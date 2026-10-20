@@ -1,0 +1,19 @@
+@* 顯示身分、姓名與學號／員編；缺少姓名時隱藏姓名欄。 *@
+@model CurrentUserViewModel?
+<div class="site-current-user" data-current-user hidden="@(Model is null)">
+    <div class="site-user-details" role="status" aria-live="polite" aria-atomic="true">
+        <span class="sr-only">目前登入者</span>
+        <div class="site-user-labels">
+            <span data-current-user-identity data-no-translate data-identity-label="@Model?.IdentityLabel">@Model?.IdentityLabel</span>
+            <strong data-current-user-display-name data-no-translate hidden="@(string.IsNullOrWhiteSpace(Model?.DisplayName))">@Model?.DisplayName</strong>
+        </div>
+        <div class="site-user-account">
+            <span data-current-user-account-label data-no-translate data-account-label="@Model?.AccountLabel">@Model?.AccountLabel</span>
+            <span data-current-user-account data-no-translate>@Model?.UserName</span>
+        </div>
+        @* 只有教職員且單位對照唯一時才有值；空字串時整行隱藏。 *@
+        <div class="site-user-unit" data-current-user-unit-row hidden="@(string.IsNullOrWhiteSpace(Model?.UnitName))">
+            <span data-current-user-unit data-no-translate>@Model?.UnitName</span>
+        </div>
+    </div>
+</div>

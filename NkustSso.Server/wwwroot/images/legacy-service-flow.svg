@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="360" viewBox="0 0 1120 360" role="img" aria-labelledby="title desc">
+  <title id="title">校園身分驗證流程</title>
+  <desc id="desc">使用者在業務系統輸入帳密，由業務系統呼叫舊 SSO。SSO 依方法查驗校園帳號目錄或資料來源，再回覆結果與必要資料，由業務系統建立登入狀態與管理權限。</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#638375"/></marker></defs>
+  <rect width="1120" height="360" rx="18" fill="#ffffff"/>
+  <g font-family="Microsoft JhengHei, Noto Sans TC, sans-serif" text-anchor="middle">
+    <rect x="20" y="74" width="188" height="164" rx="16" fill="#f3f6f3" stroke="#d6e0d9"/>
+    <circle cx="114" cy="114" r="12" fill="none" stroke="#476655" stroke-width="2"/><path d="M91 149 Q91 128 114 128 Q137 128 137 149" fill="none" stroke="#476655" stroke-width="2"/>
+    <text x="114" y="179" fill="#203e32" font-size="21" font-weight="bold">使用者</text><text x="114" y="208" fill="#586d62" font-size="14">學生・教職員等</text>
+    <rect x="274" y="74" width="210" height="164" rx="16" fill="#eef0fa" stroke="#d8d9ed"/>
+    <rect x="356" y="102" width="46" height="32" rx="4" fill="none" stroke="#65648a" stroke-width="2"/><path d="M379 134v10m-14 0h28" stroke="#65648a" stroke-width="2"/>
+    <text x="379" y="179" fill="#343252" font-size="21" font-weight="bold">業務系統</text><text x="379" y="208" fill="#64617b" font-size="14">圖書館、離校、行政等</text>
+    <rect x="566" y="59" width="230" height="194" rx="18" fill="#204c3e"/>
+    <path d="M681 88l21 9v18q0 17-21 28-21-11-21-28V97z" fill="none" stroke="#c7edb8" stroke-width="2"/><path d="M671 113l7 7 14-16" fill="none" stroke="#c7edb8" stroke-width="2"/>
+    <text x="681" y="179" fill="#fff" font-size="22" font-weight="bold">舊 SSO 服務</text><text x="681" y="209" fill="#c7dfd2" font-size="14">確認身分・依方法回覆</text><text x="681" y="235" fill="#c7dfd2" font-size="12">部分方法先檢查呼叫系統資格</text>
+    <rect x="878" y="74" width="222" height="164" rx="16" fill="#faf2e1" stroke="#e8dcc0"/>
+    <ellipse cx="989" cy="108" rx="23" ry="8" fill="none" stroke="#967543" stroke-width="2"/><path d="M966 108v27c0 11 46 11 46 0v-27m-46 14c0 11 46 11 46 0" fill="none" stroke="#967543" stroke-width="2"/>
+    <text x="989" y="179" fill="#634c26" font-size="21" font-weight="bold">校園帳號／資料</text><text x="989" y="208" fill="#7b6848" font-size="14">LDAP 目錄・其他資料來源</text>
+    <path d="M210 139h59" stroke="#638375" stroke-width="2" marker-end="url(#arrow)"/><text x="241" y="120" font-size="12" fill="#586d62">輸入帳密</text>
+    <path d="M486 139h74" stroke="#638375" stroke-width="2" marker-end="url(#arrow)"/><text x="526" y="111" font-size="12" fill="#586d62">提出驗證</text><text x="526" y="128" font-size="10" fill="#586d62">SOAP 呼叫</text>
+    <path d="M798 139h74" stroke="#638375" stroke-width="2" marker-end="url(#arrow)"/><text x="837" y="120" font-size="12" fill="#586d62">依方法查驗</text>
+    <path d="M878 199h-75" stroke="#638375" stroke-width="2" marker-end="url(#arrow)"/><text x="837" y="222" font-size="12" fill="#586d62">查驗結果</text>
+    <path d="M681 258v42H379v-56" fill="none" stroke="#638375" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="420" y="281" width="220" height="36" rx="18" fill="#e4f2e6"/><text x="530" y="304" font-size="14" font-weight="bold" fill="#2b5942">回覆結果＋該方法提供的資料</text>
+    <text x="379" y="345" font-size="13" fill="#586d62">最後由業務系統建立登入狀態，並管理使用者權限</text>
+  </g>
+</svg>

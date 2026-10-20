@@ -1,0 +1,58 @@
+@* 維護後台群組、功能權限與群組成員：新增與編輯表單。 *@
+@model AdminRoleEditViewModel
+@{ ViewData["Title"] = Model.Creating ? "新增後台角色" : "編輯後台角色"; }
+<div class="admin-head"><h1>@ViewData["Title"]</h1><a href="/admin/access">回角色清單</a></div>
+<partial name="_AdminManagementMessages" />
+<form class="system-form" method="post" action="@(Model.Creating ? "/admin/access/new" : $"/admin/access/{Model.Role.Id}/edit")">
+    @Html.AntiForgeryToken()
+    @if (!ViewData.ModelState.IsValid) { <div asp-validation-summary="All" class="validation" role="alert"></div> }
+    <input asp-for="Role.Revision" type="hidden" />
+    <section class="panel"><div class="system-fields">
+        <div><label asp-for="Role.Id">角色代碼</label><input asp-for="Role.Id" readonly="@(!Model.Creating)" required maxlength="50" /></div>
+        <div><label asp-for="Role.Name">角色名稱</label><input asp-for="Role.Name" required maxlength="100" /></div>
+    </div><div class="system-fields admin-description"><div><label asp-for="Role.Description">角色說明</label><textarea asp-for="Role.Description" rows="4" maxlength="2000"></textarea></div></div>
+    <label class="admin-check"><input asp-for="Role.Enabled" /> 啟用角色</label>
+    <div class="system-fields">
+        <div><label asp-for="StartsAtLocal">授權開始時間（臺灣時間）</label><input asp-for="StartsAtLocal" type="datetime-local" /></div>
+        <div><label asp-for="ExpiresAtLocal">授權結束時間（臺灣時間）</label><input asp-for="ExpiresAtLocal" type="datetime-local" /></div>
+    </div><p class="fine">留空表示不限制該端時間。角色未開始或已到期時不提供權限；此期限適用全部角色成員。</p></section>
+    <section class="panel"><fieldset class="admin-permissions"><legend>允許使用的管理功能</legend><p class="fine">勾選功能名稱授予查詢與維護；若只需查看清單與紀錄，勾選該功能的「僅查詢」。兩者都勾選時以查詢與維護為準。</p>
+        @foreach (var feature in AdminAuthorizationService.Features.Where(f => !f.RootOnly))
+        {
+            <div class="admin-grant-row"><label class="admin-check"><input type="checkbox" name="Permissions" value="@feature.Key" checked="@Model.Permissions.Contains(feature.Key)" /> @feature.Label</label>
+            <label class="admin-check"><input type="checkbox" name="Permissions" value="@(feature.Key + ":read")" checked="@Model.Permissions.Contains(feature.Key + ":read")" aria-label="@(feature.Label + "（僅查詢）")" /> 僅查詢</label></div>
+        }
+    </fieldset></section>
+    <section class="panel"><label asp-for="Members">角色成員</label><select asp-for="Members" multiple data-enhance>
+        @foreach (var account in Model.Accounts) { <option value="@account.Id">@account.UserName · @account.DisplayName@(account.Enabled ? "" : "（帳號停用）")</option> }
+    </select><p class="fine">輸入帳號或姓名搜尋已建立的帳號，點成員旁的 × 移除。變更後請儲存角色；帳號停用時不具有管理權限。</p>
+    @if (Model.Creating)
+    { <p class="fine">若要加入尚未登入的校務人員，請先儲存角色，再回到編輯頁加入。</p> }
+    else
+    {
+        @* 查詢與加入都在本頁完成：離開頁面會丟掉成員欄上還沒儲存的變更。 *@
+        <div class="admin-campus-add" data-campus-add
+             data-find-url="/admin/access/@Model.Role.Id/members/find"
+             data-provision-url="/admin/access/@Model.Role.Id/members/provision">
+            <label for="campusAccountName">加入校務人員（完整校務帳號）</label>
+            <div class="admin-campus-row">
+                <input id="campusAccountName" type="text" maxlength="100" autocomplete="off" data-campus-input />
+                <button class="button" type="button" data-campus-find>查詢</button>
+            </div>
+            <p class="fine admin-campus-status" role="status" data-campus-status></p>
+            <div class="admin-campus-candidate" data-campus-candidate hidden>
+                <p data-campus-summary></p>
+                <button class="button primary" type="button" data-campus-add-member>加入成員</button>
+            </div>
+            <p class="fine">輸入完整帳號查詢姓名與校務身分，核對後按「加入成員」會放進上方成員欄，再按「儲存角色」一併寫入。人員不必事先登入本系統。</p>
+        </div>
+    }
+    </section>
+    <button class="button primary" type="submit">儲存角色</button> <a class="button" href="/admin/access">取消</a>
+</form>
+@if (!Model.Creating)
+{
+    <details class="panel admin-delete"><summary>刪除這個角色</summary><p>仍有成員的角色不能刪除；可先停用或清空成員。</p><form method="post" action="/admin/access/@Model.Role.Id/delete">@Html.AntiForgeryToken()<input type="hidden" name="revision" value="@Model.Role.Revision" /><button class="button danger" type="submit">確認刪除角色</button></form></details>
+}
+@section head { <partial name="_AdminStyles" /><link rel="stylesheet" href="/admin-management.css" asp-append-version="true" /> }
+@section scripts { <partial name="_AdminScripts" /><script src="/admin-role-members.js" asp-append-version="true" defer></script> }

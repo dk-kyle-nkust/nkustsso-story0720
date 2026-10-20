@@ -1,0 +1,2058 @@
+[
+  {
+    "Name": "KuasSSO_Certify1",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_Certify1",
+    "Parameters": [
+      {
+        "Name": "usr_id",
+        "Description": "使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "fnc_id",
+        "Description": "原系統功能代碼",
+        "Sensitive": false
+      },
+      {
+        "Name": "Rnd_id",
+        "Description": "原系統發出的亂數票據",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": true,
+    "Title": "校務功能票據驗證",
+    "Summary": "核對 Portal 發出的帳號、功能代碼與亂數票據，判斷是否可進入指定功能；這個方法不是帳密登入。"
+  },
+  {
+    "Name": "KuasSSO_Certify2",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_Certify2",
+    "Parameters": [
+      {
+        "Name": "usr_id",
+        "Description": "使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "usr_pwd",
+        "Description": "使用者密碼",
+        "Sensitive": true
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": true,
+    "Title": "帳密驗證",
+    "Summary": "驗證使用者帳號與密碼，回傳是否通過及來源身分代碼；接收系統自行建立登入狀態。"
+  },
+  {
+    "Name": "KuasSSO_iKuas",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_iKuas",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "iKuas 行動專案（含會議系統）",
+    "Summary": "供「iKuas 行動專案（含會議系統）」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "KuasSSO_QueRespose",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_QueRespose",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "意見反映馬上處理中心",
+    "Summary": "供「意見反映馬上處理中心」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "Get_Traffic_Pub",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/Get_Traffic_Pub",
+    "Parameters": [
+      {
+        "Name": "usr_id",
+        "Description": "使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "usr_pwd",
+        "Description": "使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "searchID",
+        "Description": "查詢識別碼，規則待核對",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "內嵌複合結構，需逐項核對",
+    "Implemented": true,
+    "Title": "交通車資料查詢（公用帳號）",
+    "Summary": "供交通車系統使用公用帳號驗證及查詢資料，回傳 DataSet；searchID 的比對規則及資料欄位仍須核對。"
+  },
+  {
+    "Name": "Get_Traffic_Teach",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/Get_Traffic_Teach",
+    "Parameters": [
+      {
+        "Name": "usr_id",
+        "Description": "使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "usr_pwd",
+        "Description": "使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "searchID",
+        "Description": "查詢識別碼，規則待核對",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "內嵌複合結構，需逐項核對",
+    "Implemented": true,
+    "Title": "交通車資料查詢（教職員）",
+    "Summary": "供交通車系統驗證教職員並查詢資料，回傳 DataSet；不是只回傳登入成功或失敗。"
+  },
+  {
+    "Name": "Get_Traffic_Teach_Temp",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/Get_Traffic_Teach_Temp",
+    "Parameters": [
+      {
+        "Name": "usr_id",
+        "Description": "使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "usr_pwd",
+        "Description": "使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "searchID",
+        "Description": "查詢識別碼，規則待核對",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "內嵌複合結構，需逐項核對",
+    "Implemented": true,
+    "Title": "交通車教職員介面（Temp）",
+    "Summary": "原交通車系統的教職員 Temp 方法，保留獨立契約；用途差異及回傳欄位須與一般版逐項核對。"
+  },
+  {
+    "Name": "Get_Traffic_Stud",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/Get_Traffic_Stud",
+    "Parameters": [
+      {
+        "Name": "usr_id",
+        "Description": "使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "usr_pwd",
+        "Description": "使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "searchid",
+        "Description": "查詢識別碼，保留原大小寫",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "內嵌複合結構，需逐項核對",
+    "Implemented": true,
+    "Title": "交通車資料查詢（學生）",
+    "Summary": "供交通車系統驗證學生並查詢資料，回傳 DataSet；參數 searchid 使用小寫 d，須保留。"
+  },
+  {
+    "Name": "Get_Traffic_Stud_Temp",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/Get_Traffic_Stud_Temp",
+    "Parameters": [
+      {
+        "Name": "usr_id",
+        "Description": "使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "usr_pwd",
+        "Description": "使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "searchID",
+        "Description": "查詢識別碼，規則待核對",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "內嵌複合結構，需逐項核對",
+    "Implemented": true,
+    "Title": "交通車學生介面（Temp）",
+    "Summary": "原交通車系統的學生 Temp 方法。程式中的服務代碼與一般學生方法不同，授權及用途差異待核對。"
+  },
+  {
+    "Name": "KuasSSO_Alumni",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_Alumni",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "校友中心查驗登入資料",
+    "Summary": "供「校友中心查驗登入資料」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "KuasSSO_Active",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_Active",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "高應大活動訊息建置平台",
+    "Summary": "供「高應大活動訊息建置平台」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "KuasSSO_Library",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_Library",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "圖書館系統LDAP整合",
+    "Summary": "供「圖書館系統LDAP整合」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "KuasSSO_Reserach",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_Reserach",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "研究團隊系統（用途待核對）",
+    "Summary": "原程式註記為研究團隊相關系統，使用獨立服務授權及使用者驗證；正式業務名稱與提供欄位待核對。"
+  },
+  {
+    "Name": "checkSession",
+    "Namespace": "http://tempuri.org",
+    "Action": "http://tempuri.org/checkSession",
+    "Parameters": [
+      {
+        "Name": "SessionID",
+        "Description": "原介面定義的加密 Session 資料",
+        "Sensitive": true
+      }
+    ],
+    "ReturnType": "s1:ir_userinfo",
+    "Implemented": false,
+    "Title": "圖書館數位典藏 Session 驗證",
+    "Summary": "接收原格式的加密 SessionID，處理數位典藏的使用者資料驗證；需保留原加解密方式與 ir_userinfo 回傳結構。"
+  },
+  {
+    "Name": "KuasSSO_TeaAdv",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_TeaAdv",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "教卓助理相關系統",
+    "Summary": "供「教卓助理相關系統」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "KuasSSO_Cloud",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_Cloud",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "一雲多螢平台系統",
+    "Summary": "供「一雲多螢平台系統」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "KuasSSO_Moocs",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_Moocs",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "摩克斯平台",
+    "Summary": "供「摩克斯平台」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "KuasSSO_TeachDepartment",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_TeachDepartment",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "chk_division",
+        "Description": "原系所驗證條件，規則待核對",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "各系所網站認證",
+    "Summary": "供「各系所網站認證」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "KuasSSO_XiaoWuTong",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_XiaoWuTong",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "高應大校務通",
+    "Summary": "供「高應大校務通」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "KuasSSO_Nelec",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_Nelec",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "國際事務處選課系統",
+    "Summary": "供「國際事務處選課系統」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "KuasSSO_CourseMap",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_CourseMap",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "課程地圖APP系統",
+    "Summary": "供「課程地圖APP系統」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "KuasSSO_rhcloud",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_rhcloud",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "專題學程",
+    "Summary": "供「專題學程」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "KuasSSO_NoPaperMeeting",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_NoPaperMeeting",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "無紙化會議系統",
+    "Summary": "供「無紙化會議系統」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "KuasSSO_SimpleInterActive",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_SimpleInterActive",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "簡易互動式學習成果檢視及統計平台",
+    "Summary": "供「簡易互動式學習成果檢視及統計平台」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "KuasSSO_AudioBook",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_AudioBook",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "有聲書平台",
+    "Summary": "供「有聲書平台」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "KuasSSO_LibJournal",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_LibJournal",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "圖書館外文期刊系統LDAP整合",
+    "Summary": "供「圖書館外文期刊系統LDAP整合」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "KuasSSO_LibBookSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_LibBookSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "圖書館新館藏查詢系統",
+    "Summary": "供「圖書館新館藏查詢系統」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "KuasSSO_ZuvioSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_ZuvioSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "Zuvio 教學平台",
+    "Summary": "供「Zuvio 教學平台」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "KuasSSO_UnionSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_UnionSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "圖書館聯合線上串接",
+    "Summary": "供「圖書館聯合線上串接」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "NkustSSO_DoorAccessSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/NkustSSO_DoorAccessSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "s:string",
+    "Implemented": false,
+    "Title": "門禁預約系統預約登入",
+    "Summary": "供「門禁預約系統預約登入」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "KuasSSO_SchCardSearch_",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_SchCardSearch_",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "校園智慧卡登入（LDAP 版本）",
+    "Summary": "校園智慧卡系統的 LDAP 驗證版本；方法名稱最後有底線，與沒有底線的版本是不同介面。"
+  },
+  {
+    "Name": "KuasSSO_SchCardSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_SchCardSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": true,
+    "Title": "校園智慧卡登入（資料庫版本）",
+    "Summary": "校園智慧卡系統的資料庫驗證版本；不得直接當成名稱帶底線的 LDAP 方法。"
+  },
+  {
+    "Name": "KuasSSO_SchResearchSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_SchResearchSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "校發中心串接（用途待核對）",
+    "Summary": "原方法名稱與區段註記不一致；保留原方法規格，正式系統用途及回傳內容需再確認。"
+  },
+  {
+    "Name": "KuasSSO_AIFUSystemResearchSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_AIFUSystemResearchSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "艾富簽核系統",
+    "Summary": "供「艾富簽核系統」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "KuasSSO_BookingSystemSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_BookingSystemSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "線上虛擬會議室系統",
+    "Summary": "供「線上虛擬會議室系統」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "KuasSSO_InternetCampusSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_InternetCampusSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "網路學園",
+    "Summary": "供「網路學園」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "KuasSSO_EasyTestSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_EasyTestSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "Easy Test 線上學習測驗平台",
+    "Summary": "供「Easy Test 線上學習測驗平台」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "NkustSSO_DSICSystemSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/NkustSSO_DSICSystemSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "DSIC 公文系統獨立入口",
+    "Summary": "供「DSIC 公文系統獨立入口」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "NkustSSO_JESDASystemSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/NkustSSO_JESDASystemSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "JESDA捷思達_數位開發",
+    "Summary": "供「JESDA捷思達_數位開發」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "NkustSSO_DocumentApplyPaymentSystemSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/NkustSSO_DocumentApplyPaymentSystemSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "IDNO",
+        "Description": "申請者身分證號",
+        "Sensitive": true
+      },
+      {
+        "Name": "Birthday",
+        "Description": "生日字串，直接比對校務生日欄位（最多 7 字元），不自動轉換日期格式",
+        "Sensitive": true
+      },
+      {
+        "Name": "identity",
+        "Description": "STUD：有當期學籍；Employee：教職員；GRADSTUD：查無當期學籍的學生資料，沿用原校務查詢條件",
+        "Sensitive": false
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "DataSet（XSD＋DiffGram）",
+    "Implemented": true,
+    "Title": "一卡通文件申請／繳費資料",
+    "Summary": "接收系統呼叫帳密、身分證號、生日及身分類別，回傳文件申請／繳費所需的 DataSet；不是一般使用者帳密驗證。"
+  },
+  {
+    "Name": "NkustSSO_SchDevSystemSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/NkustSSO_SchDevSystemSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "校務發展系統",
+    "Summary": "供「校務發展系統」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "NkustSSO_AdjunctAssistantSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/NkustSSO_AdjunctAssistantSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "兼任助理簽到系統",
+    "Summary": "供「兼任助理簽到系統」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "NkustSSO_SchDevQueSystemSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/NkustSSO_SchDevQueSystemSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "台評會台日泰問卷",
+    "Summary": "供「台評會台日泰問卷」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "NkustSSO_SchLeavingSystemSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/NkustSSO_SchLeavingSystemSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "畢業離校系統登入驗證",
+    "Summary": "供畢業離校系統驗證登入。原成功分支回傳狀態、帳號與姓名；Email 在該分支未回傳。"
+  },
+  {
+    "Name": "NkustSSO_NkustkmuRentSystemSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/NkustSSO_NkustkmuRentSystemSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "學生校外賃居調查平台",
+    "Summary": "供「學生校外賃居調查平台」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "NkustSSO_NkustConsultationSystemSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/NkustSSO_NkustConsultationSystemSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "諮商輔導中心登入驗證",
+    "Summary": "供諮商輔導中心系統驗證登入。原成功分支包含狀態、成功標記、學號／員編、姓名及信箱。"
+  },
+  {
+    "Name": "NkustSSO_SchResearchInfoSysDownLoadPlatformSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/NkustSSO_SchResearchInfoSysDownLoadPlatformSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "校務研究組串接（用途待核對）",
+    "Summary": "原註記為校務發展系統，方法名稱另指向資訊下載平台；確切用途與回傳欄位待核對。"
+  },
+  {
+    "Name": "NkustSSO_AffairPMSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/NkustSSO_AffairPMSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "專案管理系統",
+    "Summary": "供「專案管理系統」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "NkustSSO_InterPassAPPSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/NkustSSO_InterPassAPPSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "國際學習護照APP系統",
+    "Summary": "供「國際學習護照APP系統」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "NkustSSO_NkustNewEnrollSystemSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/NkustSSO_NkustNewEnrollSystemSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "新版招生系統",
+    "Summary": "供「新版招生系統」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "NkustSSO_MonitorSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/NkustSSO_MonitorSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "跨校區監視器整合系統(清海實業有限公司)",
+    "Summary": "供「跨校區監視器整合系統(清海實業有限公司)」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "NkustSSO_CarDisplaySearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/NkustSSO_CarDisplaySearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "車位顯示系統(禾順數位科技有限公司)",
+    "Summary": "供「車位顯示系統(禾順數位科技有限公司)」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "NkustSSO_StuPubVoteSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/NkustSSO_StuPubVoteSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "學生公共事務投票系統(創創數位科技股份有限公司)",
+    "Summary": "供「學生公共事務投票系統(創創數位科技股份有限公司)」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "NkustSSO_PaySystemStudSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/NkustSSO_PaySystemStudSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "IDNO",
+        "Description": "申請者身分證號",
+        "Sensitive": true
+      },
+      {
+        "Name": "SchSysPwd",
+        "Description": "原方法輸入參數",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "LinePay 資料申請繳費（學生）",
+    "Summary": "供資料申請 LinePay 繳費系統使用的學生驗證介面，與職員版本分開保留原回傳規格。"
+  },
+  {
+    "Name": "NkustSSO_PaySystemEmployeeSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/NkustSSO_PaySystemEmployeeSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "LinePay 資料申請繳費（職員）",
+    "Summary": "供資料申請 LinePay 繳費系統使用的職員驗證介面，與學生版本分開保留原回傳規格。"
+  },
+  {
+    "Name": "NkustSSO_TeachResourceLibrarySearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/NkustSSO_TeachResourceLibrarySearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "教學資源智庫(供教師教學資源之網站)",
+    "Summary": "供「教學資源智庫(供教師教學資源之網站)」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "NkustSSO_SchStuHistorySearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/NkustSSO_SchStuHistorySearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "學籍資料調閱系統",
+    "Summary": "供「學籍資料調閱系統」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "NkustSSO_EBSystemStudSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/NkustSSO_EBSystemStudSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "華藝電子書系統（學生）",
+    "Summary": "供「華藝電子書系統（學生）」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "NkustSSO_HyreadBookSystemSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/NkustSSO_HyreadBookSystemSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "Hyread電子書入口(凌網知識股份有限公司)(教職員及學生)",
+    "Summary": "供「Hyread電子書入口(凌網知識股份有限公司)(教職員及學生)」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "KuasSSO_AIFUReportSystemResearchSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/KuasSSO_AIFUReportSystemResearchSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "艾富經費結報簽核系統",
+    "Summary": "供「艾富經費結報簽核系統」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  },
+  {
+    "Name": "NkustSSO_TWaeaQuesSystemSearch",
+    "Namespace": "http://tempuri.org/",
+    "Action": "http://tempuri.org/NkustSSO_TWaeaQuesSystemSearch",
+    "Parameters": [
+      {
+        "Name": "SearchUsr_id",
+        "Description": "原串接系統的呼叫帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "SearchUsr_pwd",
+        "Description": "原串接系統的呼叫密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "auth_id",
+        "Description": "要驗證的使用者帳號",
+        "Sensitive": false
+      },
+      {
+        "Name": "auth_pwd",
+        "Description": "要驗證的使用者密碼",
+        "Sensitive": true
+      },
+      {
+        "Name": "from_Clientip",
+        "Description": "原介面傳入的使用者 IP；不能取代伺服器端的來源授權",
+        "Sensitive": false
+      }
+    ],
+    "ReturnType": "tns:ArrayOfAnyType",
+    "Implemented": false,
+    "Title": "台評會問卷系統（學生）",
+    "Summary": "供「台評會問卷系統（學生）」使用的既有驗證／身分資料介面。先核對呼叫系統的服務資格，再處理使用者驗證；確切回傳欄位與適用身分須依原方法核對。"
+  }
+]

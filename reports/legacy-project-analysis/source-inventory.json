@@ -1,0 +1,226 @@
+{
+  "date": "2026-10-16",
+  "scope": "靜態原始碼分析；未連線任何舊服務或資料庫",
+  "projects": [
+    {
+      "name": "NewKuasSystem",
+      "framework": "v4.8",
+      "aspx_count": 415,
+      "asmx_count": 0,
+      "view_groups": {
+        "50Ann": 4,
+        "Aggregate": 4,
+        "CeedSpace": 44,
+        "DataProcess": 1,
+        "EMS": 47,
+        "Enroll": 88,
+        "EvergreenActive": 7,
+        "KGS": 40,
+        "KuasLib": 3,
+        "LibSpace": 19,
+        "Practice": 49,
+        "Space": 84,
+        "其他位置": 25
+      },
+      "sha256": "496a00edddbf950627f22949b89c5ccb3cceff9a3c8ca0e50a218baaa9fb24f2"
+    },
+    {
+      "name": "SOA",
+      "framework": "v4.8",
+      "aspx_count": 3,
+      "asmx_count": 5,
+      "view_groups": {
+        "其他位置": 3
+      },
+      "sha256": "d5a9d5fc0e2393b0b2d15d857f00825092e49c3294149bae1cf6bc48fe2d60aa"
+    },
+    {
+      "name": "AutoADAsy",
+      "framework": "v4.8",
+      "aspx_count": 0,
+      "asmx_count": 0,
+      "view_groups": {},
+      "sha256": "b3a4df34b79cd882acd61c91d0e9adaacd505d245f8b747fe793d919b9377a1e"
+    },
+    {
+      "name": "NkustProjectForJinean",
+      "framework": "v4.8",
+      "aspx_count": 1,
+      "asmx_count": 0,
+      "view_groups": {
+        "其他位置": 1
+      },
+      "sha256": "931f6a1d22694ed9a10e5608bb97706adc236be49a60c524ecbeb08385aac6af"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "S01",
+      "path": "NkustProjectForJinean.sln",
+      "line": 6,
+      "label": "四個子專案的組成",
+      "sha256": "8d3a266c3ce077e7ba5725900809ef00a13a26cd8ba97147e55b665821f93733"
+    },
+    {
+      "id": "S02",
+      "path": "NewKuasSystem/Default.aspx.cs",
+      "line": 20,
+      "label": "依網域導向業務入口",
+      "sha256": "c6f96cc7a6ec3187dbbf1e1554679e0bf8ed32701c87b8609fb7418b941fbcb2"
+    },
+    {
+      "id": "S03",
+      "path": "NewKuasSystem/View/Space/SpaceLogin.aspx.cs",
+      "line": 22,
+      "label": "場地登入、Session 與身分判定",
+      "sha256": "c2711d54e62c0a54dee6a0bbf1fcd49a72960bc31260457a32de61f5fe82b3f2"
+    },
+    {
+      "id": "S04",
+      "path": "NewKuasSystem/MasterPage/Space/MasterForSpaces.Master.cs",
+      "line": 139,
+      "label": "選單授權與登出",
+      "sha256": "ce806b2eb258817d6a4771fb93a739969a2bdd37318d6e44c708803fe7366506"
+    },
+    {
+      "id": "S05",
+      "path": "NewKuasSystem/UserControl/SkyLoginUserControl.ascx.cs",
+      "line": 87,
+      "label": "校務亂數憑據驗證",
+      "sha256": "cc884eb308d6f8ad071d1906e75875d6b59160948ab8e3347618e95866cab2c4"
+    },
+    {
+      "id": "S06",
+      "path": "SOA/KuasSSOWebService.asmx.cs",
+      "line": 403,
+      "label": "主要 SOAP 方法與對外回傳",
+      "sha256": "dd78e8ca83a146ac64c7b801dbeb25c5570c9d1c69c985464f83375895449828"
+    },
+    {
+      "id": "S07",
+      "path": "SOA/Module/LdapAuthentication.cs",
+      "line": 79,
+      "label": "LDAP 查驗、備援與補同步紀錄",
+      "sha256": "ce059a1caa61333066c023b301d022b32b5ccfac79f76403b28bab7096226768"
+    },
+    {
+      "id": "S08",
+      "path": "SOA/Model/ModelForSOA.cs",
+      "line": 786,
+      "label": "中介帳號資料與密碼驗證",
+      "sha256": "74d3e99704ed8cbbf6666db7811772231da08fa307d207a7869847ae297dd06c"
+    },
+    {
+      "id": "S09",
+      "path": "AutoADAsy/Program.cs",
+      "line": 18,
+      "label": "桌面同步程式入口",
+      "sha256": "ee6eb0d5783e2da55ea608a56ddd80e6303767a4faebddae238574225abf2126"
+    },
+    {
+      "id": "S10",
+      "path": "AutoADAsy/KuasLdapAsyFrm.cs",
+      "line": 1227,
+      "label": "全量／差異排程與密碼同步",
+      "sha256": "81ecd3d338248653d6bf6f7c64c92cfebc25ad00965d635782bd3955be56df7e"
+    },
+    {
+      "id": "S11",
+      "path": "AutoADAsy/Control/ControlForAutoADAsy.cs",
+      "line": 54,
+      "label": "校務到中介表再到 LDAP",
+      "sha256": "8e021c755c71d7461a1654490615010beb4f3bd9bd9a19348aac47a6f0f3c45e"
+    },
+    {
+      "id": "S12",
+      "path": "NewKuasSystem/View/Space/SpaceApply.aspx.cs",
+      "line": 956,
+      "label": "場地申請與時段檢查",
+      "sha256": "d0aa7ad1e928040ce91b9a01907814f452f3087d96cd7e5088d836481b713c46"
+    },
+    {
+      "id": "S13",
+      "path": "NewKuasSystem/View/Space/SpaceApplyVerify.aspx.cs",
+      "line": 122,
+      "label": "逐關審核與下一位審核者",
+      "sha256": "5a2c38dde810c613dcfd21499eaa866f57e21e739fb75cdeddc8cbd6b86c68af"
+    },
+    {
+      "id": "S14",
+      "path": "NewKuasSystem/View/Space/ShowPaymentConfirm.aspx.cs",
+      "line": 1185,
+      "label": "費用確認與保存",
+      "sha256": "743dace73d5a0db982b054937b0a04a9297d1d4b27559d3484587c83ea0233cb"
+    },
+    {
+      "id": "S15",
+      "path": "NewKuasSystem/View/Enroll/enroll_View.aspx.cs",
+      "line": 1083,
+      "label": "報名預覽後送出與通知",
+      "sha256": "c8e5133b1facc446e676aa2157d31336308bb6ac294aca5bf2985364c4d9a701"
+    },
+    {
+      "id": "S16",
+      "path": "NewKuasSystem/View/Enroll/enroll_main.aspx",
+      "line": 74,
+      "label": "招生入口與查詢服務",
+      "sha256": "92452dbe3ec12347748f8a26af66b5423114dcbaf66c076dde3e84d299d6ec17"
+    },
+    {
+      "id": "S17",
+      "path": "NewKuasSystem/View/EMS/ShowEMSApplyVerify.aspx.cs",
+      "line": 190,
+      "label": "招生名額調整審核",
+      "sha256": "07425717d16d15f7167565f76ce5814bdb30ba2e81630b5597d5fcdc984df78f"
+    },
+    {
+      "id": "S18",
+      "path": "NewKuasSystem/Model/KGS/ModelForKGS.cs",
+      "line": 306,
+      "label": "業務、流程步驟、附件與表單",
+      "sha256": "940222a384eb6a3a77cb795834bd11b0250a5a45452585eb7fade6cf80ea4794"
+    },
+    {
+      "id": "S19",
+      "path": "NewKuasSystem/Model/EvergreenActive/EvergreenActiveModel.cs",
+      "line": 99,
+      "label": "活動開放時間與名額檢查",
+      "sha256": "f8600f29903707619f8b89a9a1602930f098a9949f303595d9a514632bc5f6ea"
+    },
+    {
+      "id": "S20",
+      "path": "NewKuasSystem/Model/Aggregate/StudAggregateModel.cs",
+      "line": 68,
+      "label": "學生人數彙整",
+      "sha256": "a217b742d0c73b4ca2c564ea2e760a43d66cdc14826370bcb3c12e8b195fb23b"
+    },
+    {
+      "id": "S21",
+      "path": "NewKuasSystem/View/50Ann/ActiveRFIDOrder.aspx.cs",
+      "line": 14,
+      "label": "歷史頁面仍有測試導向",
+      "sha256": "d1d0899f914171366605dedbc8f4c4231079ec3330fc3803fa828e77ac9e0a28"
+    },
+    {
+      "id": "S22",
+      "path": "AutoADAsy/KuasHandCaptureNewsFrm.cs",
+      "line": 144,
+      "label": "校園消息擷取輔助工具",
+      "sha256": "16d376bb18e36c45c18f91e6dacf0ec9fb57dae70586ad8a4765a785c7628df3"
+    },
+    {
+      "id": "S23",
+      "path": "NewKuasSystem/Model/DataProcess/ModelForDataProcess.cs",
+      "line": 39,
+      "label": "人工資料比對與同步工具",
+      "sha256": "77d3b15d39230a8aef4501fc48723c8476d1e4c0615436149797a7f156b8d1f9"
+    },
+    {
+      "id": "S24",
+      "path": "NkustProjectForJinean/test.aspx.cs",
+      "line": 12,
+      "label": "空白測試頁骨架",
+      "sha256": "2441b9f428d70cb62b7f6b3bf9ced942a0a258a39dd02fa76d97b11c87d865fc"
+    }
+  ]
+}

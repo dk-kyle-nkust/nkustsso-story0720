@@ -1,0 +1,3 @@
+@* 呈現後台儲存結果及驗證訊息。 *@
+@if (TempData["Message"] is string message) { <p class="success-note" role="status">@message</p> }
+@if (TempData["Error"] is string error) { <p class="validation" role="alert">@error</p> }

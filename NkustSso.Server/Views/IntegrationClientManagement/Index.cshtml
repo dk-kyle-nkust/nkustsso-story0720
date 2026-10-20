@@ -1,0 +1,79 @@
+@* 維護 JSON／SOAP 呼叫系統、密鑰及可取得的資料：清單頁。 *@
+@model IntegrationClientListViewModel
+@inject IConfiguration Configuration
+@inject AdminAuthorizationService RoleAccess
+@{ var canManage = (await RoleAccess.LoadAsync(User)).CanManage("integrations"); }
+@{ ViewData["Title"] = "帳密驗證 API · 串接系統管理"; var issuer = Configuration["Sso:Issuer"]!; var existing = Model.Kind == "existing"; var groupName = existing ? "舊系統" : "新串接"; }
+<div class="admin-head"><div><span class="eyebrow">WORKSPACE / INTEGRATIONS</span><h1>帳密驗證 API</h1><p>管理 JSON 帳密驗證與 SOAP 相容服務、來源 IP、系統密鑰及服務授權。</p></div>@if (canManage) { <a class="button primary" asp-action="Create" asp-route-kind="@Model.Kind">@(existing ? "登記舊系統" : "新增串接系統")</a> }</div>
+@if (TempData["Message"] is string message) { <div class="info-strip" role="status">@message</div> }
+@if (TempData["Error"] is string error) { <div class="validation" role="alert">@error</div> }
+<nav class="integration-tabs" aria-label="串接分類">
+    <a asp-action="Index" asp-route-kind="existing" aria-current="@(existing ? "page" : null)"><span>舊系統</span><span class="integration-tab-count">@Model.ExistingCount</span></a>
+    <a asp-action="Index" asp-route-kind="new" aria-current="@(!existing ? "page" : null)"><span>新串接</span><span class="integration-tab-count">@Model.NewCount</span></a>
+</nav>
+<div class="integration-context">
+    <p><a asp-action="Overview">舊服務圖解總覽 · 主管簡報版</a></p>
+    <span class="pill @(existing ? "neutral" : "")">@(existing ? "保留既有介面" : "使用共用介面")</span>
+    <h2>@(existing ? "既有系統，依原規格逐項銜接" : "新加入的系統，統一管理串接資格")</h2>
+    <p>@(existing ? $"保留既有方法名稱、參數及回傳結構。目前已實作 {LegacySoapOperationCatalog.Available.Count} 個方法，其餘仍待資料對應與移植；正式接收端須核對欄位空值及驗證規則。" : "建議使用共用 JSON 驗證介面，各系統以獨立代碼與密鑰識別，分別授權及追蹤呼叫。目前僅回傳驗證結果，個人資料欄位授權與同步功能尚未提供。")</p>
+</div>
+<dl class="workspace-metrics"><div><dt>串接系統</dt><dd>@Model.Clients.Count<small>筆登記</small></dd></div><div><dt>設定啟用</dt><dd>@Model.Clients.Count(c => c.Enabled)<small>依服務開關及授權生效</small></dd></div><div><dt>來源已對應</dt><dd>@Model.Clients.Count(c => c.SourceSystem.Length > 0 && c.SourceId.Length > 0)<small>有來源識別碼</small></dd></div></dl>
+<details class="workspace-reference"><summary>介面與服務開關<small>查看驗證網址、回傳內容與啟用條件</small></summary><section class="panel"><h2>可用介面</h2>
+<p>驗證來源：<strong>新校務 MSSQL（s90_auth_usr），不回退舊 LDAP／Sybase</strong></p>
+<dl><dt>SOAP 1.1／1.2 · @(Model.Options.SoapEnabled ? "服務已開啟" : "服務尚未開啟")</dt>
+<dd><code>@(new Uri(new Uri(issuer), "KuasSSOWebService.asmx"))</code><br />目前提供 @LegacySoapOperationCatalog.Available.Count 個方法，依方法分別授權。<a href="/KuasSSOWebService.asmx" target="_blank" rel="noopener">服務說明與測試（另開分頁）</a> · <a href="/KuasSSOWebService.asmx?wsdl" target="_blank" rel="noopener">查看 WSDL（另開分頁）</a></dd>
+<dt>JSON API · @(Model.Options.JsonEnabled ? "服務已開啟" : "服務尚未開啟")</dt>
+<dd><code>POST @(new Uri(new Uri(issuer), "api/integration/v1/verify"))</code><br />標頭：<code>X-Client-Id</code>、<code>X-Client-Secret</code>；內容：<code>{"userName":"帳號","password":"密碼"}</code>。成功處理回傳 <code>{"verified":true}</code> 或 <code>{"verified":false}</code>，不含個人資料。<a href="/api/integration" target="_blank" rel="noopener">服務說明與測試（另開分頁）</a></dd></dl>
+<p class="fine">部署設定與下方系統登記都須啟用，並勾選可使用的服務，才會接受呼叫。SOAP 沿用原方法參數，依來源 IP 識別串接系統；JSON 另須系統密鑰。</p>
+</section></details>
+<section class="panel"><h2>@groupName 清單</h2>
+<p class="muted">@(Model.Clients.Count == 0 ? $"目前此分類尚無登記資料；登記{groupName}後會顯示在此。" : "可搜尋系統名稱、負責單位、來源代碼或聯絡窗口。") 分類僅供管理，不代表方法已完成相容。</p>
+<div class="table-wrap"><table class="session-table integration-client-table" data-datatable data-no-sort="5"><thead><tr><th>系統</th><th>介面</th><th>狀態</th><th>聯絡窗口</th><th>允許來源 IP</th><th>管理</th></tr></thead><tbody>
+@foreach (var c in Model.Clients)
+{
+    <tr><td data-label="系統"><strong>@c.Name</strong><br /><code>@c.Id</code>
+    @if (c.SourceSystem == "newnkustprojectforjinean:source") { <p><span class="pill pending">規格登記 · 待完成串接</span></p> }
+    @if (!string.IsNullOrEmpty(c.OwningUnit)) { <p>負責單位：@c.OwningUnit</p> }
+    @if (!string.IsNullOrEmpty(c.Purpose)) { <p class="integration-notes">@c.Purpose</p> }
+    @if (!string.IsNullOrEmpty(c.SourceSystem)) { <p class="fine">來源：@c.SourceSystem ／ @c.SourceId</p> }
+    @if (!string.IsNullOrEmpty(c.Notes))
+    {
+        <details class="device-detail"><summary>查看備註</summary><div class="integration-notes">@c.Notes</div></details>
+    }</td><td data-label="介面"><span class="pill">@(c.Protocol == "soap" ? "SOAP" : "JSON API")</span></td>
+    <td data-label="狀態"><span class="pill @(!c.Enabled ? "neutral" : Model.Grants.Any(g => g.ClientId == c.Id && g.ServiceId == IntegrationPermissions.VerifyAccount) && (c.Protocol == "soap" ? Model.Options.SoapEnabled : Model.Options.JsonEnabled) ? "success" : "pending")">@(!c.Enabled ? "已停用" : !Model.Grants.Any(g => g.ClientId == c.Id && g.ServiceId == IntegrationPermissions.VerifyAccount) ? "未授權服務" : (c.Protocol == "soap" ? Model.Options.SoapEnabled : Model.Options.JsonEnabled) ? "已啟用" : "等待服務開啟")</span>
+    @foreach (var service in Model.Services.Where(s => Model.Grants.Any(g => g.ClientId == c.Id && g.ServiceId == s.Id))) { <p class="fine">@service.Name</p> }
+    </td>
+    <td data-label="聯絡窗口">
+        @if (string.IsNullOrEmpty(c.ApplicantName) && string.IsNullOrEmpty(c.ContactName) && string.IsNullOrEmpty(c.ContactPhone) && string.IsNullOrEmpty(c.ContactEmail)) { <span class="fine">尚未填寫</span> }
+        else
+        {
+            <dl class="integration-contact">
+            @if (!string.IsNullOrEmpty(c.ApplicantName)) { <dt>申請人</dt><dd>@c.ApplicantName</dd> }
+            @if (!string.IsNullOrEmpty(c.ContactName)) { <dt>承辦人</dt><dd>@c.ContactName</dd> }
+            @if (!string.IsNullOrEmpty(c.ContactPhone)) { <dt>電話</dt><dd>@c.ContactPhone</dd> }
+            @if (!string.IsNullOrEmpty(c.ContactEmail)) { <dt>Email</dt><dd>@c.ContactEmail</dd> }
+            </dl>
+        }
+    </td>
+    <td data-label="允許來源 IP">@if (string.IsNullOrWhiteSpace(c.AllowedIps)) { <span class="fine">待確認，啟用前必填</span> }
+    else { @foreach (var ip in c.AllowedIps.Split('\n')) { <code>@ip</code><br /> } }</td>
+    <td data-label="管理">@if (canManage) { <a class="system-edit-link" asp-action="Edit" asp-route-id="@c.Id">編輯</a> } else { <span class="fine">僅查詢</span> }
+    @if (c.Protocol == "json" && canManage)
+    {
+        <p><a href="/api/integration?clientId=@c.Id" target="_blank" rel="noopener">說明與測試</a></p>
+        <details class="device-detail"><summary>更新密鑰</summary><p>更新後舊密鑰立即失效，請安排串接端同步更新。</p>
+        <form method="post" asp-action="Rotate" asp-route-id="@c.Id"><input type="hidden" name="revision" value="@c.Revision" /><button type="submit" class="button">產生新密鑰</button></form></details>
+    }</td></tr>
+}
+</tbody></table></div></section>
+<section class="panel"><h2>@groupName · 最近紀錄</h2><p class="fine">僅顯示此分類系統最近 50 筆紀錄；變更分類後，該系統歷史紀錄也會隨之歸類。驗證紀錄保留 30 天；設定異動持續保留。不記錄使用者帳密或系統密鑰。</p>
+<div class="table-wrap"><table class="session-table integration-audit-table" data-datatable data-page-length="10" data-no-sort="4"><thead><tr><th>時間</th><th>系統</th><th>動作</th><th>來源 IP</th><th>結果／內容</th></tr></thead><tbody>
+@foreach (var a in Model.Audits)
+{
+    <tr><td data-label="時間">@LoginSessionListViewModel.Time(a.OccurredAt)</td><td data-label="系統">@Model.Clients.FirstOrDefault(c => c.Id == a.ClientId)?.Name<br /><code>@a.ClientId</code></td><td data-label="動作">@(a.Action switch { "create" => "新增", "update" => "修改", "rotate" => "更新密鑰", "migrate" => "資料升級", "import" => "資料匯入", _ => "驗證帳密" })</td><td data-label="來源 IP">@a.RemoteIp</td>
+    <td data-label="結果／內容">@if (a.Action == "verify") { var parts = a.Detail.Split(':', 2); if (parts.Length == 2) { <code>@parts[0]</code><br /> } @(parts.Last() switch { "success" => "驗證／查詢成功", "failed" => "驗證未通過或查無資料", "caller-denied" => "呼叫帳密錯誤", "function-denied" => "功能代碼未授權", _ => "來源暫時無法使用" }) }
+    else { <details class="device-detail"><summary>設定異動</summary><p>管理者：@a.ActorId</p><code>@a.Detail</code></details> }</td></tr>
+}
+</tbody></table></div></section>
+@section head { <partial name="_AdminStyles" /><link rel="stylesheet" href="/integration-services.css" asp-append-version="true" /> }
+@section scripts { <partial name="_AdminScripts" /> }

@@ -1,0 +1,31 @@
+@* 依分類提供串接指南及 SOAP 個別方法 PDF，下載連結須經後台授權。 *@
+@model IntegrationManualListViewModel
+@{ ViewData["Title"] = "串接手冊"; }
+<div class="admin-head">
+    <div><span class="eyebrow">WORKSPACE / GUIDES</span><h1>串接手冊</h1><p>依串接方式下載指南，提供給接收系統的開發人員。</p></div>
+    <a class="button primary" href="/admin/manuals/download/all">下載全部手冊（ZIP）</a>
+</div>
+<aside class="info-strip"><span class="info-symbol" aria-hidden="true">i</span><div><strong>後台限定存取</strong><p>只有取得手冊權限的人員可以瀏覽與下載。版本 @Model.Version，共 @Model.Items.Count 份 PDF、@Model.Items.Sum(i => i.Pages) 頁。</p></div></aside>
+<section class="panel">
+    <h2>開發人員指南</h2>
+    <p class="fine">包含簡易流程圖、必要設定、欄位及範例。搜尋串接方式或 SOAP 方法名稱，即可找到對應文件。</p>
+    <div class="table-wrap" tabindex="0" aria-label="串接手冊清單">
+        <table class="manual-table" data-datatable data-paging="false" data-no-sort="3">
+            <thead><tr><th>手冊名稱</th><th>分類</th><th>頁數</th><th>下載</th></tr></thead>
+            <tbody>
+            @foreach (var manual in Model.Items)
+            {
+                <tr>
+                    <td><strong>@manual.Title</strong><p class="fine">@manual.Description</p></td>
+                    <td><span class="pill">@manual.Category</span></td>
+                    <td>@manual.Pages 頁</td>
+                    <td><a class="button" href="/admin/manuals/download/@manual.Id" aria-label="下載 @manual.Title PDF">下載 PDF</a></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+    <p class="fine">文件內的網址與密鑰為占位符；交付時請另行提供該系統的實際設定。</p>
+</section>
+@section head { <partial name="_AdminStyles" /><link rel="stylesheet" href="/manuals.css" asp-append-version="true" /> }
+@section scripts { <partial name="_AdminScripts" /> }

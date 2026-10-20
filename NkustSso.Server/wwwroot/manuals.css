@@ -1,0 +1,18 @@
+/* 手冊桌面沿用後台表格，手機改為卡片並保留整列下載按鈕。 */
+.admin-workspace table.manual-table .button { white-space: nowrap; min-height: 44px; }
+@media (max-width: 640px) {
+    .admin-workspace table.manual-table { display: block; }
+    .admin-workspace table.manual-table thead,
+    .admin-workspace table.manual-table colgroup { display: none; }
+    .admin-workspace table.manual-table tbody { display: grid; gap: 14px; }
+    .admin-workspace table.manual-table tbody tr {
+        display: grid; grid-template-columns: minmax(0, 1fr) auto;
+        border: 1px solid #dfe3ed; border-radius: 14px; padding: 6px;
+    }
+    .admin-workspace table.manual-table tbody td { display: block; border: 0; padding: 8px 10px; }
+    .admin-workspace table.manual-table tbody td:first-child { grid-column: 1 / -1; }
+    .admin-workspace table.manual-table tbody td:first-child strong { font-size: 16px; color: #293a68; }
+    .admin-workspace table.manual-table tbody td:last-child { grid-column: 1 / -1; }
+    .admin-workspace table.manual-table .fine { margin: 6px 0 0; overflow-wrap: anywhere; }
+    .admin-workspace table.manual-table .button { display: flex; justify-content: center; width: 100%; }
+}

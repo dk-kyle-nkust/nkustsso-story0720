@@ -1,0 +1,24 @@
+@* 選擇學生、教職員或校友服務專區。 *@
+@{ ViewData["Title"] = "校務資訊入口"; ViewData["SupportsEnglish"] = true; }
+@section head { <link rel="stylesheet" href="/gateway.css" asp-append-version="true" /> }
+<div class="gateway">
+    <h1 class="sr-only">校務資訊入口</h1>
+    <div class="gateway-main-areas">
+        <a class="gateway-area gateway-student" href="/portal/student" aria-label="進入學生專區">
+            <span class="gateway-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m3 11 13-7 13 7-13 7z"/><path d="M8 14v8c5 4 11 4 16 0v-8M29 11v11"/></svg></span>
+            <h2 id="student-title">學生專區</h2>
+            <p>課程與學籍、學習與獎助、校園生活</p>
+            <span class="gateway-action">進入學生專區 <span aria-hidden="true">→</span></span>
+        </a>
+        <a class="gateway-area gateway-employee" href="/portal/employee" aria-label="進入教職員專區">
+            <span class="gateway-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" focusable="false"><rect x="4" y="10" width="24" height="17" rx="4"/><path d="M11 10V7a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3M4 17c8 5 16 5 24 0M16 17v5"/></svg></span>
+            <h2 id="employee-title">教職員專區</h2>
+            <p>教學與研究、人事與行政、總務與財務</p>
+            <span class="gateway-action">進入教職員專區 <span aria-hidden="true">→</span></span>
+        </a>
+    </div>
+    <a class="gateway-alumni" href="/portal/alumni" aria-label="進入校友專區">
+        <div class="gateway-alumni-label"><span class="gateway-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" focusable="false"><rect x="3" y="6" width="26" height="21" rx="4"/><circle cx="11" cy="13" r="3"/><path d="M6 23c0-6 10-6 10 0M21 12h4M21 17h4M21 22h3"/></svg></span><div><h2 id="alumni-title">校友專區</h2><p>校友服務、證明申請、職涯資訊</p></div></div>
+        <span class="gateway-action">進入校友專區 <span aria-hidden="true">→</span></span>
+    </a>
+</div>

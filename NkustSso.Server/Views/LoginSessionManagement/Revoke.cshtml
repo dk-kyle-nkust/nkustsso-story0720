@@ -1,0 +1,13 @@
+@* 確認撤銷指定裝置或帳號的登入。 *@
+@model RevokeLoginSessionViewModel
+@{ ViewData["Title"] = "確認終止登入"; }
+<section class="panel narrow"><h1>確認終止登入</h1>
+<p>帳號：<strong>@Model.UserName</strong><br />範圍：@(Model.SessionId is null ? "此帳號所有中央登入" : "指定的中央登入")<br />目前有效：@Model.ActiveCount 筆</p>
+<p class="muted">使用者下次存取 SSO 時須重新登入，帳號本身仍可使用。其他系統的既有登入不會立即結束。</p>
+<form method="post" class="login-form">
+    @Html.AntiForgeryToken()
+    <input asp-for="AccountId" type="hidden" /><input asp-for="SessionId" type="hidden" />
+    @if (!ViewData.ModelState.IsValid) { <div asp-validation-summary="All" class="validation" role="alert"></div> }
+    <label asp-for="Reason">終止原因</label><input asp-for="Reason" maxlength="200" required placeholder="例如：使用者回報裝置遺失" />
+    <button type="submit" class="button danger">確認終止</button><a href="/admin/sessions">取消並返回</a>
+</form></section>

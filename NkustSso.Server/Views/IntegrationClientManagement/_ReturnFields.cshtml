@@ -1,0 +1,33 @@
+@* 選擇允許提供給串接端的資料欄位。 *@
+@model IntegrationClientEditViewModel
+<div class="wide integration-return-fields" id="integration-return-fields">
+    <h2>允許回傳的欄位</h2>
+    <p class="fine">依方法分別勾選此系統可取得的資料。未勾選的資料不傳送，保留原欄位／陣列位置並以空字串回傳；驗證結果與錯誤代碼固定保留。既有接收端仍須測試能否接受空值。</p>
+    <p class="fine">目前已核對下列 @IntegrationReturnFields.Contracts.Count 個方法的欄位。標示「待移植」者可先保存需求，尚不提供資料；其餘方法待逐項核對後才開放欄位設定。勾選欄位不會取得服務呼叫資格。</p>
+    @foreach (var contract in IntegrationReturnFields.Contracts)
+    {
+        <details class="integration-return-contract" open="@(contract.Operation == LegacySoapContract.Operation || Model.Client.ReturnFieldKeys.Any(k => k.StartsWith(contract.Operation + "/", StringComparison.Ordinal)))">
+            <summary><span>@contract.Method.Title <small>@contract.Operation</small></span><span class="integration-return-state">@(contract.Method.Implemented ? "已實作" : "待移植・可先保存需求")</span></summary>
+            <p class="fine">@contract.Description</p>
+            <fieldset class="integration-grants">
+                <legend>@contract.Method.Title — 回傳欄位</legend>
+                @foreach (var field in contract.Fields)
+                {
+                    var key = IntegrationReturnFields.Key(contract.Operation, field.Name);
+                    <div class="integration-return-field">
+                    @if (field.Required || field.Blocked)
+                    {
+                        <p><strong>@field.Label</strong> <code>@field.Name</code> <span>@(field.Required ? "固定回傳" : "尚未開放")</span></p>
+                    }
+                    else
+                    {
+                        <label><input type="checkbox" name="Client.ReturnFieldKeys" value="@key" checked="@(Model.Client.ReturnFieldKeys.Contains(key))" aria-describedby="field-help-@contract.Operation-@field.Name" /> <span>@field.Label <code>@field.Name</code></span></label>
+                    }
+                    <p class="fine" id="field-help-@contract.Operation-@field.Name">@field.Description</p>
+                    </div>
+                }
+            </fieldset>
+        </details>
+    }
+</div>
+<p class="wide fine" id="integration-json-fields" hidden>JSON 帳密驗證固定只回傳 verified（是否通過），不傳送姓名、信箱或來源身分代碼。</p>

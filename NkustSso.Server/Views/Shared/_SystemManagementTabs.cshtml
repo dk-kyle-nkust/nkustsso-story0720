@@ -1,0 +1,17 @@
+@* 切換首頁連結、SSO 與帳密驗證 API 維護。 *@
+@inject AdminAuthorizationService TabAccess
+@{
+    var access = await TabAccess.LoadAsync(User);
+    var api = ViewContext.RouteData.Values["controller"]?.ToString() == "IntegrationClientManagement";
+    var section = api ? "api" : ViewData.Model switch
+    {
+        SsoSystemListViewModel list => list.Section,
+        SsoSystemEditViewModel editor => editor.System.Protocol == "link" ? "links" : "sso",
+        _ => "sso"
+    };
+}
+<nav class="system-management-tabs" aria-label="串接管理類型">
+    @if (access.Can("systems")) { <a href="/admin/systems?section=links" aria-current="@(section == "links" ? "page" : null)">首頁連結</a> }
+    @if (access.Can("systems")) { <a href="/admin/systems?section=sso" aria-current="@(section == "sso" ? "page" : null)">單一登入 SSO</a> }
+    @if (access.Can("integrations")) { <a href="/admin/systems/api?kind=new" aria-current="@(section == "api" ? "page" : null)">帳密驗證 API</a> }
+</nav>

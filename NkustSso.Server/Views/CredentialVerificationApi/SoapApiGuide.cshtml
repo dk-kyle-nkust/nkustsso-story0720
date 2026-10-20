@@ -1,0 +1,96 @@
+@* 舊 SOAP 方法、參數及 WSDL 說明。 *@
+@model SoapApiGuideViewModel
+@{ Layout = null; var operation = Model.Operation; }
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>@(operation?.Name ?? "Web Service 串接說明") · 國立高雄科技大學</title>
+<link rel="stylesheet" href="/soap-help.css" asp-append-version="true" /></head>
+<body>
+<a class="skip-link" href="#service-content">跳至方法說明</a>
+<header class="help-header"><a href="/"><img src="/nkust-logo-horizontal.png" alt="國立高雄科技大學" width="2048" height="379" /></a><nav aria-label="服務導覽"><a href="/KuasSSOWebService.asmx">SOAP 說明</a><a href="/api/integration">JSON API</a><a href="/KuasSSOWebService.asmx?wsdl">下載 WSDL</a></nav></header>
+<div class="help-shell">
+<aside class="help-sidebar"><details open><summary>方法目錄 <span>@SoapHelpCatalog.Operations.Count</span></summary>
+<label for="method-search">搜尋方法</label><input id="method-search" type="search" placeholder="輸入系統用途或方法名稱" autocomplete="off" />
+<p id="method-count" class="muted" aria-live="polite">@SoapHelpCatalog.Operations.Count 個方法規格</p>
+<nav class="method-list" aria-label="方法清單">
+@foreach (var item in SoapHelpCatalog.Operations.OrderByDescending(o => o.Implemented).ThenBy(o => o.Name))
+{
+    <a href="/KuasSSOWebService.asmx?op=@item.Name" data-method="@item.Name" data-search="@item.Title @item.Name @item.Summary" aria-current="@(item.Name == operation?.Name ? "page" : null)"><strong>@item.Title</strong><code>@item.Name</code><small class="@(item.Implemented ? "ready" : "pending")">@(item.Implemented ? "已實作" : "待移植")</small></a>
+}
+</nav></details></aside>
+<main id="service-content" tabindex="-1">
+<div class="eyebrow">NKUST / WEB SERVICES</div>
+@if (operation is null)
+{
+    <h1>Web Service 串接說明</h1><p class="lead">查閱方法、確認參數，並測試已提供的介面。</p>
+    <div class="status-row"><span class="badge @(Model.Enabled ? "ready" : "pending")">@(Model.Enabled ? "服務已開啟" : "服務尚未開啟")</span><span class="muted">目前 @SoapHelpCatalog.Operations.Count(o => o.Implemented) 個方法已實作，其餘 @SoapHelpCatalog.Operations.Count(o => !o.Implemented) 個待移植。</span></div>
+    <section class="card"><h2>開始串接</h2><ol><li>從方法目錄選擇對方程式使用的方法，確認名稱及參數大小寫。</li><li>確認方法已實作，並由管理者設定來源 IP、服務授權及啟用開關。</li><li>下載 WSDL 建立服務參考，或依下方範例送出 SOAP 請求。</li><li>以測試帳號確認成功、失敗與來源不可用時的處理。</li></ol><a class="primary" href="/KuasSSOWebService.asmx?op=KuasSSO_Certify2">查看帳密驗證與測試</a></section>
+    <section class="card"><h2>服務位址</h2><pre><code>@Model.Address</code></pre><p>SOAP 方法共用這個網址，以 SOAPAction 與 XML 內容指定方法，不是每個方法各有一個 SOAP 網址。</p><p class="muted">左側保留原方法規格供核對；下載的 WSDL 僅包含已實作的方法。HTTP GET／表單 POST 繫結尚未提供。</p></section>
+}
+else
+{
+    <h1>@operation.Title</h1><p><code>@operation.Name</code></p><p class="lead">@operation.Summary</p><div class="status-row"><span class="badge @(operation.Implemented ? "ready" : "pending")">@(operation.Implemented ? "已實作" : "待移植")</span><span class="muted">SOAP 1.1／1.2 · @operation.ReturnType</span></div>
+    @if (!operation.Implemented)
+    { <div class="notice" role="note">此頁是原方法的規格說明。新服務尚未實作此方法，不會出現在目前 WSDL，也不能以測試按鈕呼叫。回傳欄位及驗證規則仍須逐項核對。</div> }
+    <section class="card"><h2>呼叫資訊</h2><dl><dt>服務網址</dt><dd><code>@Model.Address</code></dd><dt>HTTP 方法</dt><dd>POST</dd><dt>SOAPAction</dt><dd><code>@operation.Action</code></dd><dt>命名空間</dt><dd><code>@operation.Namespace</code></dd></dl></section>
+    <section class="card"><h2>輸入參數</h2><div class="table-scroll"><table><thead><tr><th>參數</th><th>型別</th><th>說明</th></tr></thead><tbody>
+    @foreach (var parameter in operation.Parameters)
+    { <tr><td><code>@parameter.Name</code></td><td>string</td><td>@parameter.Description</td></tr> }
+    </tbody></table></div><p class="muted">參數名稱、大小寫與順序需符合原契約。請勿將密碼放在網址中。</p></section>
+    @if (operation.Name == LegacySoapContract.Operation)
+    {
+        <section class="card"><h2>回傳結果</h2><p><code>KuasSSO_Certify2Result</code> 是依序包含兩個元素的陣列：</p><ol><li><code>boolean</code>：帳密是否驗證通過。</li><li><code>string</code>：成功時為來源身分代碼；失敗時為 <code>500</code>。</li></ol>
+        <p>下列 <code>02</code> 僅為格式示例；實際代碼由新校務來源回傳。未授權來源身分代碼時，第二個元素為空字串，位置不變。</p>
+        <details><summary>成功回應範例（SOAP 1.1，已授權身分代碼）</summary><pre><code>@LegacySoapContract.Response(new ServiceVerification(true, "02"), false, includeStatus: true)</code></pre></details>
+        <details><summary>帳密不通過範例（SOAP 1.1）</summary><pre><code>@LegacySoapContract.Response(new ServiceVerification(false), false, includeStatus: true)</code></pre></details>
+        <div class="table-scroll"><table><thead><tr><th>HTTP</th><th>處理方式</th></tr></thead><tbody><tr><td>200</td><td>解析回應內的 boolean，不能只看 HTTP 200 就當成登入成功。</td></tr><tr><td>403</td><td>來源 IP、系統登記或服務授權不符。</td></tr><tr><td>429</td><td>呼叫頻率超過限制，稍後再試。</td></tr><tr><td>503</td><td>部署服務尚未開啟。</td></tr><tr><td>500</td><td>來源暫時不可用或 SOAP 格式不符，查看 SOAP Fault。</td></tr></tbody></table></div></section>
+    }
+    @if (operation.Implemented && operation.Name != LegacySoapContract.Operation)
+    {
+        var contract = IntegrationReturnFields.Contracts.Single(c => c.Operation == operation.Name);
+        <section class="card"><h2>回傳結果與授權</h2><p>@contract.Description</p>
+        <p>須由管理者授權本方法並設定來源 IP；需要原系統呼叫帳密的方法，仍驗證原參數中的呼叫帳密。未勾選的個資以空字串保留原欄位或陣列位置。</p>
+        @if (operation.Name == "KuasSSO_Certify1") { <p>成功為 <code>[true, 身分代碼或空字串]</code>，失敗為 <code>[false, "NoPass"]</code>。票據限核准的 fnc_id、兩分鐘內且只能兌換一次。</p> }
+        else if (operation.Name.StartsWith("Get_Traffic_")) { <p>回傳 DataSet（XSD＋DiffGram）。處理結果 message：200 成功、500 查無符合資料、501 呼叫帳密錯誤；來源不可用或資料關聯不唯一回傳 SOAP Fault。pwd 固定為空字串，接收端須確認可接受。</p> }
+        else if (operation.Name == LegacySoapOperationCatalog.DocumentPayment)
+        {
+            <p>回傳 DataSet（XSD＋DiffGram）。message：200 成功、500 查無符合資料或輸入不符、501 呼叫帳密錯誤。來源不可用或同一帳號資料衝突時回傳 SOAP Fault。</p>
+            <p>直接核對校務資料的身分證號與生日。STUD 需要當學期學籍；GRADSTUD 沿用舊校務條件：同一證號與生日查無當學期學籍，並非另查畢業註記。Employee 使用教職員資料。生日按來源字串比對，不自動轉換格式。</p>
+            <p>同一人有多個符合條件的學號時回傳多列。欄位沿用原校務分支的 std_id、std_name、std_email，教職員也使用這些名稱；原 LDAP 分支的 usr_ 欄位不再使用，接收端須核對。</p>
+        }
+        else { <p>依序回傳結果代碼、說明及 boolean。200 為成功、500 為使用者驗證失敗、400 為呼叫系統帳密錯誤。</p> }
+        <div class="table-scroll"><table><thead><tr><th>欄位</th><th>說明</th><th>授權</th></tr></thead><tbody>
+        @foreach (var field in contract.Fields) { <tr><td><code>@field.Name</code><br />@field.Label</td><td>@field.Description</td><td>@(field.Required ? "固定回傳" : field.Blocked ? "不提供內容" : "依系統勾選")</td></tr> }
+        </tbody></table></div><p class="muted">程式已實作並以隔離資料測試；新校務正式資料及既有接收端互通須另外驗證。下方範例供串接程式測試，不提供瀏覽器填寫呼叫密鑰的表單。</p></section>
+    }
+    <section class="card"><h2>請求範例</h2><p class="muted">以下為格式範例；敏感值使用佔位文字。</p>
+    @foreach (var soap12 in new[] { false, true })
+    {
+        <details open="@(!soap12)"><summary>SOAP @(soap12 ? "1.2" : "1.1")</summary>
+        <pre><code>POST @Model.Address
+Content-Type: @(soap12 ? $"application/soap+xml; charset=utf-8; action=\"{operation.Action}\"" : "text/xml; charset=utf-8")
+@(!soap12 ? $"SOAPAction: \"{operation.Action}\"" : "")
+
+@SoapHelpCatalog.RequestExample(operation, soap12)</code></pre></details>
+    }
+    </section>
+    @if (operation.Name == LegacySoapContract.Operation)
+    {
+        <section class="card"><h2>線上測試</h2><p>由目前瀏覽器直接向此站送出 SOAP 請求，使用相同的來源 IP 及服務授權檢查。這不是代替串接主機發送的測試。</p>
+        @if (!Model.Enabled) { <p class="notice">服務尚未開啟，目前可閱讀範例；啟用後才能執行測試。</p> }
+        <form id="soap-test" action="/KuasSSOWebService.asmx" method="post" autocomplete="off" data-enabled="@(Model.Enabled ? "true" : "false")">
+            <label for="test-version">SOAP 版本</label><select id="test-version"><option value="1.1">SOAP 1.1</option><option value="1.2">SOAP 1.2</option></select>
+            <label for="test-user">usr_id · 測試帳號</label><input id="test-user" name="usr_id" maxlength="100" required autocomplete="off" />
+            <label for="test-password">usr_pwd · 測試密碼</label><input id="test-password" name="usr_pwd" type="password" maxlength="256" required autocomplete="off" />
+            <p class="muted">按下測試才送出請求。密碼不加入網址、畫面範例或瀏覽器儲存，送出後清空輸入欄。</p>
+            <button type="submit" class="primary" disabled>送出測試</button><noscript><p>線上測試需要啟用 JavaScript。</p></noscript>
+        </form>
+        <div id="test-result" class="test-result" hidden><h3>測試結果</h3><p id="test-status" role="status" aria-live="polite"></p><pre><code id="test-response"></code></pre></div>
+        </section>
+    }
+}
+</main></div>
+<footer>© @DateTime.Now.Year 國立高雄科技大學｜<a href="https://cc.nkust.edu.tw" target="_blank" rel="noopener">電算中心</a> 版權所有</footer>
+<script src="/soap-help.js" asp-append-version="true" defer></script>
+</body></html>

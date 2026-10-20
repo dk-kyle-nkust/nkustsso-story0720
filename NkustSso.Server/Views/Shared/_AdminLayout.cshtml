@@ -1,0 +1,63 @@
+@* 後台共用版型、導覽與管理者工具列。 *@
+@inject AdminAuthorizationService WorkspaceAccess
+@{
+    var path = (Context.Request.Path.Value ?? "/").ToLowerInvariant();
+    var systemsArea = path == "/admin/systems" || path.StartsWith("/admin/systems/") ||
+        path == "/admin/integration-services" || path.StartsWith("/admin/integration-services/");
+    var items = await WorkspaceAccess.NavigationAsync(User);
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+    var feature = AdminAuthorizationService.Features.FirstOrDefault(f => f.Controller == controller);
+    var areaLabel = items.FirstOrDefault(item => item.Target == feature?.Key || item.Target == "systems" && systemsArea)?.Label ?? feature?.Label ?? "管理後台";
+    var name = User.Identity?.Name ?? "使用者";
+}
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] · 管理後台</title>
+    <link rel="stylesheet" href="/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="/systems.css" asp-append-version="true" />
+    <link rel="stylesheet" href="/clean-layout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="/admin.css" asp-append-version="true" />
+    @await RenderSectionAsync("head", required: false)
+    <link rel="stylesheet" href="/admin-modern.css" asp-append-version="true" />
+</head>
+<body class="admin admin-workspace">
+    <a class="skip-link" href="#main-content">跳至主要內容</a>
+    <header class="workspace-topbar">
+        <button type="button" class="workspace-menu" aria-controls="workspace-navigation" aria-expanded="false" hidden><svg aria-hidden="true"><use href="/admin-icons.svg#menu" /></svg><span>選單</span></button>
+        <div class="workspace-breadcrumb"><span>管理工作空間</span><span aria-hidden="true">/</span><strong>@areaLabel</strong></div>
+        <div class="workspace-session">
+            <a class="workspace-portal" href="/portal"><svg aria-hidden="true"><use href="/admin-icons.svg#home" /></svg><span>入口首頁</span></a>
+            <span class="workspace-avatar" aria-hidden="true">@(name.Length > 0 ? name[..1].ToUpperInvariant() : "U")</span>
+            <span class="workspace-user"><strong title="@name">@name</strong><small>目前登入帳號</small></span>
+            <form action="/account/logout" method="post">@Html.AntiForgeryToken()<button type="submit" class="workspace-logout">登出</button></form>
+        </div>
+    </header>
+    <aside class="workspace-sidebar" id="workspace-navigation">
+        <a class="workspace-brand" href="/admin"><img src="/nkust-logo-horizontal.png" asp-append-version="true" alt="國立高雄科技大學" width="2048" height="379" /><span><b>校務資訊入口</b><small>管理後台</small></span></a>
+        <nav class="workspace-nav" aria-label="管理功能">
+        @foreach (var group in items.GroupBy(item => item.Group))
+        {
+            <div class="workspace-nav-group"><p>@group.Key</p>
+            @foreach (var item in group)
+            {
+                var active = item.Target == feature?.Key || item.Target == "systems" && systemsArea;
+                var target = item.Path;
+                <a href="@target" aria-current="@(active ? "page" : null)"><svg aria-hidden="true"><use href="@($"/admin-icons.svg#{item.Icon}")" /></svg><span>@item.Label</span>@if (active) { <span class="workspace-active-dot" aria-hidden="true"></span> }</a>
+            }
+            </div>
+        }
+        </nav>
+        <div class="workspace-sidebar-note"><span class="workspace-note-mark" aria-hidden="true">N</span><div><strong>讓校園服務更好用</strong><p>國立高雄科技大學 · 電算中心</p></div></div>
+    </aside>
+    <main id="main-content" tabindex="-1" class="admin-main">
+        @if (systemsArea) { <partial name="_SystemManagementTabs" /> }
+        @RenderBody()
+    </main>
+    <partial name="_SiteFooter" />
+    <script src="/admin-shell.js" asp-append-version="true" defer></script>
+    @await RenderSectionAsync("scripts", required: false)
+</body>
+</html>

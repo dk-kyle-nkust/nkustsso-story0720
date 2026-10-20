@@ -1,0 +1,23 @@
+.admin-check{display:flex;align-items:center;gap:.65rem;padding:.65rem 0;cursor:pointer}
+.admin-check input[type=checkbox]{width:1.1rem;height:1.1rem;flex:0 0 auto}
+.admin-permissions{border:0;padding:0;margin:0;min-width:0}
+.admin-permissions legend{font-weight:700;margin-bottom:.5rem}
+.admin-description{margin-top:1rem;grid-template-columns:1fr}
+.admin-delete{margin-top:1.5rem}
+.admin-delete summary{cursor:pointer;font-weight:600;padding:.5rem 0}
+.admin-delete pre{white-space:pre-wrap;overflow-wrap:anywhere;max-width:36rem;font-size:.8rem}
+.admin-workspace .system-form textarea{width:100%;box-sizing:border-box}
+.admin-workspace .system-form .ts-wrapper{min-width:0}
+.admin-workspace .system-form .ts-control{overflow-wrap:anywhere}
+.admin-grant-row{display:flex;justify-content:space-between;gap:1rem;border-bottom:1px solid #e7e9f2}
+.admin-grant-row .admin-check:last-child{flex-shrink:0}
+@media(max-width:480px){.admin-grant-row{display:block}.admin-grant-row .admin-check:last-child{padding-top:0;padding-left:1.75rem}}
+/* 編輯頁內的校務人員查詢：輸入與按鈕同一列，窄螢幕改為上下排。 */
+.admin-campus-add{margin-top:1rem;padding-top:1rem;border-top:1px solid #e7e9f2}
+.admin-campus-row{display:flex;gap:.5rem;align-items:center;margin:.35rem 0}
+.admin-campus-row input{flex:1 1 auto;min-width:0}
+.admin-campus-row .button{flex:0 0 auto}
+.admin-campus-status:empty{display:none}
+.admin-campus-candidate{margin:.5rem 0;padding:.75rem;border:1px solid #dfe3ed;border-radius:10px}
+.admin-campus-candidate p{margin:0 0 .5rem}
+@media(max-width:480px){.admin-campus-row{display:block}.admin-campus-row .button{width:100%;margin-top:.5rem}}

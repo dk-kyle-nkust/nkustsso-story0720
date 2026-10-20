@@ -1,0 +1,100 @@
+/* 共用前台視覺變數，管理頁保留較寬的表格與功能導覽。 */
+body.admin {
+    --ink: var(--ui-ink); --ink-secondary: #334155; --muted: var(--ui-muted);
+    --blue: var(--ui-primary); --blue-hover: var(--ui-primary-hover); --blue-light: var(--ui-soft);
+    --line: var(--ui-line); --bg: var(--ui-page-bg);
+    background: var(--ui-page-bg); color: var(--ui-ink);
+}
+
+.admin-bar { position: sticky; top: 0; z-index: 20; background: var(--surface); border-bottom: 1px solid var(--line); box-shadow: var(--shadow-sm); }
+.admin-bar-inner { display: flex; align-items: center; gap: 24px; max-width: 1440px; margin: 0 auto; padding: 0 24px; min-height: 60px; }
+
+.admin-mark { display: flex; align-items: baseline; gap: 8px; text-decoration: none; white-space: nowrap; }
+.admin-mark strong { font-size: 15px; font-weight: 700; color: var(--ink); letter-spacing: -.01em; }
+.admin-mark span { font-size: 12px; color: var(--muted); }
+.admin-mark:hover strong { color: var(--blue); }
+
+.admin-nav { display: flex; flex-wrap: wrap; gap: 2px; margin-right: auto; }
+.admin-nav a { padding: 8px 12px; border-radius: var(--radius-sm); font-size: 14px; color: var(--ink-secondary); text-decoration: none; white-space: nowrap; }
+.admin-nav a:hover { background: var(--blue-light); color: var(--blue); }
+/* 目前頁用底線標示，色塊留給 hover，兩者才不會互相混淆。 */
+.admin-nav a[aria-current="page"] { color: var(--blue); font-weight: 650; box-shadow: inset 0 -2px 0 var(--blue); border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
+
+.admin-session { display: flex; align-items: center; gap: 12px; font-size: 13px; white-space: nowrap; }
+.admin-who { color: var(--muted); max-width: 14ch; overflow: hidden; text-overflow: ellipsis; }
+.admin-session a, .admin-session button { font: inherit; color: var(--ink-secondary); text-decoration: none; background: none; border: 0; padding: 8px 10px; border-radius: var(--radius-sm); cursor: pointer; min-height: 36px; }
+.admin-session a:hover, .admin-session button:hover { background: var(--blue-light); color: var(--blue); }
+.admin-session form { margin: 0; }
+
+.admin-main { max-width: 1440px; margin: 0 auto; padding: 28px 24px 64px; }
+
+/* 單層頁首：標題與主要動作同列，說明文字只在真的需要時由各頁自行加入。 */
+.admin-head { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 24px; }
+.admin-head h1 { font-size: 26px; font-weight: 700; letter-spacing: -.02em; margin: 0; color: var(--ink); }
+.admin-head-actions { display: flex; align-items: center; gap: 10px; }
+.admin-head-sub { font-size: 14px; color: var(--muted); margin-right: auto; }
+
+/* 不適用目前登入方式的設定整段隱藏，不靠說明文字要管理者自行判斷。 */
+[data-protocol][hidden] { display: none !important; }
+
+@media (max-width: 1100px) {
+    .admin-bar-inner { flex-wrap: wrap; padding: 10px 16px; gap: 8px 16px; }
+    .admin-nav { order: 3; width: 100%; margin-right: 0; overflow-x: auto; }
+    .admin-session { margin-left: auto; }
+    .admin-main { padding: 20px 16px 48px; }
+}
+@media (forced-colors: active) {
+    .admin-nav a[aria-current="page"] { box-shadow: inset 0 -2px 0 ButtonText; }
+}
+
+/* 身分分類：全部條件一次列出，並標示尚未串接的來源。 */
+.catalog-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.catalog-tabs a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 16px; border: 1px solid var(--line); border-radius: var(--radius-full); background: var(--surface); color: var(--ink-secondary); font-size: 14px; text-decoration: none; }
+.catalog-tabs a:hover { border-color: var(--blue); color: var(--blue); }
+.catalog-tabs a[aria-current="page"] { background: var(--blue); border-color: var(--blue); color: #fff; font-weight: 650; }
+.catalog-tab-pending { color: var(--muted); }
+.catalog-tab-tag { padding: 2px 8px; border-radius: var(--radius-full); background: var(--bg); color: var(--muted); font-size: 12px; }
+.catalog-tabs a[aria-current="page"] .catalog-tab-tag { background: rgba(255, 255, 255, .22); color: #fff; }
+
+.catalog-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 12px; }
+.catalog-head h2 { margin: 0; }
+.catalog-meta { margin: 0; color: var(--muted); font-size: 14px; }
+
+@media (forced-colors: active) {
+    .catalog-tabs a[aria-current="page"] { border: 2px solid ButtonText; }
+}
+
+
+/* 與前台相同的校徽、金色頂線及淺色導覽，登入者操作固定靠右。 */
+.admin-bar { position: relative; border-top: 4px solid var(--ui-brand-accent); box-shadow: none; }
+.admin-bar-inner { flex-wrap: wrap; padding: 22px 32px 0; gap: 18px 24px; }
+.admin-mark { flex-direction: column; align-items: flex-start; gap: 8px; min-width: 0; }
+.admin-mark img { display: block; width: 280px; max-width: 100%; height: auto; }
+.admin-mark span { color: var(--ui-muted); font-size: 14px; letter-spacing: .08em; }
+.admin-session { margin-left: auto; justify-content: flex-end; }
+.admin-session a, .admin-session button { min-height: 44px; border-radius: 10px; }
+.admin-session button { border: 1px solid var(--ui-line); background: var(--surface); }
+.admin-nav { order: 3; width: 100%; min-width: 0; margin: 0; padding: 6px; gap: 4px; background: var(--ui-nav-bg); border-radius: 14px 14px 0 0; }
+.admin-nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 10px 16px; color: var(--ui-nav-ink); border-radius: 10px; }
+.admin-nav a:hover, .admin-nav a[aria-current="page"] { background: var(--ui-nav-active); color: var(--ui-nav-ink); }
+.admin-nav a[aria-current="page"] { border-radius: 10px; box-shadow: inset 0 -3px 0 #455c92; }
+.admin-main { padding-top: 36px; }
+.admin-main:focus { outline: none; }
+.admin .system-fields input, .admin .system-fields textarea, .admin .system-fields select { min-height: 44px; border-radius: 12px; border-color: var(--ui-control); }
+.admin input[type="checkbox"], .admin input[type="radio"] { accent-color: var(--ui-primary); }
+.admin .info-strip { background: var(--ui-soft); color: var(--ui-ink); border-color: var(--ui-line); border-radius: 12px; }
+.admin .site-footer { color: var(--ui-muted); border-color: var(--ui-line); }
+@media (max-width: 700px) {
+    .admin-bar-inner { padding: 18px 20px 0; gap: 14px; }
+    .admin-mark img { width: 240px; }
+    .admin-session { width: 100%; flex-wrap: wrap; gap: 8px; }
+    .admin-nav { flex-wrap: nowrap; overflow-x: auto; }
+    .admin-nav a { flex-shrink: 0; }
+    .admin-main { padding: 24px 20px 48px; }
+    .admin .panel { padding: 22px 18px; }
+    .admin-head { gap: 14px; }
+    .admin-head h1 { font-size: 26px; }
+}
+@media (forced-colors: active) {
+    .admin-nav a[aria-current="page"] { outline: 2px solid Highlight; outline-offset: -3px; }
+}

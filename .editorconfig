@@ -1,0 +1,83 @@
+; 統一排版規則，讓程式碼不依賴個人編輯器設定。
+; 風格規則一律壓在 suggestion，避免 TreatWarningsAsErrors 把排版意見變成編譯錯誤。
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+trim_trailing_whitespace = true
+
+[*.{json,js,css,yml,yaml}]
+indent_size = 2
+
+[*.{cshtml,html}]
+indent_size = 4
+
+[*.cs]
+indent_size = 4
+
+# ── 換行 ──────────────────────────────────────────────
+# 大括號一律另起一行（Allman），與專案既有寫法一致。
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_else = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
+# 物件初始設定式一個屬性一行，長初始化才看得出改了哪個欄位。
+csharp_new_line_before_members_in_object_initializers = true
+csharp_new_line_before_members_in_anonymous_types = true
+csharp_new_line_between_query_expression_clauses = true
+
+# 不要把敘述壓成一行；但 { get; set; } 這類短區塊保留單行。
+csharp_preserve_single_line_statements = false
+csharp_preserve_single_line_blocks = true
+
+# ── 縮排 ──────────────────────────────────────────────
+csharp_indent_case_contents = true
+csharp_indent_case_contents_when_block = false
+csharp_indent_switch_labels = true
+csharp_indent_labels = one_less_than_current
+csharp_indent_block_contents = true
+csharp_indent_braces = false
+
+# ── 空白 ──────────────────────────────────────────────
+csharp_space_after_cast = false
+csharp_space_after_colon_in_inheritance_clause = true
+csharp_space_after_comma = true
+csharp_space_after_dot = false
+csharp_space_after_keywords_in_control_flow_statements = true
+csharp_space_after_semicolon_in_for_statement = true
+csharp_space_around_binary_operators = before_and_after
+csharp_space_before_colon_in_inheritance_clause = true
+csharp_space_before_comma = false
+csharp_space_before_dot = false
+csharp_space_before_open_square_brackets = false
+csharp_space_before_semicolon_in_for_statement = false
+csharp_space_between_empty_square_brackets = false
+csharp_space_between_method_call_empty_parameter_list_parentheses = false
+csharp_space_between_method_call_name_and_opening_parenthesis = false
+csharp_space_between_method_call_parameter_list_parentheses = false
+csharp_space_between_method_declaration_empty_parameter_list_parentheses = false
+csharp_space_between_method_declaration_name_and_open_parenthesis = false
+csharp_space_between_method_declaration_parameter_list_parentheses = false
+csharp_space_between_parentheses = false
+csharp_space_between_square_brackets = false
+
+# ── 寫法 ──────────────────────────────────────────────
+# 單行 if 也要加大括號，避免日後補第二行敘述時看錯範圍。
+csharp_prefer_braces = true:suggestion
+# 一行寫得完的才用 => ；多行的箭頭成員改回一般方法主體。
+csharp_style_expression_bodied_methods = when_on_single_line:suggestion
+csharp_style_expression_bodied_local_functions = when_on_single_line:suggestion
+csharp_style_expression_bodied_constructors = false:suggestion
+csharp_style_expression_bodied_operators = when_on_single_line:silent
+csharp_style_expression_bodied_properties = true:silent
+csharp_style_expression_bodied_indexers = true:silent
+csharp_style_expression_bodied_accessors = true:silent
+csharp_style_expression_bodied_lambdas = true:silent
+
+# using 指示詞：System 置頂、放在 namespace 外，與現有檔案一致。
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = false
+csharp_using_directive_placement = outside_namespace:suggestion

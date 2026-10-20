@@ -1,0 +1,68 @@
+@* 依分類顯示可使用的服務入口。 *@
+@inject AdminAuthorizationService DirectoryAccess
+@model PortalDirectoryViewModel
+@inject Microsoft.AspNetCore.Identity.UserManager<Account> DirectoryUsers
+@{
+    ViewData["SupportsEnglish"] = true;
+    ViewData["UserInfoInDirectory"] = true;
+    var currentUser = await CurrentUserDisplayService.LoadAsync(DirectoryUsers, User, DirectoryAccess);
+    ViewData["DirectoryCurrentUser"] = currentUser;
+    var label = LoginArea.Label(Model.Area);
+    var signedIn = User.Identity?.IsAuthenticated == true;
+    ViewData["Title"] = label;
+}
+@section head { <link rel="stylesheet" href="/directory.css" asp-append-version="true" /> }
+<div class="directory directory-@Model.Area">
+    <div class="directory-heading">
+        <h1>@label</h1>
+        <div class="directory-account">
+            <partial name="_CurrentUser" model="currentUser" />
+        </div>
+    </div>
+    <div class="directory-workspace">
+    <div class="directory-tools">
+        <label for="directory-search">搜尋服務</label>
+        <input type="search" id="directory-search" placeholder="輸入服務名稱或關鍵字" maxlength="100" autocomplete="off" />
+        <div class="directory-filters" role="group" aria-label="服務分類">
+            <button type="button" data-directory-filter="all" aria-pressed="true">全部服務 <span>@Model.Groups.Sum(g => g.Entries.Count)</span></button>
+            @foreach (var group in Model.Groups)
+            {
+                <button type="button" data-directory-filter="@group.Category.Key" aria-pressed="false"><span data-catalog-text data-en="@group.Category.NameEn">@group.Category.Name</span> <span>@group.Entries.Count</span></button>
+            }
+        </div>
+        <p id="directory-status" role="status">共 @Model.Groups.Sum(g => g.Entries.Count) 項服務</p>
+    </div>
+    <div class="directory-results">
+    @foreach (var group in Model.Groups)
+    {
+        <section class="directory-group" data-directory-category="@group.Category.Key" aria-labelledby="category-@group.Category.Key">
+            <h2 id="category-@group.Category.Key"><span data-catalog-text data-en="@group.Category.NameEn">@group.Category.Name</span></h2>
+            <ul class="directory-services">
+                @foreach (var entry in group.Entries)
+                {
+                    var hasDescription = !string.IsNullOrWhiteSpace(entry.Description) || !string.IsNullOrWhiteSpace(entry.DescriptionEn);
+                    var descriptionId = "service-description-" + entry.Id;
+                    <li data-system-id="@entry.Id" data-directory-search="@($"{entry.Name} {entry.NameEn} {entry.Description} {entry.DescriptionEn} {entry.Keywords}".ToLowerInvariant())">
+                        <a href="@Url.Action("Open", "PortalServices", new { section = Model.Area, id = entry.Id })"
+                           aria-describedby="@(hasDescription ? descriptionId : null)"
+                           target="_blank" rel="noopener noreferrer">
+                            <span class="directory-service-name" data-catalog-text data-en="@entry.NameEn">@entry.Name</span>
+                            <span class="sr-only">（另開新分頁）</span>
+                        </a>
+                        @if (hasDescription)
+                        {
+                            <button type="button" class="directory-info" data-service-info data-service-name="@entry.Name" data-service-name-en="@entry.NameEn" aria-label="@(entry.Name + "：功能說明")" aria-controls="@descriptionId" aria-expanded="false" aria-describedby="@descriptionId"><span aria-hidden="true">i</span></button>
+                            <div id="@descriptionId" class="directory-tooltip" data-catalog-text data-en="@entry.DescriptionEn" role="tooltip" hidden>@entry.Description</div>
+                            <noscript><p class="directory-description-fallback">@entry.Description</p></noscript>
+                        }
+                    </li>
+                }
+            </ul>
+        </section>
+    }
+    <p class="directory-empty" id="directory-empty" hidden="@(Model.Groups.Count != 0)">沒有符合的服務，請調整關鍵字或選擇其他分類。</p>
+    </div>
+    </div>
+    <aside class="directory-note">「單一登入」服務可沿用有效的登入狀態；外部網站依各系統的帳號與登入規則使用。</aside>
+</div>
+@section scripts { <script src="/directory.js" asp-append-version="true" defer></script> }

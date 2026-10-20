@@ -1,0 +1,23 @@
+@* 列出內部開發與串接完成狀態。 *@
+@{ Layout = "_AdminLayout"; ViewData["Title"] = "開發進度"; }
+<div class="admin-head"><div><span class="eyebrow">WORKSPACE / DEVELOPMENT</span><h1>開發進度</h1><p>追蹤已實作功能與待完成項目。程式完成、來源接通與正式上線，分別確認。</p></div></div>
+<section class="panel"><h2>功能實作現況</h2><p class="muted">這是維護紀錄；實際服務是否開放，請查看各系統設定與部署設定。</p>
+<div class="table-wrap"><table class="session-table" data-datatable data-paging="false" data-no-sort="1,2"><thead><tr><th>功能</th><th>進度</th><th>目前範圍與下一步</th></tr></thead><tbody>
+<tr><td data-label="功能">OIDC 單一登入</td><td data-label="進度"><span class="pill success">已實作</span></td><td data-label="目前範圍與下一步">Authorization Code＋PKCE、精確回呼與身分欄位授權。至<a href="/admin/systems">串接系統管理</a>設定。</td></tr>
+<tr><td data-label="功能">Web API 單一登入</td><td data-label="進度"><span class="pill success">已實作</span></td><td data-label="目前範圍與下一步">自訂協定，以一次性票券兌換身分資料，支援 JSON 與既有表單 API，並保存發放與兌換紀錄。</td></tr>
+<tr><td data-label="功能">SAML 2.0 登入</td><td data-label="進度"><span class="pill success">已實作</span></td><td data-label="目前範圍與下一步">接收已簽章的登入請求，回傳簽章身分證明。全域登出、加密 Assertion 與 ForceAuthn 尚未提供。</td></tr>
+<tr><td data-label="功能">入口、分類與身分條件</td><td data-label="進度"><span class="pill success">已實作</span></td><td data-label="目前範圍與下一步">管理首頁入口、分類排序與可見對象；入口是否可見不等於接收系統的使用權限。</td></tr>
+<tr><td data-label="功能">登入紀錄與撤銷</td><td data-label="進度"><span class="pill success">已實作</span></td><td data-label="目前範圍與下一步">可終止單筆或帳號全部中央登入；其他系統既有 Cookie 依各自規則處理。</td></tr>
+<tr><td data-label="功能">SOAP／JSON 帳密驗證</td><td data-label="進度"><span class="pill pending">部分完成</span></td><td data-label="目前範圍與下一步">目前提供帳密驗證，尚未提供個人資料查詢。SOAP 支援 KuasSSO_Certify2；服務預設關閉，實際互通待驗證。</td></tr>
+<tr><td data-label="功能">串接登記與服務授權</td><td data-label="進度"><span class="pill success">已實作</span></td><td data-label="目前範圍與下一步">SSO／帳密驗證 API／首頁連結已整合管理導覽。用途、單位、聯絡資訊、來源對應與服務勾選已完成。JSON 支援密鑰更新。至<a href="/admin/systems/api?kind=new">帳密驗證 API</a>維護。</td></tr>
+<tr><td data-label="功能">串接資料移轉</td><td data-label="進度"><span class="pill pending">部分完成</span></td><td data-label="目前範圍與下一步">已提供本機程式規格匯入、備份、去重與異動紀錄。匯入登記保持停用；實際呼叫帳號、IP、授權關係及方法互通仍待核對。</td></tr>
+<tr><td data-label="功能">校務帳密來源</td><td data-label="進度"><span class="pill pending">待來源驗證</span></td><td data-label="目前範圍與下一步">唯讀帳密驗證與失敗鎖定已實作；來源設定及實際連線需另外確認，不保存來源密碼。</td></tr>
+<tr><td data-label="功能">LDAP 驗證來源</td><td data-label="進度"><span class="pill pending">待來源驗證</span></td><td data-label="目前範圍與下一步">串接服務可使用 LDAPS 與 Mapping 備援驗證。網站登入沿用原設定。</td></tr>
+<tr><td data-label="功能">完整多重身分同步</td><td data-label="進度"><span class="pill pending">待串接</span></td><td data-label="目前範圍與下一步">快照、版本及有效期限已實作；完整學籍、人事來源及身分對應仍待確認。</td></tr>
+<tr><td data-label="功能">跨系統登出與其他密鑰輪替</td><td data-label="進度"><span class="pill neutral">待開發</span></td><td data-label="目前範圍與下一步">中央登出尚不會即時清除各系統登入；OIDC／票券的密鑰輪替尚待實作。</td></tr>
+</tbody></table></div></section>
+<section class="panel"><h2>資料提供在哪裡設定？</h2>
+<p>「串接系統管理」的<a href="/admin/systems">單一登入 SSO</a>分頁管理 OIDC、SAML 與 Web API 單一登入，可勾選允許提供的身分欄位；<a href="/admin/systems/api?kind=new">帳密驗證 API</a>分頁管理 JSON／SOAP 服務授權，SOAP 另依方法限制回傳欄位。</p>
+<p class="fine">接收系統自行管理功能權限。取消資料欄位授權會影響後續回傳，不會收回對方已儲存的資料。</p></section>
+@section head { <partial name="_AdminStyles" /> }
+@section scripts { <partial name="_AdminScripts" /> }

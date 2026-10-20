@@ -1,0 +1,57 @@
+@charset "UTF-8";
+/* 讓 DataTables 與 Tom Select 的外觀貼齊既有管理頁樣式。 */
+
+.dt-container { margin-top: 6px; }
+.dt-layout-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin: 0 0 14px; }
+.dt-layout-row:last-child { margin: 16px 0 0; }
+.dt-layout-cell { min-width: 0; }
+.dt-search, .dt-length { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+.dt-search input, .dt-length select {
+    font: inherit; font-size: 13px; padding: 8px 11px; border: 1px solid var(--line);
+    border-radius: 7px; background: #fff; color: var(--ink); min-height: 38px;
+}
+.dt-search input { min-width: 220px; }
+.dt-search input:focus, .dt-length select:focus { border-color: var(--blue); outline: 2px solid #dce7ff; }
+.dt-info { font-size: 12px; color: var(--muted); }
+.dt-paging { display: flex; flex-wrap: wrap; gap: 6px; }
+.dt-paging .dt-paging-button {
+    border: 1px solid var(--line); background: #fff; color: #4d5f74; border-radius: 7px;
+    padding: 7px 12px; font-size: 13px; min-width: 38px;
+}
+.dt-paging .dt-paging-button:hover:not(.disabled) { border-color: #b9c7d9; }
+.dt-paging .dt-paging-button.current { background: var(--blue); border-color: var(--blue); color: #fff; font-weight: 600; }
+.dt-paging .dt-paging-button.disabled { color: #b4bfcd; }
+table.dataTable thead th { background: #f8f9fc; }
+table.dataTable thead th.dt-orderable-asc:hover, table.dataTable thead th.dt-orderable-desc:hover { background: #eef2f8; }
+table.dataTable tbody tr:hover > * { background: #f8fafd; }
+
+/* Tom Select 外觀對齊原本的 input 與 select */
+.ts-wrapper { min-height: 44px; }
+.ts-wrapper.single .ts-control, .ts-wrapper.single.input-active .ts-control {
+    font: inherit; border: 1px solid var(--line); border-radius: 7px; padding: 10px 12px;
+    background: #fff; color: var(--ink); min-height: 44px;
+}
+.ts-wrapper.focus .ts-control { border-color: var(--blue); outline: 2px solid #dce7ff; }
+.ts-dropdown { border: 1px solid var(--line); border-radius: 8px; margin-top: 4px; box-shadow: 0 8px 24px #2949731a; font-size: 14px; }
+.ts-dropdown .active { background: #eef3fd; color: #1f4bb0; }
+.ts-wrapper.single .ts-control:after { border-color: var(--muted) transparent transparent; }
+
+@media (max-width: 620px) {
+    .dt-layout-row { flex-direction: column; align-items: stretch; }
+    .dt-search, .dt-length { justify-content: space-between; }
+    .dt-search input { min-width: 0; flex: 1; }
+    /* 行動版表格改為卡片式，表頭隱藏，排序改由桌機操作。 */
+    .session-table.dataTable thead { display: none; }
+}
+
+/* 管理元件沿用入口網站的按鈕與欄位語言。 */
+.admin .dt-search input, .admin .dt-length select,
+.admin .ts-wrapper.single .ts-control, .admin .ts-wrapper.single.input-active .ts-control {
+    border-radius: 12px; min-height: 44px; border-color: var(--ui-control);
+}
+.admin .ts-dropdown { border-radius: 12px; border-color: var(--ui-line); }
+.admin .ts-dropdown .active { background: var(--ui-soft); color: var(--ui-primary-hover); }
+.admin .ts-wrapper.focus .ts-control { border-color: var(--ui-primary); outline: 3px solid #272173; outline-offset: 3px; }
+.admin .dt-paging .dt-paging-button { border-radius: 10px; min-height: 44px; }
+.admin table.dataTable thead th { background: var(--ui-nav-bg); color: var(--ui-ink); }
+.admin table.dataTable tbody tr:hover > * { background: #f5f6ff; }

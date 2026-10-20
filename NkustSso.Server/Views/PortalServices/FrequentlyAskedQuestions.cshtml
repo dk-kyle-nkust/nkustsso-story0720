@@ -1,0 +1,57 @@
+@* 帳號、登入及校方服務常見問題。 *@
+@{
+    ViewData["Title"] = "常見問題";
+    ViewData["SupportsEnglish"] = true;
+}
+@section head { <link rel="stylesheet" href="/faq.css" asp-append-version="true" /> }
+<div class="faq">
+    <h1>常見問題</h1>
+    <section aria-labelledby="faq-account">
+        <h2 id="faq-account">登入與帳號</h2>
+        <details>
+            <summary>進入專區就需要登入嗎？</summary>
+            <p>學生、教職員與校友專區皆可直接瀏覽。點選需要登入的服務時，才會導向統一登入頁，登入後接續前往原本的服務。</p>
+        </details>
+        <details>
+            <summary>已經登入，使用其他系統還要再登入嗎？</summary>
+            <p>已串接單一登入的服務可沿用有效的中央登入狀態。未串接的外部網站仍可能要求自己的帳號密碼；登入逾時、被撤銷或服務要求重新驗證時，也需要再次登入。</p>
+        </details>
+        <details>
+            <summary>忘記密碼或帳號被鎖定怎麼辦？</summary>
+            <p>請依校方密碼重設系統的指示操作；仍無法使用時，請聯絡該系統的服務窗口。</p>
+            <div class="faq-links">
+                <a href="https://resetpassword.nkust.edu.tw/" target="_blank" rel="noopener noreferrer">忘記密碼 <span aria-hidden="true">↗</span><span class="sr-only">（另開新分頁）</span></a>
+                <a href="https://webap0.nkust.edu.tw/nkust/ResetPwdGuide-20230110.pdf" target="_blank" rel="noopener noreferrer">密碼手冊 (PDF) <span aria-hidden="true">↗</span><span class="sr-only">（另開新分頁）</span></a>
+            </div>
+        </details>
+        <details>
+            <summary>選擇不同專區，會改變我的帳號權限嗎？</summary>
+            <p>專區只用來整理服務選單，不會改變帳號身分或權限。實際能否使用服務，仍由帳號資料及各系統的授權規則決定。</p>
+        </details>
+        <details>
+            <summary>為什麼登入後會看到更多服務？</summary>
+            <p>部分系統只對符合身分條件的登入者顯示，未登入時不會公開名稱或說明。可點選專區中的「登入」，登入後仍使用同一套搜尋與分類。</p>
+        </details>
+        <details>
+            <summary>點選服務會離開目前的選單嗎？</summary>
+            <p>服務會在新分頁開啟。需要登入時，也在新分頁完成登入並接續前往服務；原本的專區、搜尋與分類會保留。</p>
+        </details>
+        <details>
+            <summary>畢業後可以繼續使用原本帳號嗎？</summary>
+            <p>校友帳號與服務資格依校方及各系統規定。原帳號已停用或尚未開通時，請查閱校友服務指南，或聯絡校友服務中心。</p>
+            <div class="faq-links">
+                <a href="https://ascdc.nkust.edu.tw/" target="_blank" rel="noopener noreferrer">校友服務中心 <span aria-hidden="true">↗</span><span class="sr-only">（另開新分頁）</span></a>
+            </div>
+        </details>
+    </section>
+    <section aria-labelledby="faq-guides">
+        <h2 id="faq-guides">各身分的校方服務指南在哪裡？</h2>
+        <p>以下連結前往高科大校方網站，提供各身分的完整服務資訊。</p>
+        <div class="faq-guide-grid">
+            <a href="https://www.nkust.edu.tw/p/405-1000-45113,c7048.php" target="_blank" rel="noopener noreferrer">學生服務指南 <span aria-hidden="true">↗</span><span class="sr-only">（另開新分頁）</span></a>
+            <a href="https://www.nkust.edu.tw/p/404-1000-62954.php" target="_blank" rel="noopener noreferrer">教師服務指南 <span aria-hidden="true">↗</span><span class="sr-only">（另開新分頁）</span></a>
+            <a href="https://www.nkust.edu.tw/p/405-1000-45314,c7048.php" target="_blank" rel="noopener noreferrer">職員服務指南 <span aria-hidden="true">↗</span><span class="sr-only">（另開新分頁）</span></a>
+            <a href="https://www.nkust.edu.tw/p/405-1000-45727,c7048.php" target="_blank" rel="noopener noreferrer">校友服務指南 <span aria-hidden="true">↗</span><span class="sr-only">（另開新分頁）</span></a>
+        </div>
+    </section>
+</div>

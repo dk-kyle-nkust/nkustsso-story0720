@@ -1,0 +1,64 @@
+/* 長備註保留段落並在手機換行，避免撐寬管理表格。 */
+.integration-notes {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    max-height: 24rem;
+    overflow-y: auto;
+    line-height: 1.8;
+    margin-top: 12px;
+    text-align: left;
+}
+
+.integration-contact { margin: 0; min-width: 9rem; text-align: left; }
+.integration-contact dt { font-size: .8rem; color: var(--muted); }
+.integration-contact dd { margin: 0 0 .5rem; overflow-wrap: anywhere; }
+.integration-contact dd:last-child { margin-bottom: 0; }
+
+.integration-tabs { display: flex; gap: 8px; padding: 6px; margin-bottom: 20px; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
+.integration-tabs a { display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 46px; padding: 10px 24px; border-radius: 10px; color: var(--muted); font-weight: 650; text-decoration: none; }
+.integration-tabs a:hover { background: #f5f4ff; }
+.integration-tabs a[aria-current="page"] { background: #eeecff; color: #493dbd; box-shadow: inset 0 0 0 1px #d8d3ff; }
+.integration-tabs a:focus-visible { outline: 3px solid #5146cf; outline-offset: 2px; }
+.integration-tab-count { min-width: 24px; padding: 2px 7px; border-radius: 7px; background: #fff; text-align: center; font-size: .8rem; }
+.integration-context { padding: 4px 4px 20px; }
+.integration-context h2 { margin: 12px 0 8px; font-size: 1.15rem; }
+.integration-context p { max-width: 80ch; margin: 0; color: var(--muted); line-height: 1.8; }
+/* 長備註不應擠壓介面、狀態及 IP 欄；較窄桌面在表格內捲動。 */
+@media (min-width: 621px) {
+    .integration-client-table th:nth-child(1) { min-width: 220px; }
+    .integration-client-table th:nth-child(2) { min-width: 90px; }
+    .integration-client-table th:nth-child(3) { min-width: 120px; }
+    .integration-client-table th:nth-child(4) { min-width: 175px; }
+    .integration-client-table th:nth-child(5) { min-width: 130px; }
+    .integration-client-table th:nth-child(6) { min-width: 80px; }
+    .integration-audit-table th:nth-child(1) { min-width: 150px; }
+    .integration-audit-table th:nth-child(2) { min-width: 170px; }
+    .integration-audit-table th:nth-child(3) { min-width: 100px; }
+    .integration-audit-table th:nth-child(4) { min-width: 130px; }
+}
+@media (max-width: 600px) {
+    .integration-tabs a { flex: 1; gap: 8px; padding: 10px 8px; }
+}
+@media (forced-colors: active) {
+    .integration-tabs a[aria-current="page"] { outline: 2px solid Highlight; }
+}
+
+.integration-grants { min-width: 0; margin: 0; padding: 12px 16px; border: 1px solid var(--line); border-radius: 12px; }
+.integration-grants legend { padding: 0 6px; font-weight: 600; }
+[data-soap-only][hidden] { display: none !important; }
+.integration-grants label span, .integration-grants label { overflow-wrap: anywhere; }
+.integration-return-contract { border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin: 12px 0; }
+.integration-return-contract summary { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; justify-content: space-between; cursor: pointer; min-height: 44px; font-weight: 600; }
+.integration-return-contract summary::before { content: "+"; }
+.integration-return-contract[open] summary::before { content: "−"; }
+.integration-return-contract summary > span:first-of-type { flex: 1; min-width: 0; }
+.integration-return-contract summary small { display: block; overflow-wrap: anywhere; margin-top: 4px; font-weight: 400; }
+.integration-return-contract summary:focus-visible { outline: 3px solid #5146cf; outline-offset: 4px; }
+.integration-return-state { font-size: .8rem; color: #493dbd; background: #eeecff; padding: 4px 8px; border-radius: 6px; }
+.integration-return-field { padding: 8px 0; border-bottom: 1px solid var(--line); }
+.integration-return-field:last-child { border-bottom: 0; }
+.integration-return-field code { overflow-wrap: anywhere; }
+.integration-return-field p { margin: 4px 0; }
+.integration-return-field > p > span { font-size: .8rem; color: var(--muted); }
+.system-fields .integration-grants label { display: flex; align-items: center; gap: 10px; min-height: 44px; cursor: pointer; }
+.admin .system-fields .integration-grants input[type="checkbox"] { width: 18px; height: 18px; min-height: 0; padding: 0; margin: 0; flex-shrink: 0; }

@@ -1,0 +1,71 @@
+/* 說明在新增、編輯與建立成功頁共用；技術規格以原生 details 保留鍵盤操作。 */
+.web-api-guide { min-width: 0; color: #28334b; line-height: 1.8; }
+.web-api-guide * { box-sizing: border-box; }
+.web-api-guide p { margin: 0 0 12px; }
+.web-api-guide .web-api-guide-label { display: block; margin-bottom: 6px; color: #6256a8; font-size: 12px; font-weight: 600; letter-spacing: .04em; }
+.admin-workspace .web-api-guide h2 { margin: 0 0 8px; font-size: 23px; }
+.web-api-guide h3 { margin: 0 0 12px; font-size: 15px; line-height: 1.6; }
+.web-api-guide-intro > p { color: #59657b; }
+.web-api-guide .web-api-flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; padding: 0; margin: 24px 0; list-style: none; }
+.web-api-flow li { min-width: 0; padding: 16px; border: 1px solid #e3e5f1; border-radius: 12px; background: #f8f9fd; }
+.web-api-flow li > span { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; margin-bottom: 10px; border-radius: 8px; background: #eae7ff; color: #5146ad; font-size: 12px; font-weight: 700; }
+.web-api-flow strong { font-size: 14px; }
+.web-api-guide .web-api-flow p { margin: 4px 0 0; color: #59657b; font-size: 12px; }
+.web-api-responsibilities { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin: 24px 0; }
+.web-api-responsibilities > section { min-width: 0; padding: 0 0 0 16px; border-left: 3px solid #c9c4f0; }
+.web-api-responsibilities > section:last-child { border-color: #add4cb; }
+.web-api-responsibilities h3 { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+.web-api-party { color: #58657b; font-size: 11px; border: 1px solid #dce1eb; border-radius: 5px; padding: 1px 7px; }
+.web-api-guide ul, .web-api-handoff ol { padding-left: 20px; margin: 0; }
+.web-api-guide li { margin-bottom: 5px; }
+.web-api-responsibilities li { font-size: 13px; }
+.web-api-endpoint { padding: 20px; border: 1px solid #d7d2f5; border-radius: 12px; background: #f3f1ff; margin: 24px 0; }
+.web-api-endpoint-title { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 6px 16px; margin-bottom: 12px; }
+.web-api-endpoint-title h3 { margin: 0; }
+.web-api-endpoint-title > span { font-size: 12px; color: #655b92; }
+.web-api-guide .web-api-endpoint-address { display: flex; align-items: flex-start; gap: 12px; margin: 0 0 12px; }
+.web-api-guide .web-api-endpoint-address code { background: transparent; padding: 0; color: #39335e; font-size: 14px; overflow-wrap: anywhere; }
+.web-api-method { flex-shrink: 0; border-radius: 5px; padding: 2px 8px; font-size: 11px; font-weight: 700; color: #fff; background: #5146ad; }
+.web-api-guide .web-api-endpoint > p:last-child { margin-bottom: 0; color: #595476; font-size: 13px; }
+.web-api-handoff { padding: 0 2px; margin: 24px 0; font-size: 13px; }
+.web-api-guide .web-api-handoff > p { margin: 12px 0 0; color: #59657b; }
+.web-api-technical { min-width: 0; margin-top: 12px; border: 1px solid #e0e4ef; border-radius: 12px; background: #fff; }
+.web-api-technical > summary { padding: 16px 20px; min-height: 54px; cursor: pointer; color: #3e385f; }
+.web-api-technical > summary > span { display: inline; }
+.web-api-technical > summary strong { font-size: 14px; }
+.web-api-technical > summary small { display: block; margin: 4px 0 0 18px; font-size: 12px; font-weight: 400; color: #68738a; }
+.web-api-technical > summary:hover { background: #f8f7fe; border-radius: 12px; }
+.web-api-technical-body { padding: 20px; border-top: 1px solid #e0e4ef; font-size: 13px; }
+.web-api-technical-body h3:not(:first-child) { margin-top: 28px; }
+.web-api-guide pre { max-width: 100%; margin: 14px 0; padding: 18px; border: 1px solid #dce1ec; border-radius: 9px; color: #e3e9ff; background: #263149; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.8; font-size: 12px; }
+.web-api-guide pre code { padding: 0; background: transparent; color: inherit; font-size: inherit; white-space: inherit; word-break: normal; }
+.web-api-guide code { overflow-wrap: anywhere; }
+.web-api-guide .web-api-code-note { font-size: 12px; color: #59657b; }
+.web-api-guide .web-api-parameters { margin: 16px 0; }
+.web-api-parameters > div { display: grid; grid-template-columns: minmax(0, 170px) minmax(0, 1fr); gap: 8px 16px; padding: 12px 0; border-bottom: 1px solid #e9ecf3; }
+.web-api-parameters dt { font-weight: 600; overflow-wrap: anywhere; }
+.web-api-guide .web-api-parameters dd { margin: 0; color: #59657b; min-width: 0; }
+.web-api-guide pre:focus-visible { outline: 3px solid #8b80e3; outline-offset: 3px; }
+.web-api-diagram { margin: 28px 0; padding: 20px; border: 1px solid #e0e4ef; border-radius: 12px; background: #fafbfe; }
+.web-api-diagram > p, .web-api-diagram figcaption { font-size: 12px; color: #59657b; }
+.web-api-diagram figure { margin: 16px 0; }
+.web-api-diagram-scroll { max-width: 100%; overflow-x: auto; border: 1px solid #e0e4ef; border-radius: 8px; background: #fff; }
+.web-api-diagram-scroll img { display: block; width: 100%; min-width: 720px; height: auto; }
+.web-api-diagram-scroll:focus-visible { outline: 3px solid #8b80e3; outline-offset: 3px; }
+.web-api-diagram figcaption { margin-top: 10px; }
+.web-api-downloads { display: flex; flex-wrap: wrap; gap: 10px; }
+.web-api-downloads .button { font-size: 12px; min-height: 44px; }
+@media (max-width: 1200px) {
+    .web-api-guide .web-api-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 620px) {
+    .admin-workspace .web-api-guide h2 { font-size: 20px; }
+    .web-api-guide .web-api-flow { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+    .web-api-flow li { display: flex; align-items: flex-start; gap: 12px; padding: 12px; }
+    .web-api-flow li > span { flex-shrink: 0; margin: 0; }
+    .web-api-responsibilities { grid-template-columns: minmax(0, 1fr); }
+    .web-api-endpoint, .web-api-technical-body, .web-api-diagram { padding: 16px; }
+    .web-api-technical > summary { padding: 14px 16px; }
+    .web-api-guide pre { padding: 12px; }
+    .web-api-parameters > div { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+}

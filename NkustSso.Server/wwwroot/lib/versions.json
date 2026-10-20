@@ -1,0 +1,22 @@
+{
+  "jquery": {
+    "version": "4.0.0",
+    "integrity": "sha512-TXCHVR3Lb6TZdtw1l3RTLf8RBWVGexdxL6AC8/e0xZKEpBflBsjh9/8LXw+dkNFuOyW9B7iB3O1sP7hS0Kiacg==",
+    "source": "https://registry.npmjs.org/jquery/-/jquery-4.0.0.tgz"
+  },
+  "datatables.net": {
+    "version": "3.1.4",
+    "integrity": "sha512-tnk14y/AOr0Z1d7avIUvCcOGgqZpeo7B6g6RQiycMQckEMq2FaaZTG1Q1xD6Kci5gpAvdjZInDmbscoiVSTyGw==",
+    "source": "https://registry.npmjs.org/datatables.net/-/datatables.net-3.1.4.tgz"
+  },
+  "datatables.net-dt": {
+    "version": "3.1.4",
+    "integrity": "sha512-HST6HmWEMr6SA6FM2SpYu2ko0In5nHjUb03Ocop2gsHLWoRP18sgVbehxUtRS3QZP4eHfU68ujs/gnzd0U2t9g==",
+    "source": "https://registry.npmjs.org/datatables.net-dt/-/datatables.net-dt-3.1.4.tgz"
+  },
+  "tom-select": {
+    "version": "2.6.2",
+    "integrity": "sha512-eiXIkk82XzzUTOVQDFpy+ZGejuqdTvMukyUyeZBQaKnqW42UoTiTZnrod/eX0rkqJEc4rZY9DZ3zdjV07i29wQ==",
+    "source": "https://registry.npmjs.org/tom-select/-/tom-select-2.6.2.tgz"
+  }
+}

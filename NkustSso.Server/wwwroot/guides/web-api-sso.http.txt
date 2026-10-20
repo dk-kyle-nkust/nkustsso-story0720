@@ -1,0 +1,34 @@
+# Web API 單一登入：請求格式範例（下載後可另存為 .http）
+# 必須先由對方登入啟動頁保存 state／verifier，並綁定當次瀏覽器。
+# 此檔僅示範呼叫格式，不會替接收端實作回呼驗證或建立登入。
+# 請在私有本機變數或機密設定提供值，不將真實密鑰提交版本控制。
+@sso = https://sso.example.edu
+@clientId = example-system
+@redirectUriEncoded = https%3A%2F%2Fapp.example.edu%2Fsso%2Fcallback
+@redirectUri = https://app.example.edu/sso/callback
+@state = REPLACE_WITH_RANDOM_STATE
+@challenge = REPLACE_WITH_S256_CHALLENGE
+@verifier = REPLACE_WITH_SAVED_VERIFIER
+@ticket = REPLACE_WITH_CALLBACK_TICKET
+@basicCredentials = REPLACE_WITH_BASE64_UTF8_CLIENTID_COLON_SECRET
+
+### 1. 由瀏覽器開啟此網址，讓中央確認登入（API 工具不會自動取得使用者登入狀態）
+GET {{sso}}/ticket/authorize?client_id={{clientId}}&redirect_uri={{redirectUriEncoded}}&state={{state}}&code_challenge={{challenge}}&code_challenge_method=S256
+
+### 2. 收到回呼後，先驗證 state／瀏覽器關聯／期限，再由對方後端兌換
+# 此 POST 不需使用者 Cookie。票券最長 60 秒、只能使用一次。
+# 密鑰只放 Authorization，不能放入網址或瀏覽器 JavaScript。
+POST {{sso}}/api/sso/v1/redeem
+Authorization: Basic {{basicCredentials}}
+Content-Type: application/json
+
+{
+  "ticket": "{{ticket}}",
+  "redirect_uri": "{{redirectUri}}",
+  "code_verifier": "{{verifier}}"
+}
+
+### 3. 成功必須是 HTTP 200；核對 issuer、client_id、sub 與 session_expires_at
+# 其餘欄位依授權提供。以 issuer＋sub 對應帳號，完成授權後建立對方登入狀態。
+# authenticated_at／session_expires_at 為 Unix 秒。
+# 失敗或回應遺失時重新啟動登入，不重送同一張票券。

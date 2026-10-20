@@ -1,0 +1,7 @@
+@* 校方連結與頁尾資訊。 *@
+@{
+    var year = DateTimeOffset.UtcNow.ToOffset(TimeSpan.FromHours(8)).Year;
+}
+<footer class="site-footer">
+    <p class="site-copyright"><span>© @year</span> <span data-catalog-text data-en="National Kaohsiung University of Science and Technology">國立高雄科技大學</span>｜<a href="https://cc.nkust.edu.tw/" target="_blank" rel="noopener noreferrer" aria-label="電算中心（另開新分頁）"><span data-catalog-text data-en="Computer Center">電算中心</span></a> <span>版權所有</span></p>
+</footer>

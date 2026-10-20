@@ -1,0 +1,39 @@
+@* 查詢及撤銷使用者的中央登入狀態：清單頁。 *@
+@model LoginSessionListViewModel
+@inject AdminAuthorizationService RoleAccess
+@{ var canManage = (await RoleAccess.LoadAsync(User)).CanManage("sessions"); }
+@{ ViewData["Title"] = "登入管理"; }
+<div class="admin-head"><div><span class="eyebrow">WORKSPACE / SESSIONS</span><h1>登入管理</h1><p>查看中央登入狀態，追蹤裝置活動，並依需要終止登入。</p></div></div>
+@if (TempData["Message"] is string message) { <p class="info-strip" role="status">@message</p> }
+<aside class="info-strip"><span class="info-symbol">i</span><div><strong>終止後，下次存取 SSO 須重新登入</strong><p>此操作不會停用帳號。已登入的其他系統仍依各自設定的登入期限運作。</p></div></aside>
+<section class="panel">
+    <form method="get" class="session-filter">
+        <div><label for="account">帳號（完整比對）</label><input id="account" name="account" value="@Model.Account" maxlength="100" placeholder="輸入完整校園帳號" /></div>
+        <div><label for="status">登入狀態</label><select id="status" name="status" asp-for="Status" data-enhance><option value="active">有效</option><option value="revoked">已終止</option><option value="expired">已到期</option><option value="all">全部</option></select></div>
+        <button class="button primary" type="submit">查詢</button><a href="/admin/sessions">重設</a>
+    </form>
+    <p class="fine">依登入時間顯示最近 100 筆符合紀錄。時間為臺灣時間；最近活動最多每 60 秒更新一次。</p>
+    <div class="table-wrap" tabindex="0" aria-label="登入紀錄"><table class="session-table" data-datatable data-no-sort="4"><thead><tr><th>帳號</th><th>登入時間／期限</th><th>裝置／最近活動</th><th>狀態</th><th>操作</th></tr></thead><tbody>
+    @foreach (var session in Model.Sessions)
+    {
+        var active = session.RevokedAt is null && Model.EffectiveExpiry(session) > Model.Now;
+        <tr data-session-id="@session.Id" data-account="@session.UserName">
+            <td data-label="帳號"><strong>@session.UserName</strong><br />@session.DisplayName @if (session.Id == Model.CurrentSession) { <span class="pill">目前登入</span> }</td>
+            <td data-label="登入時間／期限"><time>@LoginSessionListViewModel.Time(session.CreatedAt)</time><br /><span class="fine">目前到期 @LoginSessionListViewModel.Time(Model.EffectiveExpiry(session))<br />最晚重新登入 @LoginSessionListViewModel.Time(Model.AbsoluteExpiry(session))</span></td>
+            <td data-label="裝置／最近活動"><span>@session.IpAddress</span><details class="device-detail"><summary>裝置資訊</summary>@session.UserAgent</details><span class="fine">@LoginSessionListViewModel.Time(session.LastSeenAt)</span></td>
+            <td data-label="狀態"><span class="pill @(active ? "success" : "neutral")">@(session.RevokedAt != null ? "已終止" : active ? "有效" : "已到期")</span>@if (session.RevokedAt is long revoked) { <p class="fine">@LoginSessionListViewModel.Time(revoked)<br />@session.RevocationReason</p> }</td>
+            <td data-label="操作">@if (active && canManage) { <a asp-action="Revoke" asp-route-accountId="@session.AccountId" asp-route-sessionId="@session.Id">終止此登入</a><br /><a asp-action="Revoke" asp-route-accountId="@session.AccountId">終止此帳號所有登入</a> } else if (!canManage) { <span class="fine">僅查詢</span> }</td>
+        </tr>
+    }
+    </tbody></table></div>
+    @if (Model.Sessions.Count == 0) { <p class="muted">沒有符合條件的登入紀錄。</p> }
+</section>
+<section class="panel"><h2>管理操作紀錄</h2><p class="fine">最近 30 筆，包含管理者識別碼、對象及原因。</p><div class="table-wrap" tabindex="0" aria-label="管理操作紀錄"><table data-datatable data-page-length="10"><thead><tr><th>時間／管理者</th><th>對象</th><th>操作</th><th>原因</th></tr></thead><tbody>
+@foreach (var audit in Model.Audits)
+{
+    <tr><td>@LoginSessionListViewModel.Time(audit.OccurredAt)<br /><code>@audit.ActorId</code></td><td><code>@audit.TargetAccountId</code></td><td>@(audit.SessionId is null ? "帳號所有登入" : "單筆登入")<br />已終止 @audit.AffectedCount 筆</td><td>@audit.Reason</td></tr>
+}
+</tbody></table></div></section>
+
+@section head { <partial name="_AdminStyles" /> }
+@section scripts { <partial name="_AdminScripts" /> }

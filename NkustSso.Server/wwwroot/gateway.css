@@ -1,0 +1,37 @@
+.gateway { max-width: 1120px; margin: 20px auto; }
+/* 整張卡片只佔一個鍵盤焦點，操作文字保持固定位置。 */
+.gateway-main-areas { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.gateway-area { position: relative; display: flex; flex-direction: column; align-items: flex-start; min-height: 354px; padding: 34px; border: 1px solid var(--area-bg); border-radius: 26px; background: var(--area-bg); color: #fff; box-shadow: 0 8px 28px rgba(32, 42, 67, .04); }
+.gateway-area h2 { margin: 24px 0 10px; font-size: 30px; font-weight: 700; letter-spacing: -.02em; color: inherit; }
+.gateway-area p { margin: 0 0 28px; font-size: 17px; line-height: 1.8; color: var(--area-description); }
+.gateway-icon { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; width: 60px; height: 60px; border: 1px solid transparent; border-radius: 18px; background: var(--area-icon); color: #fff; }
+.gateway-icon svg { width: 32px; height: 32px; }
+/* 三種身分使用同等強度的底色，文字和操作保持一致層級。 */
+.gateway-student { --area-bg: #303e88; --area-icon: #46569e; --area-description: #e0e5ff; }
+.gateway-employee { --area-bg: #21645f; --area-icon: #377973; --area-description: #e1f4ef; }
+.gateway-alumni { --area-bg: #66508a; --area-icon: #7c659f; --area-description: #f0e8ff; }
+.gateway-action { display: inline-flex; align-items: center; justify-content: center; gap: 24px; min-height: 54px; padding: 12px 22px; border: 1px solid #fff; border-radius: 14px; background: #fff; color: var(--area-bg); font-size: 17px; font-weight: 600; }
+.gateway-area .gateway-action { align-self: flex-end; margin-top: auto; }
+.site-clean .gateway-area:hover, .site-clean .gateway-alumni:hover { text-decoration: none; color: #fff; border-color: var(--area-bg); box-shadow: 0 12px 32px rgba(43, 48, 103, .12); }
+.gateway-area:is(:hover, :focus-visible) .gateway-action, .gateway-alumni:is(:hover, :focus-visible) .gateway-action { text-decoration: underline; text-underline-offset: 4px; }
+.gateway-alumni { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 24px; padding: 28px 34px; min-height: 146px; border: 1px solid var(--area-bg); border-radius: 24px; background: var(--area-bg); color: #fff; }
+.gateway-alumni-label { display: flex; align-items: center; gap: 22px; }
+.gateway-alumni h2 { margin: 0 0 6px; font-size: 24px; font-weight: 700; color: inherit; }
+.gateway-alumni p { margin: 0; font-size: 16px; line-height: 1.8; color: var(--area-description); }
+.gateway-alumni .gateway-action { flex-shrink: 0; }
+@media (max-width: 760px) {
+    .gateway { margin: 8px auto; }
+    .gateway-main-areas { grid-template-columns: 1fr; gap: 18px; }
+    .gateway-area { min-height: 310px; padding: 26px; border-radius: 22px; }
+    .gateway-area h2 { font-size: 27px; margin-top: 20px; }
+    .gateway-area p { font-size: 16px; }
+    .gateway-area .gateway-action { align-self: stretch; }
+    .gateway-alumni { padding: 26px; margin-top: 18px; flex-direction: column; align-items: stretch; gap: 22px; }
+    .gateway-alumni-label { gap: 16px; }
+    .gateway-alumni .gateway-icon { width: 48px; height: 48px; border-radius: 14px; }
+    .gateway-alumni h2 { font-size: 22px; }
+}
+@media (forced-colors: active) {
+    .gateway-area, .gateway-alumni, .gateway-icon, .gateway-action { border-color: ButtonText; }
+}
+

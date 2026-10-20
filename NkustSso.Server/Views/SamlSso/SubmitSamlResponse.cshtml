@@ -1,0 +1,13 @@
+@* 以表單將簽章 SAML 回應送往接收系統。 *@
+@model SamlResponseFormViewModel
+@{ Layout = null; }
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>正在登入系統</title><link rel="stylesheet" href="/site.css" /></head>
+<body data-english-enabled="true"><main><h1>正在登入系統</h1><p>正在確認你的身分，稍後將進入系統。</p>
+<form id="saml-post" method="post" action="@Model.Destination" asp-antiforgery="false">
+    <input type="hidden" name="SAMLResponse" value="@Model.SamlResponse" />
+    @if (!string.IsNullOrEmpty(Model.RelayState)) { <input type="hidden" name="RelayState" value="@Model.RelayState" /> }
+    <button type="submit">繼續</button>
+</form></main><partial name="_SiteFooter" /><script src="/portal-language.js" asp-append-version="true" defer></script><script src="/saml-post.js" defer></script></body>
+</html>

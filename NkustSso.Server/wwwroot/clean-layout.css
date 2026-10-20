@@ -1,0 +1,37 @@
+/* 共用視覺變數與鍵盤操作；入口、選單及登入各自管理版面。 */
+.site-clean, .admin { --ui-ink: #202a43; --ui-muted: #526079; --ui-primary: #4c46c8; --ui-primary-hover: #3732a3; --ui-line: #dce2ed; --ui-control: #818ba0; --ui-soft: #eef0ff; --ui-page-bg: #f5f7fb; --ui-nav-bg: #eef2fa; --ui-nav-active: #dce5f6; --ui-nav-ink: #293a68; --ui-brand-accent: #e5ab36; }
+html:has(body.site-clean), body.site-clean { overflow-x: visible; }
+body.site-clean { background: #fff; }
+body.site-clean:has(.gateway, .directory, .login-center-wrapper) { background: var(--ui-page-bg); color: var(--ui-ink); }
+:is(.site-clean, .admin) a:hover { color: var(--ui-primary-hover); }
+.site-clean main { width: 100%; max-width: 1200px; padding: 48px 32px; min-height: calc(100vh - 270px); }
+.site-clean .site-footer { max-width: 1136px; display: flex; flex-direction: column; align-items: flex-start; gap: 16px; padding: 22px 0; color: var(--ui-muted); font-size: 13px; border-color: var(--ui-line); }
+.site-account-links { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 22px; }
+.site-account-links form { margin: 0; }
+.site-account-links button { padding: 0; border: 0; background: transparent; color: #334e68; font: inherit; cursor: pointer; }
+.site-account-links button:hover { text-decoration: underline; }
+.site-account-links a, .site-account-links button { display: inline-flex; align-items: center; min-height: 44px; }
+:is(.site-clean, .admin) .button { border-radius: 12px; }
+:is(.site-clean, .admin) .button.primary { background: var(--ui-primary); color: #fff; box-shadow: none; }
+:is(.site-clean, .admin) .button.primary:hover { background: var(--ui-primary-hover); box-shadow: none; transform: none; }
+:is(.site-clean, .admin) .button.full { justify-content: center; }
+:is(.site-clean, .admin) .panel { box-shadow: none; border-radius: 14px; }
+:is(.site-clean, .admin) :is(a, button, summary, input, select, textarea):focus-visible { outline: 3px solid #272173; outline-offset: 4px; box-shadow: 0 0 0 4px #fff; }
+.skip-link { position: absolute; top: 8px; left: 8px; z-index: 1000; padding: 12px 20px; background: #fff; color: #272173; border: 2px solid currentColor; border-radius: 8px; transform: translateY(-200%); }
+.skip-link:focus { transform: none; }
+.site-clean main:focus { outline: none; }
+:is(.site-clean, .admin) input::placeholder { color: #59667c; opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+    :is(.site-clean, .admin) *, :is(.site-clean, .admin) *::before, :is(.site-clean, .admin) *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+@media (forced-colors: active) {
+    :is(.site-clean, .admin) :is(a, button, summary, input, select, textarea):focus-visible { outline-color: Highlight; }
+    :is(.site-clean, .admin) [aria-current="page"], :is(.site-clean, .admin) [aria-pressed="true"] { outline: 2px solid Highlight; outline-offset: -3px; }
+}
+@media (max-width: 1200px) { .site-clean .site-footer { margin: 0 32px; } }
+@media (max-width: 600px) {
+    .site-clean main { padding: 24px 20px; }
+    .site-clean .site-footer { margin: 0 20px; }
+}
+
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }

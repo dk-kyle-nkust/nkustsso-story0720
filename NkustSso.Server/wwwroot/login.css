@@ -1,0 +1,91 @@
+/* 單欄登入：身分只影響視覺，帳密表單與驗證共用。 */
+.site-clean .login-center-wrapper {
+    --login-accent: #344b80;
+    --login-hover: #25385f;
+    --login-tint: #edf2fb;
+    display: block;
+    max-width: 520px;
+    margin: 4px auto 20px;
+}
+.site-clean .login-area-employee { --login-accent: #235f59; --login-hover: #174741; --login-tint: #eaf5f1; }
+.site-clean .login-area-alumni { --login-accent: #655080; --login-hover: #4d3967; --login-tint: #f2edf7; }
+.login-surface {
+    border: 1px solid #dce2ed;
+    border-radius: 24px;
+    background: #fff;
+    box-shadow: 0 12px 40px rgba(32, 42, 67, .06);
+}
+.site-clean .login-card-box { padding: 36px 40px 20px; border: 0; border-radius: 24px; background: transparent; box-shadow: none; }
+.login-card-heading { text-align: left; }
+.login-identity {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 100%;
+    margin: 0 0 18px;
+    padding: 7px 12px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: var(--login-accent);
+    background: var(--login-tint);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+.login-identity svg { flex: 0 0 auto; }
+.site-clean #login-title { margin: 0; color: var(--ui-ink); font-size: 28px; font-weight: 700; line-height: 1.35; letter-spacing: -.02em; }
+.site-clean .login-card-sub { margin: 12px 0 28px; color: var(--ui-muted); font-size: 14px; line-height: 1.8; }
+.site-clean .login-form { gap: 20px; }
+.site-clean .login-form .form-group { gap: 8px; }
+.site-clean .login-form label { color: var(--ui-ink); font-size: 15px; }
+.site-clean .login-form .label-row { flex-wrap: wrap; gap: 0 12px; }
+.site-clean .login-form .input-wrap input {
+    min-height: 54px;
+    border: 1px solid var(--ui-control);
+    border-radius: 10px;
+    color: var(--ui-ink);
+    background: #fff;
+    font-size: 16px;
+}
+.site-clean .login-form .input-wrap input:hover { border-color: var(--login-accent); }
+.site-clean .login-form .input-wrap input:focus { border-color: var(--login-accent); box-shadow: none; }
+.site-clean .login-form .input-wrap input:focus-visible { box-shadow: 0 0 0 4px #fff; }
+.site-clean .login-form .input-icon { color: #5b6980; }
+.site-clean .login-form .password-wrap input { padding-right: 54px; }
+.site-clean .login-form .pwd-toggle { min-width: 44px; min-height: 44px; right: 5px; border-radius: 7px; color: #49556c; }
+.site-clean .login-form .pwd-toggle:hover { background: var(--login-tint); color: var(--login-accent); }
+.site-clean .login-form .button.primary {
+    min-height: 54px;
+    margin-top: 4px;
+    border-radius: 10px;
+    background: var(--login-accent);
+    font-size: 16px;
+    font-weight: 600;
+    gap: 12px;
+}
+.site-clean .login-form .button.primary:hover { background: var(--login-hover); }
+.site-clean .login-form .validation { margin: 0; padding: 14px; border-radius: 10px; font-size: 14px; overflow-wrap: anywhere; }
+.site-clean .login-center-wrapper a:not(.button) { color: var(--login-accent); text-decoration: underline; text-underline-offset: 3px; }
+.site-clean .login-center-wrapper a:hover { color: var(--login-hover); }
+.site-clean .link-forgot-pwd { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; }
+.login-area-note { margin: 20px 0 0; color: var(--ui-muted); font-size: 14px; line-height: 1.8; }
+.site-clean .login-center-wrapper summary { min-height: 44px; padding: 11px 0; cursor: pointer; line-height: 1.6; }
+.site-clean .login-center-wrapper summary:hover { color: var(--login-accent); }
+.site-clean .login-help-details { width: 100%; margin-top: 24px; padding-top: 8px; border-top: 1px solid var(--ui-line); color: var(--ui-muted); font-size: 14px; }
+.login-help-details > summary { color: var(--ui-muted); }
+.site-clean .login-help-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; margin-top: 12px; }
+.site-clean .help-card { min-width: 0; padding: 20px; overflow-wrap: anywhere; border: 1px solid var(--ui-line); border-radius: 14px; box-shadow: none; }
+.site-clean .help-card-header h2 { margin: 0; color: var(--ui-ink); font-size: 16px; font-weight: 700; }
+.site-clean .help-intro, .site-clean .help-list, .site-clean .contact-table { color: var(--ui-muted); }
+.site-clean .contact-table th { text-align: left; padding: 10px 6px; color: var(--ui-ink); }
+@media (max-width: 600px) {
+    .site-clean .login-center-wrapper { margin-top: 0; }
+    .login-surface { border-radius: 20px; }
+    .site-clean .login-card-box { padding: 28px 24px 16px; border-radius: 20px; }
+    .site-clean #login-title { font-size: 26px; }
+}
+@media (max-width: 380px) {
+    .site-clean .login-card-box { padding: 24px 18px 14px; }
+    .site-clean .login-card-sub { margin-bottom: 22px; }
+    .site-clean .help-card { padding: 16px; }
+}

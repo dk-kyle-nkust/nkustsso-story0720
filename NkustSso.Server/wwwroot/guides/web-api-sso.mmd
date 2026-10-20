@@ -1,0 +1,28 @@
+sequenceDiagram
+    autonumber
+    actor U as 使用者瀏覽器
+    participant S as 我們的 SSO
+    participant A as 對方網站／後端
+    U->>S: 首頁點選系統
+    S-->>U: 開啟對方登入啟動網址
+    U->>A: GET /sso/login
+    A->>A: 產生並保存 state、PKCE verifier<br/>綁定目前瀏覽器及請求期限
+    A-->>U: 導向 SSO，帶 state 與 challenge
+    U->>S: GET /ticket/authorize
+    alt 中央登入仍有效
+        S->>S: 沿用目前登入
+    else 尚未登入
+        S-->>U: 顯示統一帳密登入頁
+        U->>S: 提交登入資料並完成驗證
+    end
+    S-->>U: 導回登記網址，帶 ticket 與 state
+    U->>A: GET /sso/callback
+    A->>A: 驗證 state、瀏覽器關聯及期限
+    rect rgb(241, 238, 255)
+        Note over A,S: 伺服器對伺服器：使用者不需操作
+        A->>S: POST /api/sso/v1/redeem<br/>系統密鑰＋票券＋回呼網址＋verifier
+        S->>S: 驗證系統、票券、PKCE 及登入狀態<br/>一次性消耗票券，依欄位授權提供資料
+        S-->>A: JSON 身分資料
+    end
+    A->>A: 檢查回應、對應帳號及功能權限<br/>建立自己的 Session／Cookie
+    A-->>U: 顯示服務首頁（不含票券的網址）

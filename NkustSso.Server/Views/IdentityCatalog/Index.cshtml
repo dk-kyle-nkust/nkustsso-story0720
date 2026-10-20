@@ -1,0 +1,61 @@
+@* 校務身分分類查詢：清單頁。 *@
+@model IdentityCatalogListViewModel
+@using NkustSso.Server.Services.Sources
+@{ ViewData["Title"] = "身分分類查詢"; var dimension = Model.Catalog.Dimensions.Single(d => d.Key == Model.Dimension);
+   var connected = CampusIdentityCatalog.Sources.ContainsKey(dimension.Key);
+   var options = Model.Catalog.Options.Where(o => o.Dimension == dimension.Key).ToList();
+   var isDepartment = dimension.Key == "department";
+   var parents = Model.Catalog.DepartmentParents;
+   var parentCodes = parents.Values.ToHashSet(StringComparer.Ordinal);
+   var childCounts = parents.Values.GroupBy(code => code).ToDictionary(group => group.Key, group => group.Count());
+   if (isDepartment) options = DepartmentHierarchy.Order(options);
+   var note = dimension.Key switch {
+       "division" => "學生與部別的對應尚待確認，缺少部別資料的使用者不會符合指定部別條件。",
+       "department" => "學生單位依班級對應；教職員的單位對應尚待確認。預設顯示第一層，點「展開下層」查看所屬單位；搜尋會包含所有層級。",
+       "campus" => "校區選項來自 s90_cmparea。人員校區對應尚待確認，缺少校區資料的使用者不會符合指定校區條件。",
+       "student_kind" => "學生狀況來自 s90_srckind，例如復學生、轉學生。此分類不等同在學、休學等學籍狀態；學生紀錄對應尚待確認。",
+       _ => null };
+}
+<div class="admin-head"><div><span class="eyebrow">WORKSPACE / IDENTITY</span><h1>身分分類查詢</h1><p>查詢入口顯示條件使用的分類。選擇下方項目，查看來源代碼與名稱。</p></div></div>
+@if (Model.Catalog.SourceError is string error) { <div class="validation" role="alert">@error</div> }
+@* 九個身分條件直接列出，一次點擊即切換；原本的下拉選單加送出鈕要兩個動作才看得到資料。 *@
+<nav class="catalog-tabs" aria-label="身分條件">
+@foreach (var item in Model.Catalog.Dimensions)
+{
+    var ready = CampusIdentityCatalog.Sources.ContainsKey(item.Key);
+    <a href="@Url.Action("Index", new { dimension = item.Key })" aria-current="@(item.Key == Model.Dimension ? "page" : null)" class="@(ready ? null : "catalog-tab-pending")">@item.Name@if (!ready) { <span class="catalog-tab-tag">待串接</span> }</a>
+}
+</nav>
+<section class="panel">
+    <div class="catalog-head">
+        <h2>@dimension.Name</h2>
+        <p class="catalog-meta">適用：@IdentityCatalogSnapshot.FamilyLabel(dimension.Family)@if (connected && Model.Catalog.SourceError is null) { <text> · @options.Count 個選項</text>}</p>
+    </div>
+    @if (note is not null) { <p class="fine">@note</p> }
+    @if (!connected)
+    { <p class="muted">此種類尚待確認資料來源，目前不提供示範選項。</p> }
+    else if (Model.Catalog.SourceError is not null)
+    { <p class="muted">資料暫時無法取得，請稍後重新查詢。</p> }
+    else
+    {
+        <div class="table-wrap"><table class="session-table @(isDepartment ? "department-catalog" : "")" data-datatable data-no-sort="@(isDepartment ? "0,1,2,3" : "")"><thead><tr><th>名稱</th><th>代碼</th>@if (isDepartment) { <th>上層單位</th> }<th>適用身分</th></tr></thead><tbody>
+        @foreach (var option in options)
+        {
+            var parent = isDepartment && parents.TryGetValue(option.Code, out var parentCode) ? Model.Catalog.Option("department", parentCode) : null;
+            <tr data-unit-code="@(isDepartment ? option.Code : null)" data-parent-code="@parent?.Code">
+                <td data-label="名稱"><span class="@(parent is not null ? "department-child" : "")">@if (parent is not null) { <span aria-hidden="true">↳ </span> }@option.Label</span>
+                    @if (isDepartment) { <span class="department-level">@(parent is not null ? "下層單位" : parentCodes.Contains(option.Code) ? "上層單位" : "獨立單位")</span> }
+                    @if (isDepartment && childCounts.TryGetValue(option.Code, out var childCount))
+                    { <button type="button" class="department-toggle" data-expand-unit="@option.Code" data-child-count="@childCount" aria-expanded="false" aria-label="展開 @option.Label 的下層單位" hidden>展開下層（@childCount）</button> }
+                </td>
+                <td data-label="代碼"><code>@option.Code</code></td>
+                @if (isDepartment) { <td data-label="上層單位">@if (parent is not null) { <span>@parent.Label</span><br /><code>@parent.Code</code> } else { <span class="muted">—</span> }</td> }
+                <td data-label="適用身分">@IdentityCatalogSnapshot.FamilyLabel(dimension.Key == "identity_type" ? option.Family : dimension.Family)</td>
+            </tr>
+        }
+        </tbody></table></div>
+    }
+</section>
+<p class="fine">分類代碼與名稱由校務資料庫提供。如需調整，請由來源資料管理單位處理；本頁僅供查詢。</p>
+@section head { <partial name="_AdminStyles" /><link rel="stylesheet" href="/audience-editor.css" asp-append-version="true" /> }
+@section scripts { <partial name="_AdminScripts" />@if (isDepartment) { <script src="/department-catalog.js" asp-append-version="true"></script> } }

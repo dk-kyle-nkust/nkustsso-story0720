@@ -1,0 +1,68 @@
+/* 校徽與中英文校名使用同一張官方圖片，避免分別縮放造成比例不一。 */
+.site-header { border-top: 4px solid var(--ui-brand-accent); background: #fff; }
+.site-header-brand-row { max-width: 1200px; margin: 0 auto; padding: 24px 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.site-header-brand { min-width: 0; }
+.site-header-brand > a { display: flex; align-items: center; min-height: 44px; border-radius: 4px; }
+.site-header-brand img { display: block; width: 360px; max-width: 100%; height: auto; }
+.site-header-caption { display: block; margin-top: 10px; color: #526079; font-size: 15px; letter-spacing: .12em; }
+.site-header-tools { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; min-width: 0; max-width: 55%; }
+.site-current-user { display: flex; justify-content: flex-end; max-width: 100%; margin-left: auto; color: #293a68; padding: 12px 18px; border: 1px solid #dce2ed; border-radius: 14px; background: #f8faff; text-align: right; }
+.site-user-details { min-width: 0; display: grid; gap: 5px; }
+.site-user-labels { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 6px 10px; overflow-wrap: anywhere; }
+.site-user-labels strong { font-size: 18px; font-weight: 650; line-height: 1.5; }
+.site-user-labels > span { padding: 2px 9px; border: 1px solid #cbd5e6; border-radius: 999px; background: #edf2f8; font-size: 12px; line-height: 1.6; color: #435474; }
+.site-user-account { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: baseline; gap: 4px 8px; color: #526079; font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }
+.site-user-account [data-current-user-account] { color: #293a68; font-variant-numeric: tabular-nums; font-weight: 600; }
+/* 教職員所屬單位；學生與無單位對照者整行隱藏。 */
+.site-user-unit { display: flex; justify-content: flex-end; color: #526079; font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
+.site-current-user [hidden], .site-current-user[hidden] { display: none !important; }
+.site-clean .site-user-manage { display: inline-flex; align-items: center; min-height: 44px; color: #344b80; font-size: 14px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+.site-clean .site-user-manage:hover { color: #25385f; }
+.site-header-actions { display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; gap: 10px; }
+.site-header-actions a, .site-header-actions button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; padding: 10px 15px; border: 1px solid #818ba0; border-radius: 10px; color: #293a68; background: #fff; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; }
+.site-header-actions .site-header-forgot { background: #eef0ff; border-color: #818ba0; }
+.site-header-actions :is(a, button):hover { background: #e8edf6; color: #202a43; text-decoration: underline; text-underline-offset: 4px; }
+.site-header-navigation { background: var(--ui-nav-bg); border-top: 1px solid #dce2ed; border-bottom: 1px solid #dce2ed; }
+.site-header-nav-inner { display: flex; align-items: center; gap: 16px; max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+#site-navigation { display: flex; flex: 1; min-width: 0; width: auto; flex-wrap: wrap; gap: 6px; }
+.site-clean #site-navigation a { display: flex; align-items: center; justify-content: center; min-height: 50px; padding: 12px 24px; border-bottom: 3px solid transparent; color: #293a68; font-size: 15px; text-decoration: none; }
+.site-clean #site-navigation a:hover, #site-navigation a[aria-current="page"] { background: var(--ui-nav-active); border-bottom-color: #455c92; }
+.site-clean #site-navigation a:hover { text-decoration: underline; text-underline-offset: 5px; }
+/* 管理入口只對系統管理者渲染，以分隔線與較深的字色與一般專區區分。 */
+.site-clean #site-navigation .site-nav-admin { gap: 7px; color: #1f2d52; font-weight: 650; box-shadow: inset 1px 0 0 #cfd8e8; }
+
+.site-nav-account { flex-shrink: 0; margin-left: auto; padding: 6px 0; }
+.site-nav-account form { margin: 0; }
+.site-clean .site-nav-account :is(a, button) { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; min-width: 92px; padding: 8px 16px; border: 1px solid #344b80; border-radius: 8px; font: inherit; font-size: 14px; font-weight: 600; text-decoration: none; cursor: pointer; }
+.site-clean .site-nav-signin { background: #344b80; color: #fff; }
+.site-clean .site-nav-signin:hover { background: #25385f; color: #fff; }
+.site-clean .site-nav-signout { background: #fff; color: #344b80; }
+.site-clean .site-nav-signout:hover { background: var(--ui-nav-active); color: #25385f; }
+.site-clean .site-nav-account :is(a, button):hover { text-decoration: underline; text-underline-offset: 4px; }
+.site-nav-toggle { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 10px 0; border: 0; background: transparent; color: #293a68; font: inherit; cursor: pointer; }
+.site-header [hidden] { display: none !important; }
+@media (max-width: 900px) {
+    .site-header-brand-row { align-items: flex-start; }
+    .site-header-brand img { width: 310px; }
+    .site-header-actions { max-width: 300px; }
+}
+@media (max-width: 760px) {
+    .site-header-brand-row { flex-direction: column; gap: 18px; padding: 20px; }
+    .site-header-brand { width: 100%; }
+    .site-header-brand img { width: 330px; }
+    .site-header-caption { font-size: 14px; margin-top: 8px; }
+    .site-header-actions { max-width: none; width: 100%; justify-content: flex-start; gap: 8px; }
+    .site-header-tools { width: 100%; max-width: none; align-items: stretch; }
+    .site-current-user { width: fit-content; max-width: 100%; }
+    .site-user-details { flex: 1; }
+    .site-header-actions a, .site-header-actions button { padding: 8px 11px; }
+    .site-header-nav-inner { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 12px; padding: 0 20px; }
+    .site-nav-toggle { grid-column: 1; grid-row: 1; }
+    .site-nav-account { grid-column: 2; grid-row: 1; }
+    #site-navigation { grid-column: 1 / -1; grid-row: 2; padding: 0 0 12px; flex-direction: column; gap: 4px; }
+    .site-clean #site-navigation a { justify-content: flex-start; padding-left: 12px; }
+}
+@media (forced-colors: active) {
+    .site-header { border-bottom: 1px solid CanvasText; }
+    #site-navigation a[aria-current="page"] { border-bottom-color: Highlight; }
+}

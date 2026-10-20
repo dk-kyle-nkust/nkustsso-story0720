@@ -1,0 +1,28 @@
+@* 維護後台選單名稱、順序與顯示設定：新增與編輯表單。 *@
+@model AdminMenuEditViewModel
+@{ ViewData["Title"] = Model.Creating ? "新增後台選單" : "編輯後台選單"; var protect = Model.Menu.Id is "menus" or "access"; }
+<div class="admin-head"><h1>@ViewData["Title"]</h1><a href="/admin/menus">回選單清單</a></div>
+<form class="system-form" method="post" action="@(Model.Creating ? "/admin/menus/new" : $"/admin/menus/{Model.Menu.Id}/edit")">
+    @Html.AntiForgeryToken()
+    @if (!ViewData.ModelState.IsValid) { <div asp-validation-summary="All" class="validation" role="alert"></div> }
+    <input asp-for="Menu.Revision" type="hidden" />
+    <section class="panel"><div class="system-fields">
+        <div><label asp-for="Menu.Id">選單代碼</label><input asp-for="Menu.Id" readonly="@(!Model.Creating)" required maxlength="50" /><p class="fine">小寫英數字、底線或連字號；建立後固定。</p></div>
+        <div><label asp-for="Menu.Label">選單名稱</label><input asp-for="Menu.Label" required maxlength="100" /></div>
+        <div><label asp-for="Menu.Group">選單分組</label><input asp-for="Menu.Group" required maxlength="50" /></div>
+        <div><label asp-for="Menu.SortOrder">排序</label><input asp-for="Menu.SortOrder" type="number" min="0" max="10000" required /><p class="fine">數字越小越前面。</p></div>
+        <div><label asp-for="Menu.Target">連結功能</label><select asp-for="Menu.Target" data-enhance>
+            @foreach (var feature in AdminAuthorizationService.Features.Where(f => !protect || f.Key == Model.Menu.Id)) { <option value="@feature.Key">@feature.Label</option> }
+        </select><p class="fine">選擇既有功能；新增業務頁面仍需實作對應程式。</p></div>
+        <div><label asp-for="Menu.Icon">圖示</label><select asp-for="Menu.Icon" data-enhance>@foreach (var icon in AdminAuthorizationService.Icons) { <option value="@icon.Key">@icon.Value</option> }</select></div>
+    </div>
+    @if (protect) { <input asp-for="Menu.Enabled" type="hidden" value="true" /><p>此為最高管理者必要入口，保持啟用。</p> }
+    else { <label class="admin-check"><input asp-for="Menu.Enabled" /> 啟用選單</label> }
+    </section><button class="button primary" type="submit">儲存選單</button> <a class="button" href="/admin/menus">取消</a>
+</form>
+@if (!Model.Creating && !protect)
+{
+    <details class="panel admin-delete"><summary>刪除這個選單</summary><p>只移除導覽項目，不刪除功能或撤銷權限。</p><form method="post" action="/admin/menus/@Model.Menu.Id/delete">@Html.AntiForgeryToken()<input type="hidden" name="revision" value="@Model.Menu.Revision" /><button class="button danger" type="submit">確認刪除選單</button></form></details>
+}
+@section head { <partial name="_AdminStyles" /><link rel="stylesheet" href="/admin-management.css" asp-append-version="true" /> }
+@section scripts { <partial name="_AdminScripts" /> }

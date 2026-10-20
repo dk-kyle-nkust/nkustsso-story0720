@@ -1,0 +1,129 @@
+@* 維護 SSO 串接系統、首頁連結及入口顯示條件：清單頁。 *@
+@model SsoSystemListViewModel
+@inject AdminAuthorizationService RoleAccess
+@{
+    var canManage = (await RoleAccess.LoadAsync(User)).CanManage("systems");
+    var links = Model.Section == "links";
+    var listUrl = links ? "/admin/systems?section=links" : "/admin/systems?section=sso";
+    ViewData["Title"] = links ? "首頁連結 · 串接系統管理" : "單一登入 SSO · 串接系統管理";
+    var enabledCount = Model.Systems.Count(s => s.Protocol != "link" && s.Enabled);
+    var disabledCount = Model.Systems.Count(s => s.Protocol != "link" && !s.Enabled);
+    var shownCount = Model.Systems.Count(s => s.ShowOnPortal);
+    var restrictedCount = Model.Systems.Count(s => Model.Audiences.TryGetValue(s.ClientId, out var audience) && !audience.IsUnrestricted);
+    var filtered = Model.Protocol != "all" || Model.Status != "all" || Model.Visibility != "all" || Model.Category.Length != 0;
+}
+<div class="systems-workspace">
+    <div class="admin-head">
+        <div><span class="eyebrow">WORKSPACE / SYSTEMS</span><h1>@(links ? "首頁連結" : "單一登入 SSO")</h1><p>@(links ? "管理首頁入口網址、顯示專區與身分條件。連結本身不提供單一登入。" : "管理 OIDC、SAML 與 Web API 單一登入，以及各系統可取得的身分資料。")</p></div>
+        @if (canManage) { <div class="admin-head-actions"><a class="button primary" href="/admin/systems/new?section=@Model.Section"><span aria-hidden="true">＋</span> @(links ? "新增首頁連結" : "新增 SSO 系統")</a></div> }
+    </div>
+    @if (TempData["Message"] is string message) { <div class="info-strip" role="status">@message</div> }
+    @if (links)
+    {
+        <p class="info-strip">這裡維護前台的系統連結。新增或修改後，勾選「在首頁顯示入口」與顯示專區，前台重新整理即可看到。分類名稱與順序請到 <a href="/admin/categories">首頁分類</a> 維護。<a href="/portal/student" target="_blank" rel="noopener">查看前台（另開分頁）</a></p>
+    }
+    <div class="systems-overview-label">@(filtered ? "目前篩選結果概覽" : links ? "首頁連結概覽" : "SSO 系統概覽")<span>依本分頁查詢條件統計</span></div>
+    <dl class="systems-overview">
+        <div><dt>系統總數</dt><dd>@Model.Systems.Count<span>個系統</span></dd></div>
+        @if (links) { <div><dt>開啟前需登入本站</dt><dd>@Model.Systems.Count(s => s.RequirePortalLogin)<span>個連結</span></dd></div> }
+        else { <div><dt><span class="overview-dot active" aria-hidden="true"></span>SSO 已啟用</dt><dd>@enabledCount<span>SSO 停用 @disabledCount 個</span></dd></div> }
+        <div><dt><span class="overview-dot visible" aria-hidden="true"></span>首頁設為顯示</dt><dd>@shownCount<span>隱藏 @(Model.Systems.Count - shownCount) 個</span></dd></div>
+        <div><dt><span class="overview-dot audience" aria-hidden="true"></span>已設定身分條件</dt><dd>@restrictedCount<span>入口顯示對象</span></dd></div>
+    </dl>
+    <section class="panel systems-filter-panel" aria-labelledby="filter-heading">
+        <div class="systems-section-heading"><h2 id="filter-heading">篩選系統</h2><a href="@listUrl">清除條件</a></div>
+        <form method="get" action="/admin/systems" class="system-filter">
+            <input type="hidden" name="section" value="@Model.Section" />
+            @if (!links) {
+            <div><label asp-for="Protocol">登入方式</label><select asp-for="Protocol" data-enhance><option value="all">全部方式</option><option value="oidc">OIDC 標準登入</option><option value="ticket">@SystemProtocols.Label("ticket")</option><option value="saml">SAML 2.0</option></select></div>
+            <div><label asp-for="Status">SSO 啟用設定</label><select asp-for="Status" data-enhance><option value="all">全部狀態</option><option value="enabled">已勾選啟用</option><option value="disabled">未勾選啟用</option></select></div>
+            }
+            <div><label asp-for="Visibility">首頁入口</label><select asp-for="Visibility" data-enhance><option value="all">全部</option><option value="shown">顯示</option><option value="hidden">隱藏</option></select></div>
+            <div><label asp-for="Category">首頁分類</label><select asp-for="Category" data-enhance><option value="">全部分類</option>
+                @if (Model.Category.Length != 0 && !Model.Categories.Any(c => c.Key == Model.Category)) { <option value="@Model.Category">@Model.Category（分類已不存在）</option> }
+                @foreach (var category in Model.Categories) { <option value="@category.Key">@category.Name</option> }
+            </select></div>
+            <div class="filter-actions"><button class="button primary" type="submit">查詢</button></div>
+        </form>
+    </section>
+    <section class="panel system-results" aria-labelledby="systems-heading">
+        <div class="systems-section-heading"><div><h2 id="systems-heading">系統清單 <span class="systems-count">@Model.Systems.Count</span></h2><p>查看登入狀態、入口位置與身分條件。</p></div><span class="systems-result-scope">@(filtered ? "已套用篩選" : "顯示本分頁全部系統")</span></div>
+        @if (Model.Systems.Count == 0)
+        {
+            <div class="system-empty"><strong>目前沒有符合條件的系統</strong><p>調整查詢條件，或新增第一個服務入口。</p><a class="button" href="@listUrl">查看本分頁全部系統</a></div>
+        }
+        else
+        {
+            <div class="table-wrap"><table class="session-table system-registry" data-datatable data-page-length="10" data-no-sort="4,6,7"><caption class="sr-only">串接系統與首頁入口設定</caption><thead><tr><th>系統名稱</th><th>首頁分類</th><th>登入方式</th><th>SSO 登入</th><th>入口顯示</th><th>開放身分</th><th>提供資料</th><th>操作</th></tr></thead><tbody>
+            @foreach (var system in Model.Systems)
+            {
+                var audience = Model.Audiences.GetValueOrDefault(system.ClientId) ?? new PortalAudienceSelection();
+                var fields = IdentityClaimReleasePolicy.Fields.Where(f => IdentityClaimReleasePolicy.Allows(system.ClaimMask, f.Bit)).ToArray();
+                var hasPublicArea = system.PublicStudent || system.PublicEmployee || system.PublicAlumni;
+                var publicVisible = hasPublicArea && !system.RequireLoginToView;
+                <tr>
+                    <td data-label="系統名稱"><div class="system-name"><strong>@system.DisplayName</strong><code>@system.ClientId</code><span class="fine">排序 @system.SortOrder</span></div></td>
+                    <td data-label="首頁分類"><span class="system-category">@PortalCategoryService.Of(Model.Categories, system.Category).Name</span></td>
+                    <td data-label="登入方式"><span class="protocol-badge @system.Protocol">@SystemProtocols.Label(system.Protocol)</span>
+                        @if (system.Protocol == "ticket") { <span class="system-cell-note">自訂協定</span> }
+                        @if (system.Protocol == "link") { <span class="system-cell-note">未串接 SSO</span> }
+                    </td>
+                    <td data-label="SSO 登入">
+                        @if (system.Protocol == "link") { <span class="system-cell-note">不適用</span> }
+                        else { <span class="system-state @(system.Enabled ? "enabled" : "disabled")">@(system.Enabled ? "啟用" : "停用")</span> }
+                    </td>
+                    <td data-label="入口顯示">
+                        <div class="system-visibility @(system.ShowOnPortal ? "is-visible" : "is-hidden")">@(system.ShowOnPortal ? "首頁顯示" : "首頁隱藏")</div>
+                        <div class="system-area-tags">
+                            @if (system.PublicStudent) { <span>學生專區</span> }
+                            @if (system.PublicEmployee) { <span>教職員專區</span> }
+                            @if (system.PublicAlumni) { <span>校友專區</span> }
+                            @if (!hasPublicArea) { <span>私人入口 · 各專區</span> }
+                        </div>
+                        <span class="system-cell-note">@(publicVisible ? "名稱與說明公開可見" : "登入後依身分顯示")</span>
+                        @if (!system.Enabled && system.Protocol != "link") { <span class="system-cell-note">已停用，入口不會顯示</span> }
+                        @if (system.RequirePortalLogin) { <span class="system-cell-note">開啟前需登入本站</span> }
+                    </td>
+                    <td data-label="開放身分" data-order="@(audience.IsUnrestricted ? "全部身分" : audience.Mode == "rules" ? "指定身分" : "身分規則異常")">
+                        @if (audience.IsUnrestricted) { <span class="pill neutral">全部身分</span> }
+                        else
+                        {
+                            <span class="pill @(audience.Mode == "rules" ? "" : "pending")">@(audience.Mode == "rules" ? "指定身分" : "身分規則異常")</span>
+                            <span class="system-audience-label">@string.Join("、", audience.Groups.Select(g => g.Family == "any" ? "依身分條件" : IdentityCatalogSnapshot.FamilyLabel(g.Family)).Distinct())</span>
+                            <details class="system-detail audience-detail"><summary>@(audience.Mode == "rules" ? $"查看 {audience.Groups.Count} 組條件" : "查看規則")</summary>
+                                <ul>@foreach (var description in audience.Describe(Model.IdentityCatalog)) { <li>@description</li> }</ul>
+                                @if (publicVisible) { <p>此入口的名稱與說明公開，身分條件不會隱藏公開項目。</p> }
+                            </details>
+                        }
+                    </td>
+                    <td data-label="提供資料">
+                        @if (system.Protocol == "link") { <span class="system-cell-note">不提供身分資料</span> }
+                        else if (fields.Length == 0) { <span class="system-claims-minimal">僅基本識別碼</span><span class="system-cell-note">不提供額外欄位</span> }
+                        else
+                        {
+                            <details class="system-detail claims-detail"><summary>基本識別碼 + @fields.Length 項</summary><p>固定識別碼（sub）</p><ul>@foreach (var field in fields) { <li>@field.Label</li> }</ul></details>
+                        }
+                    </td>
+                    <td data-label="操作">@if (canManage) { <a class="system-edit-link" href="/admin/systems/@system.ClientId/edit" aria-label="編輯 @system.DisplayName">編輯設定</a> } else { <span class="fine">僅查詢</span> }</td>
+                </tr>
+            }
+            </tbody></table></div>
+        }
+    </section>
+    <aside class="systems-guidance"><span class="systems-guidance-icon" aria-hidden="true">i</span><div><strong>入口顯示與系統權限分開管理</strong><p>身分條件用於首頁入口；隱藏入口不會禁止直接登入。停用會阻止新的 SSO 登入，既有 Session／Cookie 與功能權限仍由接收系統管理。</p></div></aside>
+    <section class="panel systems-audit-panel" aria-labelledby="audit-heading">
+        <div class="systems-section-heading"><div><h2 id="audit-heading">最近設定異動</h2><p>目前符合查詢條件之系統的最近 30 筆紀錄。</p></div><span class="systems-count">@Model.Audits.Count 筆</span></div>
+        @if (Model.Audits.Count == 0) { <p class="system-empty">尚無符合條件的異動紀錄。</p> }
+        else
+        {
+            <div class="table-wrap"><table class="session-table system-audits" data-datatable data-page-length="10" data-no-sort="4"><caption class="sr-only">系統設定異動紀錄</caption><thead><tr><th>時間</th><th>系統</th><th>管理者</th><th>來源 IP</th><th>異動內容</th></tr></thead><tbody>
+            @foreach (var audit in Model.Audits)
+            {
+                <tr><td data-label="時間">@LoginSessionListViewModel.Time(audit.OccurredAt)</td><td data-label="系統">@audit.ClientId</td><td data-label="管理者">@audit.ActorId</td><td data-label="來源 IP">@audit.RemoteIp</td><td data-label="異動內容"><details class="device-detail"><summary>@(audit.Action == "create" ? "新增系統" : "更新設定")</summary><p>變更前</p><code>@audit.BeforeJson</code><p>變更後</p><code>@audit.AfterJson</code></details></td></tr>
+            }
+            </tbody></table></div>
+        }
+    </section>
+</div>
+@section head { <partial name="_AdminStyles" /><link rel="stylesheet" href="/systems-admin.css" asp-append-version="true" /> }
+@section scripts { <partial name="_AdminScripts" /> }

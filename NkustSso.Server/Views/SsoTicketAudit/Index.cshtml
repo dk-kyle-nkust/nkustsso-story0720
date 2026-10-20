@@ -1,0 +1,14 @@
+@* 查詢一次性登入票券的核發與兌換紀錄：清單頁。 *@
+@model List<TicketAudit>
+@{ ViewData["Title"] = "Web API 單一登入票券紀錄"; }
+<div class="admin-head"><div><span class="eyebrow">WORKSPACE / TICKETS</span><h1>票券紀錄</h1><p>追蹤 Web API 單一登入使用的一次性票券，記錄發放與兌換結果。此功能使用本系統自訂協定。</p></div></div>
+<aside class="info-strip"><span class="info-symbol">i</span><div><strong>兩種來源 IP，代表不同連線</strong><p>發放 IP 是瀏覽器連到 SSO 的來源；兌換 IP 是各系統後端連到 SSO 的來源。本機測試可能都顯示 ::1 或 127.0.0.1。</p></div></aside>
+<section class="panel"><h2>最近 100 筆</h2><p class="fine">保留 30 天，時間為臺灣時間。正式環境使用反向代理時，需設定可信任代理；IP 不作為登入憑證。</p><div class="table-wrap" tabindex="0" aria-label="Web API 單一登入票券紀錄"><table data-datatable><thead><tr><th>時間</th><th>系統／使用者</th><th>操作／結果</th><th>連線來源 IP</th></tr></thead><tbody>
+@foreach (var entry in Model)
+{
+    <tr><td>@LoginSessionListViewModel.Time(entry.OccurredAt)</td><td>@entry.ClientId<br /><code>@entry.AccountId</code></td><td>@(entry.Action == "issue" ? "發放（瀏覽器）" : "兌換（系統後端）")<br /><span class="pill">@entry.Outcome</span></td><td>@entry.RemoteIp</td></tr>
+}
+</tbody></table></div>@if (Model.Count == 0) { <p class="muted">尚無一次性登入票券紀錄。</p> }</section>
+
+@section head { <partial name="_AdminStyles" /> }
+@section scripts { <partial name="_AdminScripts" /> }

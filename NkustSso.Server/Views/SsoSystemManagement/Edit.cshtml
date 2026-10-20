@@ -1,0 +1,104 @@
+@* 維護 SSO 串接系統、首頁連結及入口顯示條件：新增與編輯表單。 *@
+@model SsoSystemEditViewModel
+@{ ViewData["Title"] = Model.System.Protocol == "link" ? (Model.Creating ? "新增首頁連結" : "編輯首頁連結") : (Model.Creating ? "新增 SSO 系統" : "編輯 SSO 系統"); }
+<div class="systems-workspace">
+<div class="admin-head"><h1>@ViewData["Title"]</h1>@if (!Model.Creating) { <span class="admin-head-sub">@Model.System.DisplayName</span> }</div>
+<div class="info-strip" data-protocol="oidc ticket saml">中央登入後以票券換取 JSON 身分資料，請選「Web API 單一登入」。若由對方傳入使用者帳密驗證，請使用 <a href="/admin/systems/api?kind=new">帳密驗證 API</a>。</div>
+<div class="info-strip" data-protocol="link">儲存後會更新前台連結。請勾選「在首頁顯示入口」及要顯示的專區；取消顯示即可從前台下架。</div>
+<div class="system-edit-layout">
+<aside class="system-editor-rail"><h2>設定導覽</h2><nav aria-label="系統設定區段">
+    @* 編號由 system-editor.js 依目前顯示的項目重排，避免隱藏區塊留下跳號。 *@
+    <a href="#system-basics"><span></span>基本資料</a>
+    <a href="#audience-editor"><span></span>開放身分</a>
+    <a href="#system-visibility" data-protocol="oidc ticket saml link"><span></span>顯示專區與隱私</a>
+    <a href="#system-login" data-protocol="link"><span></span>開啟服務的登入要求</a>
+    <a href="#system-callbacks" data-protocol="oidc ticket saml"><span></span>登入回呼設定</a>
+    <a href="#web-api-settings" data-protocol="ticket"><span></span>Web API 單一登入串接指南</a>
+    <a href="#saml-settings" data-protocol="saml"><span></span>SAML 接收系統設定</a>
+    <a href="#system-claims" data-protocol="oidc ticket saml"><span></span>提供身分欄位</a>
+    <a href="#editor-save">前往儲存設定 ↓</a>
+</nav><p>先決定入口放在哪個專區，再設定哪些身分可見。系統內的功能權限由接收系統管理。</p></aside>
+<form class="system-form" method="post" action="@(Model.Creating ? "/admin/systems/new" : $"/admin/systems/{Model.System.ClientId}/edit")">
+    @Html.AntiForgeryToken()
+    @if (!ViewData.ModelState.IsValid) { <div asp-validation-summary="All" class="validation" role="alert"></div> }
+    <input asp-for="System.Revision" type="hidden" />
+    <section class="panel" id="system-basics"><h2>基本資料</h2><div class="system-fields">
+        <div><label asp-for="System.DisplayName">系統名稱</label><input asp-for="System.DisplayName" maxlength="100" required /></div>
+        <div><label asp-for="System.DisplayNameEn">英文系統名稱</label><input asp-for="System.DisplayNameEn" maxlength="100" lang="en" /><p class="fine">英文版優先使用此名稱；留空時使用內建譯名或原名稱。</p></div>
+        <div><label asp-for="System.ClientId">系統識別碼（Client ID）</label>
+        @if (Model.Creating) { <input asp-for="System.ClientId" maxlength="100" pattern="[a-z0-9][a-z0-9_-]{0,99}" required /> }
+        else { <input asp-for="System.ClientId" readonly /> }
+        <p class="fine">建立後不可變更，用來辨識接收登入的系統。</p></div>
+        <div><label asp-for="System.Protocol">登入方式</label>
+        @if (Model.Creating) { <select asp-for="System.Protocol" data-enhance><option value="oidc">OIDC（建議新系統採用）</option><option value="ticket">@SystemProtocols.Label("ticket")</option><option value="saml">SAML 2.0</option><option value="link">僅首頁連結（尚未串接 SSO）</option></select> }
+        else { <input asp-for="System.Protocol" type="hidden" /><p>@SystemProtocols.Label(Model.System.Protocol)（建立後不可變更）</p> }
+        <p class="fine">僅首頁連結只在入口列出網址，不接收登入、不需要回呼網址與密鑰。</p>
+        </div>
+        <div><label asp-for="System.SortOrder">首頁排序（分類內）</label><input asp-for="System.SortOrder" type="number" min="0" max="10000" /><p class="fine">數字越小越前面；分類之間的順序請到首頁分類管理調整。</p></div>
+        <div class="wide"><label asp-for="System.Description">功能詳述</label><textarea asp-for="System.Description" maxlength="300" rows="3" aria-describedby="system-description-help"></textarea><p class="fine" id="system-description-help">最多 300 字。公開專區的服務卡片在滑鼠移入、鍵盤聚焦或點擊「功能說明」時顯示；留空則不顯示提示。中英文說明皆可搜尋。</p></div>
+        <div class="wide"><label asp-for="System.DescriptionEn">英文功能詳述</label><textarea asp-for="System.DescriptionEn" maxlength="600" rows="3" lang="en"></textarea><p class="fine">最多 600 字；未填時保留中文詳述。中英文內容都可搜尋。</p></div>
+        <div><label asp-for="System.Category">首頁分類</label>
+        <select asp-for="System.Category" data-enhance>
+        @foreach (var category in Model.Categories)
+        {
+            <option value="@category.Key">@category.Name</option>
+        }
+        </select><p class="fine">首頁依分類分區顯示。<a href="/admin/categories">維護分類與分類順序</a></p></div>
+        <div><label asp-for="System.Keywords">搜尋別名</label><input asp-for="System.Keywords" maxlength="300" placeholder="報帳 核銷 差旅" />
+        <p class="fine">以空白分隔。使用者慣用的說法，例如「報帳」要能找到「經費結報簽核」。</p></div>
+        <div class="wide"><label asp-for="System.EntryUrl">首頁入口網址</label><input asp-for="System.EntryUrl" type="url" maxlength="2000" placeholder="https://course.example.edu/" required /></div>
+    </div><div class="system-checks"><label data-protocol="oidc ticket saml"><input asp-for="System.Enabled" /> 啟用 SSO 登入</label><label><input asp-for="System.ShowOnPortal" /> 在首頁顯示入口</label></div>
+    <p class="fine" data-protocol="oidc ticket saml">停用將阻止新的登入；不會清除接收系統已建立的 Session／Cookie。</p></section>
+    <partial name="_AudienceEditor" model="Model" />
+    <section class="panel" id="system-visibility" data-protocol="oidc ticket saml link"><h2>顯示專區與隱私</h2>
+        <p class="fine">勾選要放置的專區。未勾選「登入後才顯示」時，名稱與說明公開；勾選後僅登入且符合身分條件者可見。不指定任何專區的既有私人入口，會在登入且符合身分條件後顯示於各專區。取消「在首頁顯示入口」則全部隱藏。</p>
+        <label><input asp-for="System.RequireLoginToView" /> 登入後才顯示</label>
+        <div class="system-checks">
+            <label><input asp-for="System.PublicStudent" /> 學生專區</label>
+            <label><input asp-for="System.PublicEmployee" /> 教職員專區</label>
+            <label><input asp-for="System.PublicAlumni" /> 校友專區</label>
+        </div>
+        <p class="fine">SSO 系統的入口網址須指向接收系統的 SSO 登入啟動頁；僅登記網址不會讓原本獨立的帳密頁自動支援 SSO。</p>
+    </section>
+    <section class="panel" id="system-login" data-protocol="link"><h2>開啟服務前的登入要求</h2>
+        <label><input asp-for="System.RequirePortalLogin" /> 需先登入本站</label>
+        <p class="fine">適用於外部連結：訪客點選後先到統一登入頁，登入有效期間內不重複詢問。此設定不會讓外部網站自動支援 SSO，外部網站仍可能要求自己的帳號密碼。已串接 SSO 的系統一律需登入。</p>
+    </section>
+    <section class="panel" id="system-callbacks" data-protocol="oidc ticket saml"><h2>登入回呼設定</h2><div class="system-fields">
+        <div class="wide"><label asp-for="System.RedirectUri">登入回呼網址</label><input asp-for="System.RedirectUri" type="url" maxlength="2000" /><p class="fine"><span data-protocol="oidc">例如 https://系統網域/signin-oidc。</span><span data-protocol="ticket">例如 https://系統網域/sso/callback。</span><span data-protocol="saml">填 SP 的 ACS 網址。</span>必須與接收系統設定完全相同，僅接受 HTTPS。</p></div>
+        <div class="wide" data-protocol="oidc"><label asp-for="System.PostLogoutRedirectUri">OIDC 登出回呼網址（選填）</label><input asp-for="System.PostLogoutRedirectUri" type="url" maxlength="2000" /><p class="fine">Web API 單一登入請留空。此網址不代表已實作全系統同步登出。</p></div>
+    </div></section>
+    <section class="panel" id="web-api-settings" data-protocol="ticket">
+        <partial name="_WebApiSsoGuide" />
+    </section>
+    <section class="panel" id="saml-settings" data-protocol="saml"><h2>SAML 接收系統設定</h2>
+        <p>將 <a href="/saml/metadata" target="_blank" rel="noopener">本站 IdP metadata</a> 交給接收系統設定信任。首頁入口網址請填對方的 SAML 登入啟動網址。</p>
+        <div class="system-fields">
+            <div class="wide"><label asp-for="System.SamlEntityId">SP Entity ID</label><input asp-for="System.SamlEntityId" maxlength="1000" /><p class="fine">照對方提供的識別 URI 填寫，需完全相同。</p></div>
+            <div class="wide"><label asp-for="System.SamlSigningCertificate">SP 簽章公開憑證（PEM）</label><textarea asp-for="System.SamlSigningCertificate" maxlength="16000" rows="7"></textarea><p class="fine">包含 BEGIN CERTIFICATE 與 END CERTIFICATE。只貼公開憑證，不貼私鑰。對方須使用 RSA-SHA256 簽署登入請求。</p></div>
+        </div><p class="fine">支援由接收系統發起的 HTTP-Redirect 請求與 HTTP-POST 回應；固定使用者 ID 以 persistent NameID 提供。尚不支援 SAML 全域登出、加密 Assertion 與 ForceAuthn。</p>
+    </section>
+    <section class="panel" id="system-claims" data-protocol="oidc ticket saml"><h2>允許提供的身分欄位</h2><p data-protocol="oidc ticket saml">固定使用者識別碼 <code>sub</code> 與協定必要資訊會保留，其餘只提供下方勾選的資料。新系統預設不勾選。</p>
+    <fieldset class="claim-options"><legend>可選欄位</legend>
+    @foreach (var field in NkustSso.Server.Services.IdentityClaimReleasePolicy.Fields)
+    {
+        <label><input type="checkbox" name="AllowedClaims" value="@field.Bit" checked="@Model.AllowedClaims.Contains(field.Bit)" /> <span>@field.Label
+        @if (field.Type == "preferred_username")
+        {
+            <small data-protocol="ticket">username</small><small data-protocol="oidc saml">@field.Type</small>
+        }
+        else { <small>@field.Type</small> }
+        </span></label>
+    }
+    </fieldset><p class="fine">OIDC 也須由對方要求 profile／student_profile scope，勾選欄位才會提供。Web API 單一登入回應的帳號欄位名為 username。密碼、SSO Session 與內部管理權限不在可提供範圍。</p>
+    <p class="fine">取消勾選不會收回對方已保存的資料。接收端須處理欄位缺少的情況，並自行判斷功能權限。</p></section>
+    <div class="system-save-actions" id="editor-save">
+    @if (Model.Creating) { <p data-protocol="oidc ticket saml">OIDC 與 Web API 單一登入會產生系統密鑰，只顯示一次。SAML 使用憑證建立信任，不產生共用密鑰。</p> }
+    <button class="button primary" type="submit">@(Model.Creating ? "建立系統" : "儲存設定")</button> <a class="button" href="@(Model.System.Protocol == "link" ? "/admin/systems?section=links" : "/admin/systems?section=sso")">取消</a>
+    </div>
+</form>
+</div>
+</div>
+
+@section head { <partial name="_AdminStyles" /><link rel="stylesheet" href="/audience-editor.css" /><link rel="stylesheet" href="/systems-admin.css" asp-append-version="true" /><link rel="stylesheet" href="/web-api-guide.css" asp-append-version="true" /> }
+@section scripts { <partial name="_AdminScripts" /><script src="/system-editor.js" defer></script><script src="/audience-editor.js" asp-append-version="true" defer></script> }

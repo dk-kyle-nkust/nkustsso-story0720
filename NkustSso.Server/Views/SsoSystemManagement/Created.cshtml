@@ -1,0 +1,51 @@
+@* 顯示新建 SSO 系統的交付資料與串接說明。 *@
+@model SsoSystemCreatedViewModel
+@inject IConfiguration Configuration
+@{ ViewData["Title"] = "系統已建立"; }
+<div class="system-handoff">
+    <header class="handoff-heading">
+        <span class="handoff-check" aria-hidden="true">✓</span>
+        <div><span class="handoff-eyebrow">串接設定已儲存</span><h1>@ViewData["Title"]</h1><p>@Model.System.DisplayName · 將下方資料交給接收系統的開發人員，完成串接後即可開始測試。</p></div>
+    </header>
+    <nav class="handoff-navigation" aria-label="串接交接導覽">
+        <a href="#handoff-settings">01 串接資料</a>
+        <a href="#handoff-fields">02 提供的欄位</a>
+        @if (Model.System.Protocol == "ticket") { <a href="#handoff-guide">03 串接指南與流程圖</a> }
+    </nav>
+    <section class="panel handoff-panel" id="handoff-settings" aria-labelledby="handoff-settings-title">
+        <div class="handoff-section-title"><div><h2 id="handoff-settings-title">串接資料</h2><p>系統識別與網址須與接收端設定一致。</p></div><span class="handoff-protocol">@SystemProtocols.Label(Model.System.Protocol)</span></div>
+        <dl class="handoff-settings">
+            <div><dt>認證中心網址 <small>SSO Issuer</small></dt><dd><code>@Configuration["Sso:Issuer"]</code></dd></div>
+            <div><dt>串接系統代碼 <small>Client ID</small></dt><dd><code>@Model.System.ClientId</code></dd></div>
+            <div><dt>對方登入啟動網址 <small>首頁入口網址</small></dt><dd><code>@Model.System.EntryUrl</code></dd></div>
+            <div><dt>對方登入回呼網址 <small>Redirect URI</small></dt><dd><code>@Model.System.RedirectUri</code></dd></div>
+        </dl>
+        <aside class="handoff-secret" aria-labelledby="handoff-secret-title">
+            <div class="handoff-section-title"><h3 id="handoff-secret-title">串接系統密鑰 <small>Client Secret</small></h3><span>僅顯示這一次</span></div>
+            <code id="client-secret">@Model.Secret</code>
+            <p>交由對方保存在伺服器的機密設定中。請離開此頁前妥善保存；系統僅保存雜湊，之後無法查閱原值。不要放進網址、前端程式或一般紀錄檔。</p>
+        </aside>
+        @if (Model.System.Protocol == "ticket")
+        {
+            <p class="handoff-note">登入回呼網址是接收票券的處理程式；路徑可自訂，但必須實作本頁的 Web API 流程。若填入 <code>/signin-oidc</code>，現成的 OIDC 處理程式無法直接接收這種票券。</p>
+        }
+        else { <p class="handoff-note">OIDC 使用 Authorization Code＋PKCE；接收端應透過 OIDC 套件處理回呼及驗證登入結果。</p> }
+    </section>
+    <section class="panel handoff-panel" id="handoff-fields" aria-labelledby="handoff-fields-title">
+        <div class="handoff-section-title"><div><h2 id="handoff-fields-title">提供給對方的身分欄位</h2><p>下面列出這次勾選的個人資料。未授權的欄位不會提供，密碼不會回傳。</p></div></div>
+        <ul class="handoff-fields">
+            <li><span>固定使用者識別碼</span><code>sub</code><small>必要欄位</small></li>
+            @foreach (var field in IdentityClaimReleasePolicy.Fields.Where(f => IdentityClaimReleasePolicy.Allows(Model.System.ClaimMask, f.Bit)))
+            {
+                <li><span>@field.Label</span><code>@(Model.System.Protocol == "ticket" && field.Type == "preferred_username" ? "username" : field.Type)</code></li>
+            }
+        </ul>
+        <p class="handoff-note">另含發行者、接收系統與有效時間等驗證資訊。@(Model.System.Protocol == "oidc" ? "OIDC 仍須要求對應的 scope。" : "接收端以 issuer＋sub 對應帳號，並自行管理功能權限。")</p>
+    </section>
+    @if (Model.System.Protocol == "ticket")
+    {
+        <section class="panel handoff-panel" id="handoff-guide"><partial name="_WebApiSsoGuide" /></section>
+    }
+    <footer class="handoff-actions"><p>下一步：由對方完成接收程式，再測試登入、欄位及使用權限。</p><a class="button primary" href="/admin/systems?section=sso">返回系統管理</a><a class="button" href="/admin/systems/@Model.System.ClientId/edit">檢視系統設定</a></footer>
+</div>
+@section head { <link rel="stylesheet" href="/web-api-guide.css" asp-append-version="true" /><link rel="stylesheet" href="/system-handoff.css" asp-append-version="true" /> }

@@ -1,0 +1,88 @@
+@* 呈現串接服務支援狀態與說明。 *@
+@model IReadOnlyList<SoapHelpOperation>
+@{
+    Layout = null;
+    var implemented = Model.Count(o => o.Implemented);
+}
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>校園身分驗證服務總覽｜國立高雄科技大學</title>
+    <link rel="stylesheet" href="/integration-overview.css" asp-append-version="true" />
+    <script src="/integration-overview.js" asp-append-version="true" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">跳至主要內容</a>
+<header class="brief-header">
+    <a href="/admin/systems/api?kind=existing" class="brand"><img src="/nkust-logo-horizontal.png" alt="國立高雄科技大學" /><span>校園數位服務簡報</span></a>
+    <div class="tools"><a href="/admin/systems/api?kind=existing">返回管理</a><button type="button" id="print-brief">列印／另存 PDF</button></div>
+</header>
+<main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy"><p class="eyebrow">服務盤點 · 主管閱讀版</p><h1 id="hero-title">一個驗證窗口，<br />串起校園各項服務。</h1><p class="hero-lead">舊平台協助各系統確認「你是誰」，<br class="desktop-break" />並依原有規格提供所需的身分資料。</p><a class="hero-link" href="#how">用一張圖看懂流程 <span aria-hidden="true">↓</span></a></div>
+        <div class="hero-map" role="img" aria-label="圖書學習、行政辦公、學生服務與校園生活，透過中央驗證服務確認使用者身分。">
+            <span class="orbit orbit-one"></span><span class="orbit orbit-two"></span>
+            <div class="hub"><span class="hub-mark" aria-hidden="true">✓</span><strong>校園身分驗證</strong><small>共用的身分確認窗口</small></div>
+            <span class="satellite sat-one">圖書・學習</span><span class="satellite sat-two">行政・辦公</span><span class="satellite sat-three">學生・服務</span><span class="satellite sat-four">校園・生活</span>
+        </div>
+        <div class="hero-foot"><span>依舊專案原始碼與已保存的介面規格整理</span><span>盤點基準：2026.10.16</span></div>
+    </section>
+    <nav class="chapter-nav" aria-label="簡報章節"><a href="#services">提供什麼</a><a href="#how">如何運作</a><a href="#coverage">服務對象</a><a href="#migration">移轉現況</a></nav>
+
+    <section class="brief-section" id="services">
+        <div class="section-heading"><div><p class="eyebrow">01 / 服務的價值</p><h2>先確認身分，再提供需要的服務。</h2></div><p>舊程式主要提供三類能力。<br />每個方法的用途與回傳資料不同。</p></div>
+        <div class="service-cards">
+            <article class="service-card mint"><span class="card-number">01</span><div class="service-symbol" aria-hidden="true">✓</div><h3>確認能否登入</h3><p>核對帳號、密碼及來源帳號狀態，回覆驗證是否通過。</p><div class="example">例如：校務帳密驗證<br /><strong>回覆：通過／未通過＋身分代碼</strong></div></article>
+            <article class="service-card lavender"><span class="card-number">02</span><div class="service-symbol person-symbol" aria-hidden="true">◎</div><h3>提供必要身分資料</h3><p>部分方法在驗證後，回傳姓名、帳號、信箱或單位等資料。</p><div class="example">例如：離校、諮商輔導系統<br /><strong>各系統收到的欄位不一定相同</strong></div></article>
+            <article class="service-card sand"><span class="card-number">03</span><div class="service-symbol" aria-hidden="true">⇄</div><h3>支援特定業務查驗</h3><p>依專用規格查詢交通車、文件申請／繳費資料，或查驗既有登入憑據。</p><div class="example">例如：交通車、數位典藏<br /><strong>不全是輸入帳密的登入流程</strong></div></article>
+        </div>
+        <p class="plain-note">各業務系統仍自行決定使用者能做哪些事，例如查詢、申請或審核；中央驗證不等於授予所有功能權限。</p>
+    </section>
+
+    <section class="brief-section flow-section" id="how">
+        <div class="section-heading"><div><p class="eyebrow">02 / 一張圖看懂</p><h2>對方送來驗證需求，平台回覆結果。</h2></div><a class="text-link" href="/images/legacy-service-flow.svg" download="校園身分驗證流程圖.svg">下載流程圖 SVG</a></div>
+        <figure class="flow-figure"><img src="/images/legacy-service-flow.svg" alt="使用者在業務系統輸入帳密，業務系統向舊 SSO 提出驗證。SSO 向校園帳號目錄或資料來源查驗，再回覆驗證結果及該方法提供的身分資料。最後由業務系統建立登入狀態與管理權限。" /><figcaption>一般帳密驗證示意。票據查驗及專用資料查詢的輸入不同；實際流程依各方法而定。</figcaption></figure>
+        <div class="flow-mobile" aria-label="驗證流程文字版"><p><b>1　使用者</b>在業務系統輸入帳密</p><span aria-hidden="true">↓</span><p><b>2　業務系統</b>向中央服務提出驗證需求</p><span aria-hidden="true">↓</span><p><b>3　舊 SSO 服務</b>依方法查驗校園帳號或資料來源</p><span aria-hidden="true">↓</span><p><b>4　回覆業務系統</b>驗證結果與該方法提供的資料</p><span aria-hidden="true">↓</span><p><b>5　業務系統決定</b>建立登入狀態、管理功能權限</p></div>
+        <div class="scenario">
+            <div class="scenario-intro"><span class="small-label">點選情境，看看差別</span><h3>同一個平台，<br />回覆不一定相同。</h3><div class="scenario-buttons" role="group" aria-label="選擇驗證情境"><button type="button" data-scenario="verify" aria-pressed="true">只確認帳密</button><button type="button" data-scenario="leaving" aria-pressed="false">畢業離校</button><button type="button" data-scenario="consultation" aria-pressed="false">諮商輔導</button></div></div>
+            <div class="scenario-result" aria-live="polite" aria-atomic="true"><span class="small-label">原程式成功分支 · 欄位示意</span><h3 id="scenario-title">校務帳密驗證</h3><p id="scenario-description">確認帳密與帳號狀態，回傳是否通過及來源身分代碼。</p><div class="field-chips" id="scenario-fields"><span>驗證結果</span><span>身分代碼</span></div><p class="scenario-note" id="scenario-note">不回傳姓名或信箱；接收系統自行建立登入狀態。</p></div>
+        </div>
+        <noscript><p>其他範例：畢業離校回傳狀態、帳號與姓名；諮商輔導另包含成功標記及信箱。以上為原程式成功分支的欄位。</p></noscript>
+        <div class="glossary"><p><strong>LDAP＝校園帳號查驗來源</strong><span>由 SSO 後端連接；不是對方系統必須直接連線的介面。</span></p><p><strong>SOAP＝系統之間的服務通道</strong><span>對方用程式傳入需求，再接收驗證結果或資料。</span></p><p><strong>WSDL＝串接規格說明書</strong><span>說明怎麼呼叫；只有說明書，不代表後端功能已完成。</span></p></div>
+    </section>
+
+    <section class="brief-section" id="coverage">
+        <div class="section-heading"><div><p class="eyebrow">03 / 涵蓋哪些業務</p><h2>從學習到行政，已有多種專用介面。</h2></div><p>依原程式名稱整理的業務範例。<br />不代表這些系統目前仍有使用。</p></div>
+        <div class="domain-grid">
+            <article><span aria-hidden="true">A</span><h3>圖書與數位資源</h3><p>圖書館、外文期刊、館藏查詢、華藝與 HyRead 電子書、數位典藏。</p></article>
+            <article><span aria-hidden="true">B</span><h3>教學與學習</h3><p>網路學園、MOOCs、Easy Test、Zuvio、課程地圖、教學資源智庫。</p></article>
+            <article><span aria-hidden="true">C</span><h3>學生與校友服務</h3><p>畢業離校、諮商輔導、校外賃居調查、學生投票、校友中心。</p></article>
+            <article><span aria-hidden="true">D</span><h3>行政與辦公</h3><p>公文、簽核、經費結報、無紙化會議、會議室預約、專案管理。</p></article>
+            <article><span aria-hidden="true">E</span><h3>校園生活與設施</h3><p>交通車、校園智慧卡、門禁預約、監視器整合、車位顯示。</p></article>
+            <article><span aria-hidden="true">F</span><h3>校務與資料申請</h3><p>招生、學籍資料調閱、校務發展、文件申請與繳費相關介面。</p></article>
+        </div>
+        <details class="method-directory"><summary>展開完整的 @Model.Count 個方法名稱與用途<span>供承辦人核對</span></summary><p>以下為主要服務入口的原有方法。名稱沿用舊程式註記；用途有歧義者保留「待核對」。詳細頁可能包含技術參數。</p><div class="method-list">
+        @foreach (var operation in Model)
+        {
+            <article><a href="/KuasSSOWebService.asmx?op=@operation.Name">@operation.Title</a><code>@operation.Name</code><p>@operation.Summary</p></article>
+        }
+        </div></details>
+    </section>
+
+    <section class="brief-section migration-section" id="migration">
+        <div class="section-heading"><div><p class="eyebrow">04 / 新系統移轉現況</p><h2>盤點已完成，服務接手仍需逐項驗證。</h2></div><p>以下是程式盤點與實作狀態，<br />不是正式上線或服務流量統計。</p></div>
+        <div class="status-grid"><article><strong>@Model.Count</strong><h3>原有服務方法</h3><p>主要 SOAP 入口已整理的介面數量，並非使用中的系統數。</p></article><article><strong>54</strong><h3>規格登記已匯入</h3><p>2026.10.16 匯入本機管理資料庫的筆數；部分登記包含多個方法。</p></article><article><strong>@implemented<span>／@Model.Count</span></strong><h3>新 SOAP 方法已實作</h3><p>已完成隔離測試；正式來源與既有呼叫系統的互通仍待確認。</p></article></div>
+        <ol class="migration-steps"><li class="done"><span>01</span><div><h3>整理原有規格</h3><p>方法、參數及說明已盤點；匯入時預設停用。</p></div></li><li><span>02</span><div><h3>確認實際使用者</h3><p>與業務單位確認在用系統、窗口及必要欄位。</p></div></li><li><span>03</span><div><h3>逐項完成與測試</h3><p>保留舊呼叫規格，核對登入結果與回傳內容。</p></div></li><li><span>04</span><div><h3>安排正式切換</h3><p>完成驗證後，再安排網域、切換時程與復原方案。</p></div></li></ol>
+        <aside class="decision-note"><strong>主管需要掌握的決策</strong><p>先確認「哪些系統仍在使用、哪些不可中斷」，再排定移轉優先順序。完成相容測試後，才能評估讓既有系統沿用原方式接入。</p></aside>
+    </section>
+
+    <section class="brief-section reading-notes"><h2>三個容易混淆的地方</h2><div class="faq-grid"><article><h3>有規格，還要有功能</h3><p>提供 WSDL 不會自動完成驗證或取得資料；對應方法必須實作並連接正確來源。</p></article><article><h3>驗證通過，不等於全部授權</h3><p>各系統自行管理功能權限；取得哪些個人資料，也取決於原有方法及呼叫資格。</p></article><article><h3>共用帳密，不一定免再次登入</h3><p>帳密驗證與跨系統免重登是不同流程。舊程式另有票據／Session 查驗方法，不能混為同一種服務。</p></article></div>
+        <p class="scope-note">分析範圍：舊專案主要 SOAP 入口及相關驗證、資料模組；依原始碼與已保存的介面規格整理，未連線查驗正式資料或使用紀錄。其他版本與測試入口不列入 61 個方法。</p>
+        <details class="source-notes"><summary>分析依據與範圍</summary><p>本頁聚焦舊專案對外串接的主要入口 <code>/KuasSSOWebService.asmx</code>，依其 61 個方法、LDAP 驗證模組、資料存取模組，以及已保存的 WSDL 交叉整理。其他版本與測試入口未納入此方法數。</p><p>主要來源：<code>SOA/KuasSSOWebService.asmx.cs</code>、<code>SOA/Module/LdapAuthentication.cs</code>、<code>SOA/Model/ModelForSOA.cs</code>。目前只做靜態程式分析，沒有連線查驗舊資料庫或正式呼叫紀錄，因此不能判斷實際使用量、現行承辦單位或正式服務可用性。</p><p>舊平台部分方法包含系統資格檢查、資料查詢、紀錄或同步處理；本頁以業務用途簡化說明，不表示所有方法都使用完全相同的來源與步驟。新系統的 JSON 驗證介面不列入舊 SOAP 方法移轉數量。</p></details>
+    </section>
+</main>
+<footer>© @DateTime.Now.Year 國立高雄科技大學｜<a href="https://cc.nkust.edu.tw" target="_blank" rel="noopener">電算中心</a> 版權所有<span>校園身分驗證服務總覽 · 內部說明</span></footer>
+</body>
+</html>

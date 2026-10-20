@@ -1,0 +1,26 @@
+**/bin/
+**/obj/
+.local/
+.vs/
+**/App_Data/
+node_modules/
+test-results/
+__pycache__/
+*.user
+*.suo
+
+# 本機連線與機密設定只留在開發電腦，範本另以 appsettings.example.json 提供。
+NkustSso.Server/appsettings.json
+**/appsettings.*.json
+!**/appsettings.example.json
+.env
+.env.*
+*.pfx
+*.p12
+*.key
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+*.pubxml.user

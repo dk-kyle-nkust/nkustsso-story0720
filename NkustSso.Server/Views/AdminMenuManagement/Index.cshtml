@@ -1,0 +1,15 @@
+@* 維護後台選單名稱、順序與顯示設定：清單頁。 *@
+@model AdminMenuListViewModel
+@{ ViewData["Title"] = "後台選單維護"; }
+<div class="admin-head"><div><h1>後台選單維護</h1><p>調整側邊選單的名稱、分組、順序與顯示狀態。</p></div><div class="admin-head-actions"><a class="button primary" href="/admin/menus/new">新增選單</a></div></div>
+<partial name="_AdminManagementMessages" />
+<p class="info-strip">選單連到已提供的後台功能。停用或刪除選單只影響導覽；實際存取權限請至「權限管理」設定。分組依組內最小排序值排列。</p>
+<section class="panel"><div class="table-scroll"><table class="session-table" data-datatable data-no-sort="5"><thead><tr><th>排序</th><th>選單</th><th>分組</th><th>功能</th><th>狀態</th><th>操作</th></tr></thead><tbody>
+@foreach (var item in Model.Items)
+{
+    <tr><td data-label="排序">@item.SortOrder</td><td data-label="選單">@item.Label<br /><small>@item.Id</small></td><td data-label="分組">@item.Group</td><td data-label="功能">@AdminAuthorizationService.Features.FirstOrDefault(f => f.Key == item.Target)?.Label</td><td data-label="狀態">@(item.Enabled ? "啟用" : "停用")</td><td data-label="操作"><a href="/admin/menus/@item.Id/edit" aria-label="編輯 @item.Label">編輯</a></td></tr>
+}
+</tbody></table></div></section>
+<partial name="_AdminManagementAudits" model="Model.Audits" />
+@section head { <partial name="_AdminStyles" /><link rel="stylesheet" href="/admin-management.css" asp-append-version="true" /> }
+@section scripts { <partial name="_AdminScripts" /> }

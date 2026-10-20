@@ -1,0 +1,57 @@
+@* 維護 JSON／SOAP 呼叫系統、密鑰及可取得的資料：新增與編輯表單。 *@
+@model IntegrationClientEditViewModel
+@{ ViewData["Title"] = Model.Creating ? "新增串接系統" : "編輯串接系統"; }
+<div class="admin-head"><div><span class="eyebrow">WORKSPACE / INTEGRATIONS</span><h1>@ViewData["Title"]</h1><p>填寫系統資料，再設定可使用的服務與來源 IP。</p></div><a class="button" asp-action="Index" asp-route-kind="@Model.Client.ConnectionKind">返回帳密驗證 API</a></div>
+<section class="panel narrow"><form method="post" class="system-form">
+@Html.AntiForgeryToken()
+@if (!ViewData.ModelState.IsValid) { <div asp-validation-summary="All" class="validation" role="alert"></div> }
+<input asp-for="Client.Revision" type="hidden" />
+<div class="system-fields">
+<div class="wide"><label asp-for="Client.ConnectionKind">串接分類</label>
+<select asp-for="Client.ConnectionKind" data-enhance><option value="existing">舊系統 — 保留既有介面</option><option value="new">新串接 — 使用共用介面</option></select>
+<p class="fine">分類用於清單及紀錄管理，不會變更驗證方式、原方法參數或密鑰。目前已提供 @LegacySoapOperationCatalog.Available.Count 個 SOAP 方法與 JSON 帳密驗證，正式接收端仍須核對相容性。</p></div>
+<div class="wide"><label asp-for="Client.Id">系統代碼</label><input asp-for="Client.Id" readonly="@(!Model.Creating)" maxlength="100" required /><p class="fine">小寫英文字母、數字、底線或連字號。建立後不可修改。</p></div>
+<div class="wide"><label asp-for="Client.Name">系統名稱</label><input asp-for="Client.Name" maxlength="100" required /></div>
+<div class="wide"><label asp-for="Client.Purpose">系統用途</label><textarea asp-for="Client.Purpose" rows="3" maxlength="1000"></textarea><p class="fine">簡述服務對象與主要功能，最多 1,000 字。</p></div>
+<div class="wide"><label asp-for="Client.OwningUnit">負責單位</label><input asp-for="Client.OwningUnit" maxlength="100" /></div>
+<div class="wide"><label asp-for="Client.Protocol">串接介面</label>
+@if (Model.Creating) { <select asp-for="Client.Protocol" data-enhance><option value="soap">SOAP 相容服務</option><option value="json">JSON API</option></select> }
+else { <input asp-for="Client.Protocol" type="hidden" /><p>@(Model.Client.Protocol == "soap" ? "SOAP 相容服務" : "JSON API")</p> }
+<p class="fine">JSON 使用來源 IP 與系統密鑰；SOAP 保留原方法參數，依來源 IP 授權。</p></div>
+<fieldset class="wide integration-grants"><legend>可使用的服務</legend>
+@foreach (var service in Model.Services)
+{
+    <label data-soap-only="@(service.Id != IntegrationPermissions.VerifyAccount ? "true" : null)"><input type="checkbox" name="Client.ServiceIds" value="@service.Id" checked="@(Model.Client.ServiceIds.Contains(service.Id))" /> @service.Name</label>
+}
+<p class="fine">只列出目前可提供的服務。未勾選服務時，此系統不能呼叫驗證；儲存後即生效。</p></fieldset>
+<partial name="_ReturnFields" model="Model" />
+<fieldset class="wide integration-grants" data-soap-only="true"><legend>舊系統呼叫資格</legend>
+<p class="fine">有 SearchUsr_id／SearchUsr_pwd 或交通查詢 usr_id／usr_pwd 的方法，須核對原系統呼叫帳密及來源 IP。請填入對方既有程式使用的呼叫帳密；不會連線或修改舊授權資料庫。</p>
+<label asp-for="Client.CallerName">原系統呼叫帳號</label><input asp-for="Client.CallerName" maxlength="100" autocomplete="off" />
+<label asp-for="Client.CallerPassword">原系統呼叫密碼</label><input asp-for="Client.CallerPassword" type="password" maxlength="256" autocomplete="new-password" />
+<p class="fine">只保存不可逆雜湊，不顯示原密碼。編輯時留空保留原密碼；變更帳號時須重新輸入。</p>
+<label asp-for="Client.AllowedFunctionIds">票據允許的功能代碼（fnc_id）</label><textarea asp-for="Client.AllowedFunctionIds" rows="3" maxlength="2000"></textarea>
+<p class="fine">只供 KuasSSO_Certify1 使用，每行一個，最多 40 個。來源 IP、服務授權及功能代碼都符合才可兌換票據。</p>
+</fieldset>
+<div class="wide"><label asp-for="Client.AllowedIps">允許來源 IP</label><textarea asp-for="Client.AllowedIps" rows="5" maxlength="2000"></textarea>
+<p class="fine">停用且待確認的登記可先留空；啟用前必填。填入串接系統主機的完整 IPv4／IPv6，每行一個。SOAP 同一來源 IP 只能對應一筆啟用登記。經過代理時須先正確設定受信任的來源 IP 轉送。</p></div>
+<div class="wide"><h2>申請與聯絡資訊</h2><p class="fine">申請人或承辦人可依實際情況填寫，聯絡資訊會直接顯示於管理列表。</p></div>
+<div><label asp-for="Client.ApplicantName">申請人</label><input asp-for="Client.ApplicantName" maxlength="100" placeholder="申請人姓名／單位" /></div>
+<div><label asp-for="Client.ContactName">承辦人</label><input asp-for="Client.ContactName" maxlength="100" placeholder="承辦人姓名／單位" /></div>
+<div><label asp-for="Client.ContactPhone">聯絡電話</label><input asp-for="Client.ContactPhone" type="tel" maxlength="100" placeholder="電話、分機或手機" /></div>
+<div><label asp-for="Client.ContactEmail">電子郵件</label><input asp-for="Client.ContactEmail" type="email" maxlength="254" placeholder="name@example.edu.tw" /></div>
+<div class="wide"><label asp-for="Client.Notes">詳細備註</label>
+<textarea asp-for="Client.Notes" rows="14" maxlength="20000" aria-describedby="integration-notes-help" placeholder="可依需要記錄：&#10;一、系統用途與使用單位&#10;二、承辦人、聯絡窗口與維護廠商&#10;三、介面規格、參數與回傳說明&#10;四、測試環境、測試方式與驗收結果&#10;五、上線日期、異動原因及交接事項"></textarea>
+<p class="fine" id="integration-notes-help">選填，最多 20,000 字，保留換行。僅供後台管理者查看，修改內容會保留於異動紀錄；請勿填入密碼、密鑰或真實帳密測試資料。</p></div>
+<div class="wide"><h2>資料來源</h2><p class="fine">新建資料可留空。移轉資料以來源系統及原識別碼配對，避免重複登記。</p></div>
+<div><label asp-for="Client.SourceSystem">來源系統</label><input asp-for="Client.SourceSystem" maxlength="100" /></div>
+<div><label asp-for="Client.SourceId">原系統識別碼</label><input asp-for="Client.SourceId" maxlength="100" /><p class="fine">保留原始大小寫，與新系統代碼分開保存。</p></div>
+<div class="wide"><dl><dt>匯入批次</dt><dd>@(string.IsNullOrEmpty(Model.ImportBatchId) ? "尚無匯入紀錄" : Model.ImportBatchId)</dd>
+<dt>匯入時間</dt><dd>@(Model.ImportedAt is long importedAt ? LoginSessionListViewModel.Time(importedAt) : "—")</dd></dl></div>
+</div>
+<div class="system-checks"><label><input asp-for="Client.Enabled" /> 啟用此串接</label></div>
+<p class="fine">停用後立即拒絕新的驗證請求。服務總開關由部署設定控制，不會改動原本網站的登入方式。</p>
+<div class="actions"><button type="submit" class="button primary">儲存設定</button><a class="button" asp-action="Index" asp-route-kind="@Model.Client.ConnectionKind">取消</a></div>
+</form></section>
+@section head { <partial name="_AdminStyles" /><link rel="stylesheet" href="/integration-services.css" asp-append-version="true" /> }
+@section scripts { <partial name="_AdminScripts" /><script src="/integration-return-fields.js" asp-append-version="true" defer></script> }

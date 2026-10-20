@@ -1,0 +1,25 @@
+@* 維護前台服務分類與顯示順序：新增與編輯表單。 *@
+@model PortalCategoryEditViewModel
+@{ ViewData["Title"] = Model.Creating ? "新增首頁分類" : "編輯首頁分類"; }
+<div class="admin-head"><h1>@ViewData["Title"]</h1><div class="admin-head-actions"><a href="/admin/categories">回分類清單</a></div></div>
+<form method="post" class="system-form" action="@(Model.Creating ? "/admin/categories/new" : $"/admin/categories/{Model.Category.Key}/edit")">
+    @Html.AntiForgeryToken()
+    @if (!ViewData.ModelState.IsValid) { <div asp-validation-summary="All" class="validation" role="alert"></div> }
+    <input asp-for="Category.Revision" type="hidden" />
+    <section class="panel"><div class="system-fields">
+        <div><label asp-for="Category.Key">分類代碼</label>
+        @if (Model.Creating) { <input asp-for="Category.Key" required maxlength="50" pattern="[a-z0-9][a-z0-9_-]{0,49}" /> }
+        else { <input asp-for="Category.Key" readonly /> }
+        <p class="fine">小寫英數字、底線或連字號，建立後固定；all 為保留代碼。</p></div>
+        <div><label asp-for="Category.Name">分類名稱</label><input asp-for="Category.Name" required maxlength="100" /></div>
+        <div><label asp-for="Category.NameEn">英文分類名稱</label><input asp-for="Category.NameEn" maxlength="100" lang="en" /><p class="fine">留空時使用內建譯名或原名稱。</p></div>
+        <div><label asp-for="Category.SortOrder">分類排序</label><input asp-for="Category.SortOrder" type="number" min="0" max="10000" required /><p class="fine">數字越小越前面；相同時按分類代碼排列。可使用 10、20、30，方便日後插入。</p></div>
+        <div><label asp-for="Category.Accent">顯示顏色</label><select asp-for="Category.Accent" data-enhance>
+            @foreach (var accent in PortalCategoryService.Accents) { <option value="@accent.Key">@accent.Value</option> }
+        </select></div>
+    </div></section>
+    <button class="button primary" type="submit">儲存分類</button> <a class="button" href="/admin/categories">取消</a>
+</form>
+
+@section head { <partial name="_AdminStyles" /> }
+@section scripts { <partial name="_AdminScripts" /> }

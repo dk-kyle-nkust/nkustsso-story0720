@@ -1,0 +1,19 @@
+@* 維護後台群組、功能權限與群組成員：清單頁。 *@
+@model AdminRoleListViewModel
+@{ ViewData["Title"] = "後台權限管理"; }
+<div class="admin-head"><div><h1>後台權限管理</h1><p>用角色分配管理功能，成員可同時加入多個角色。</p></div><div class="admin-head-actions"><a class="button primary" href="/admin/access/new">新增角色</a></div></div>
+<partial name="_AdminManagementMessages" />
+<p class="info-strip">最高管理者保留全部功能；此頁管理一般後台角色，不變更最高管理者資格。一般角色可授予僅查詢或查詢與維護；停用、未開始或已到期的角色不提供權限。</p>
+<section class="panel"><div class="table-scroll"><table class="session-table" data-datatable data-no-sort="4"><thead><tr><th>角色</th><th>可使用功能</th><th>成員數</th><th>狀態</th><th>操作</th></tr></thead><tbody>
+@foreach (var role in Model.Roles)
+{
+    var permissions = Model.Permissions.Where(g => g.RoleId == role.Id).Select(g => AdminAuthorizationService.GrantLabel(g.Permission)).Where(n => n is not null);
+    var now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+    <tr><td data-label="角色">@role.Name<br /><small>@role.Id</small></td><td data-label="可使用功能">@string.Join("、", permissions)</td><td data-label="成員數">@Model.Members.Count(m => m.RoleId == role.Id)</td><td data-label="狀態">@(!role.Enabled ? "停用" : role.StartsAt > now ? "尚未開始" : role.ExpiresAt <= now ? "已到期" : "啟用")
+    @if (role.StartsAt is long start) { <p class="fine">開始：@LoginSessionListViewModel.Time(start)</p> }
+    @if (role.ExpiresAt is long end) { <p class="fine">結束：@LoginSessionListViewModel.Time(end)</p> }</td><td data-label="操作"><a href="/admin/access/@role.Id/edit" aria-label="編輯 @role.Name">編輯</a></td></tr>
+}
+</tbody></table></div></section>
+<partial name="_AdminManagementAudits" model="Model.Audits" />
+@section head { <partial name="_AdminStyles" /><link rel="stylesheet" href="/admin-management.css" asp-append-version="true" /> }
+@section scripts { <partial name="_AdminScripts" /> }

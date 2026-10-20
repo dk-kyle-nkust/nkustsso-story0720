@@ -1,0 +1,20 @@
+.faq { max-width: 880px; margin: 0 auto; color: var(--ui-ink); }
+.faq h1 { font-size: clamp(28px, 4vw, 36px); margin: 16px 0 30px; }
+.faq h2 { font-size: 21px; margin: 0 0 20px; }
+.faq section + section { margin-top: 40px; }
+.faq details { margin: 12px 0; border: 1px solid var(--ui-line); border-radius: 14px; background: #fff; }
+.faq summary { min-height: 54px; padding: 17px 20px; font-size: 16px; font-weight: 600; cursor: pointer; }
+.faq summary::marker { color: #4c46c8; }
+.faq details[open] summary { border-bottom: 1px solid var(--ui-line); }
+.faq p { color: var(--ui-muted); line-height: 1.9; font-size: 16px; }
+.faq details p { margin: 18px 20px; }
+.faq-links { display: flex; flex-wrap: wrap; gap: 12px; padding: 0 20px 20px; }
+.faq-links a, .faq-guide-grid a { display: inline-flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 48px; padding: 12px 18px; border: 1px solid var(--ui-control); border-radius: 10px; background: #f5f7fc; color: #293a68; text-decoration: underline; text-underline-offset: 4px; }
+.faq-guide-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 22px; }
+.faq-guide-grid a { min-height: 66px; }
+@media (max-width: 600px) {
+    .faq-guide-grid { grid-template-columns: 1fr; }
+    .faq summary { padding: 16px; }
+    .faq details p { margin: 16px; }
+    .faq-links { padding: 0 16px 16px; }
+}

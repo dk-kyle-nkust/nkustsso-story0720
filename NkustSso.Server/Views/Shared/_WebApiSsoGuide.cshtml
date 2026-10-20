@@ -1,0 +1,146 @@
+@* Web API 單一登入的流程、範例與下載說明。 *@
+@inject IConfiguration Configuration
+@{
+    var issuer = (Configuration["Sso:Issuer"] ?? "").TrimEnd('/');
+    var system = ViewData.Model switch
+    {
+        SsoSystemEditViewModel editor => editor.System,
+        SsoSystemCreatedViewModel created => created.System,
+        _ => null
+    };
+    var callback = string.IsNullOrWhiteSpace(system?.RedirectUri) ? "https://app.example.edu/sso/callback" : system.RedirectUri;
+    var requestExample = System.Text.Json.JsonSerializer.Serialize(new
+    {
+        ticket = "<本次回呼收到的票券>",
+        redirect_uri = callback,
+        code_verifier = "<本次登入保存在後端的 verifier>"
+    }, new System.Text.Json.JsonSerializerOptions
+    {
+        WriteIndented = true,
+        Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+    });
+    var responseValues = new Dictionary<string, object>
+    {
+        ["issuer"] = issuer + "/", ["client_id"] = system?.ClientId is { Length: > 0 } id ? id : "example-system",
+        ["sub"] = "example-person-id", ["authenticated_at"] = 1800000000, ["session_expires_at"] = 1800003600
+    };
+    var samples = new Dictionary<int, (string Key, string Value)>
+    {
+        [1] = ("username", "example-user"), [2] = ("name", "示範使用者"), [4] = ("identity_type", "student"),
+        [8] = ("class_code", "DEMO-CLASS"), [16] = ("class_name", "示範班級"),
+        [32] = ("student_status_code", "DEMO-ACTIVE"), [64] = ("student_status_name", "示範在學狀態"),
+        [128] = ("education_level_code", "DEMO-LEVEL"), [256] = ("education_level_name", "示範學制")
+    };
+    foreach (var sample in samples.Where(s => IdentityClaimReleasePolicy.Allows(system?.ClaimMask ?? 0, s.Key)))
+        responseValues[sample.Value.Key] = sample.Value.Value;
+    var responseExample = System.Text.Json.JsonSerializer.Serialize(responseValues, new System.Text.Json.JsonSerializerOptions
+    {
+        WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+    });
+}
+<div class="web-api-guide">
+    <header class="web-api-guide-intro">
+        <span class="web-api-guide-label">串接指南 · 自訂協定</span>
+        <h2>Web API 單一登入串接指南</h2>
+        <p>使用者在中央登入，對方後端以一次性票券透過 JSON API 取得身分資料，再建立自己的登入狀態。「一次性票券」是此登入流程的憑證，不是另一種登入方式。</p>
+    </header>
+
+    <ol class="web-api-flow" aria-label="單一登入流程">
+        <li><span aria-hidden="true">01</span><div><strong>點選系統</strong><p>前往對方的登入啟動頁</p></div></li>
+        <li><span aria-hidden="true">02</span><div><strong>確認中央登入</strong><p>已有有效登入即可沿用</p></div></li>
+        <li><span aria-hidden="true">03</span><div><strong>票券換取身分</strong><p>對方後端呼叫 SSO API</p></div></li>
+        <li><span aria-hidden="true">04</span><div><strong>開啟服務</strong><p>對方建立自己的登入狀態</p></div></li>
+    </ol>
+
+    <section class="web-api-diagram" aria-labelledby="web-api-diagram-title">
+        <div class="web-api-endpoint-title"><h3 id="web-api-diagram-title">串接流程圖</h3><span>瀏覽器轉址與後端呼叫分開看</span></div>
+        <p>對方先準備登入請求；中央登入通過後，由瀏覽器帶票券回到對方。紫色區塊是對方後端向我們 POST 的步驟，SSO 不會主動 POST 個人資料到對方網站。</p>
+        <figure>
+            <div class="web-api-diagram-scroll" tabindex="0" role="region" aria-label="串接時序圖，小螢幕可水平捲動"><img src="/guides/web-api-sso.svg" asp-append-version="true" alt="使用者從 SSO 首頁選系統，對方產生登入請求，SSO 驗證後經瀏覽器交付票券；對方後端 POST 兌換身分資料，最後建立自己的登入狀態。" /></div>
+            <figcaption>回呼網址由瀏覽器開啟；票券兌換 API 由對方伺服器呼叫。小螢幕可左右捲動，或下載原圖放大。</figcaption>
+        </figure>
+        <div class="web-api-downloads"><a class="button" href="/guides/web-api-sso.svg" download>下載流程圖 SVG</a><a class="button" href="/guides/web-api-sso.png" download>下載流程圖 PNG</a><a class="button" href="/guides/web-api-sso.http.txt" download="web-api-sso.http">下載 HTTP 呼叫範例</a></div>
+    </section>
+
+    <div class="web-api-responsibilities">
+        <section>
+            <h3><span class="web-api-party">SSO</span>我們提供</h3>
+            <ul><li>中央登入頁與一次性票券</li><li>供對方後端呼叫的身分兌換 API</li><li>Client ID、系統密鑰與身分欄位授權</li></ul>
+        </section>
+        <section>
+            <h3><span class="web-api-party">接收系統</span>對方準備</h3>
+            <ul><li>登入啟動頁：填入「首頁入口網址」</li><li>接收票券的頁面：填入「登入回呼網址」</li><li>後端兌換程式、帳號對應與登入狀態</li></ul>
+        </section>
+    </div>
+
+    <div class="web-api-endpoint">
+        <div class="web-api-endpoint-title"><h3>SSO 提供的身分兌換 API</h3><span>由對方後端呼叫</span></div>
+        <p class="web-api-endpoint-address"><span class="web-api-method">POST</span><code>@issuer/api/sso/v1/redeem</code></p>
+        <p>此網址由 SSO 提供，不需另外填寫。對方以票券換取 JSON 身分資料，無須傳送使用者密碼。</p>
+    </div>
+
+    <aside class="web-api-handoff">
+        <h3>交給對方前，確認這 3 件事</h3>
+        <ol><li>填妥對方的入口與回呼網址，回呼須使用 HTTPS 且完全一致。</li><li>勾選需要提供的身分欄位，並啟用此系統。</li><li>交付 Client ID、建立時僅顯示一次的 Client Secret，以及下方串接規格。</li></ol>
+        <p>入口網址須能啟動 SSO 流程；對方完成接收程式後，使用者才能免重複輸入帳密。</p>
+    </aside>
+
+    <details class="web-api-technical">
+        <summary><span><strong>開發人員：登入與 API 呼叫範例</strong><small>展開查看參數、JSON 格式及回應處理</small></span></summary>
+        <div class="web-api-technical-body">
+            <h3>1. 對方啟動登入</h3>
+            <p>後端產生隨機 <code>state</code> 與 <code>code_verifier</code>，設定期限並綁定當次瀏覽器。由 verifier 計算 PKCE challenge，再將瀏覽器導向：</p>
+            <pre tabindex="0" aria-label="票券核發網址與參數"><code>GET @issuer/ticket/authorize
+    ?client_id=&lt;Client ID&gt;
+    &amp;redirect_uri=&lt;已登記的回呼網址&gt;
+    &amp;state=&lt;本次隨機 state&gt;
+    &amp;code_challenge=&lt;PKCE challenge&gt;
+    &amp;code_challenge_method=S256</code></pre>
+            <p class="web-api-code-note">以上分行方便閱讀；實際須以 URL 編碼組成同一個網址。密鑰與 verifier 留在對方後端。</p>
+            <dl class="web-api-parameters">
+                <div><dt>state</dt><dd>32～128 字元的隨機 Base64Url 字串，用來確認回呼屬於本次登入。</dd></div>
+                <div><dt>code_verifier</dt><dd>43～128 字元，允許英數與 <code>-._~</code>。建議用 32 位元組安全亂數轉為 Base64Url。</dd></div>
+                <div><dt>code_challenge</dt><dd><code>BASE64URL(SHA256(ASCII(code_verifier)))</code>，移除 Base64 的 <code>=</code> 補位。</dd></div>
+            </dl>
+
+            <h3>2. 收到票券後，由後端兌換</h3>
+            <p>中央將瀏覽器導回已登記的回呼網址，帶入 <code>ticket</code> 與 <code>state</code>。對方先檢查 state、瀏覽器關聯及期限，再送出：</p>
+            <pre tabindex="0" aria-label="JSON 票券兌換請求範例"><code>POST @issuer/api/sso/v1/redeem
+Authorization: Basic &lt;Base64(UTF8(ClientId:ClientSecret))&gt;
+Content-Type: application/json
+
+@requestExample</code></pre>
+            <p class="web-api-code-note">範例中的尖括號是待替換內容；回呼網址以頁面載入時的登記值顯示，未填寫時使用示意網址。Basic 是編碼，傳輸仍須使用 HTTPS。</p>
+            <dl class="web-api-parameters">
+                <div><dt>ticket</dt><dd>本次回呼收到的票券，最長有效 60 秒，且只能成功兌換一次。</dd></div>
+                <div><dt>redirect_uri</dt><dd>與後台登記完全一致的登入回呼網址。</dd></div>
+                <div><dt>code_verifier</dt><dd>步驟 1 保存在後端的原值，必須對應當時送出的 challenge。</dd></div>
+            </dl>
+
+            <h3>3. 核對身分，建立對方的登入</h3>
+            <p>回應範例依「頁面載入時已儲存的欄位授權」產生；下列使用者、代碼及時間皆為示意資料，不代表真實校務資料或目前有效期限。調整勾選後須先儲存，範例才會更新。</p>
+            <pre tabindex="0" aria-label="JSON 身分回應範例"><code>@responseExample</code></pre>
+            <p>僅在 HTTP 200 且回應檢查通過後建立登入。核對 <code>issuer</code> 為預期 SSO、<code>client_id</code> 為自己的系統、<code>sub</code> 非空且 <code>session_expires_at</code> 尚未到期，以 <code>issuer + sub</code> 對應帳號。</p>
+            <p><code>authenticated_at</code> 與 <code>session_expires_at</code> 使用 Unix 秒。姓名、帳號等額外欄位依「允許提供的身分欄位」回傳；接收端須處理未提供的欄位，並自行判斷功能權限。</p>
+            <p>成功後清除本次登入關聯，轉向不含票券的站內網址。回應是 JSON 身分資料，不是 Bearer Access Token；對方的 Session／Cookie 須自行管理。</p>
+            <h3>4. 對方需實作的兩個入口</h3>
+            <dl class="web-api-parameters">
+                <div><dt>登入啟動頁<br /><code>/sso/login</code></dt><dd>產生 state 與 verifier，保存在伺服器並綁定目前瀏覽器及期限；組成核發網址後轉址，不另設一個帳密登入畫面。</dd></div>
+                <div><dt>登入回呼頁<br /><code>/sso/callback</code></dt><dd>接收票券並檢查 state、請求期限及瀏覽器關聯；在此頁的後端 POST 兌換資料，驗證結果並建立自己的 Cookie／Session，最後導向固定站內網址。</dd></div>
+            </dl>
+            <p>後端 POST 是回呼處理程式的一部分，不必另開第三個接收網址。若要支援多個分頁同時登入，請以每次 state 分別保存關聯資料，並在使用後移除。</p>
+        </div>
+    </details>
+
+    <details class="web-api-technical">
+        <summary><span><strong>常見錯誤與既有串接</strong><small>無法兌換時的檢查方向</small></span></summary>
+        <div class="web-api-technical-body">
+            <dl class="web-api-parameters">
+                <div><dt>401 · 系統驗證失敗</dt><dd>確認 Client ID、Secret、Basic 標頭與系統啟用狀態。</dd></div>
+                <div><dt>400 · 請求或票券無效</dt><dd>檢查 JSON 欄位、回呼網址、PKCE，以及票券是否已到期或用過。需要時重新啟動登入。</dd></div>
+                <div><dt>415 · 格式不符</dt><dd>JSON 端點須使用 <code>Content-Type: application/json</code>。</dd></div>
+            </dl>
+            <p>既有表單端點 <code>/ticket/redeem</code> 仍可使用，與 JSON 端點共用票券使用狀態。此方式為本站自訂票券協定；SSO 後端不會呼叫對方的回呼網址，而是讓瀏覽器返回該網址。</p>
+        </div>
+    </details>
+</div>

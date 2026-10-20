@@ -1,0 +1,44 @@
+/* 交接資料與教學分區；只在建立完成頁載入。 */
+.system-handoff { min-width: 0; max-width: 1140px; margin: 0 auto; }
+.handoff-heading { display: flex; align-items: flex-start; gap: 18px; margin: 28px 0; }
+.handoff-check { display: grid; place-items: center; width: 48px; height: 48px; flex-shrink: 0; border-radius: 15px; background: #e2f3eb; color: #23654a; font-size: 27px; }
+.handoff-heading h1 { margin: 3px 0 8px; }
+.handoff-heading p, .handoff-section-title p, .handoff-actions p { margin: 0; color: #58657b; line-height: 1.8; }
+.handoff-eyebrow { color: #347258; font-size: 12px; font-weight: 600; }
+.handoff-navigation { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+.handoff-navigation a { display: inline-flex; align-items: center; min-height: 44px; padding: 10px 15px; border: 1px solid #e0dff0; border-radius: 10px; background: #fff; color: #514888; font-size: 13px; text-decoration: none; }
+.handoff-navigation a:hover { background: #f1effb; }
+.admin-workspace .system-handoff .handoff-panel { padding: 28px; margin-bottom: 24px; scroll-margin-top: 24px; }
+.handoff-section-title { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 22px; }
+.admin-workspace .handoff-section-title h2 { margin: 0 0 6px; }
+.handoff-section-title p { font-size: 13px; }
+.handoff-protocol { background: #f0edfc; color: #514888; border-radius: 8px; padding: 6px 12px; font-size: 12px; }
+.handoff-settings { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 28px; margin: 0 0 24px; }
+.handoff-settings > div { min-width: 0; padding-bottom: 18px; border-bottom: 1px solid #e9ecf3; }
+.handoff-settings dt { font-size: 14px; font-weight: 600; color: #34405a; }
+.handoff-settings dt small { display: block; font-size: 11px; font-weight: 400; color: #65718a; margin-top: 4px; }
+.system-handoff .handoff-settings dd { margin: 10px 0 0; }
+.system-handoff code { overflow-wrap: anywhere; }
+.handoff-secret { padding: 22px; border: 1px solid #dccca9; border-radius: 12px; background: #fffbf1; }
+.handoff-secret .handoff-section-title { margin-bottom: 12px; }
+.handoff-secret h3 { margin: 0; font-size: 15px; }
+.handoff-secret h3 small { display: inline-block; margin-left: 8px; font-size: 12px; font-weight: 400; }
+.handoff-secret .handoff-section-title > span { color: #79571b; font-size: 12px; }
+.handoff-secret > code { display: block; padding: 14px; border-radius: 8px; background: #fff; border: 1px solid #e7ddc8; font-size: 14px; line-height: 1.8; user-select: all; }
+.handoff-secret p { margin: 12px 0 0; color: #715a31; font-size: 12px; line-height: 1.8; }
+.system-handoff .handoff-note { font-size: 13px; color: #58657b; margin: 18px 0 0; line-height: 1.8; }
+.handoff-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; list-style: none; padding: 0; margin: 0; }
+.handoff-fields li { min-width: 0; padding: 14px; border: 1px solid #e3e6f1; border-radius: 10px; background: #f8f9fd; }
+.handoff-fields span { display: block; font-size: 14px; margin-bottom: 7px; }
+.handoff-fields small { display: block; color: #65718a; margin-top: 6px; font-size: 11px; }
+.handoff-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 4px 0 24px; }
+.handoff-actions p { flex-basis: 100%; margin-bottom: 6px; font-size: 13px; }
+@media (max-width: 800px) { .handoff-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px) {
+    .handoff-heading { gap: 12px; }
+    .handoff-check { width: 38px; height: 38px; font-size: 22px; border-radius: 11px; }
+    .admin-workspace .system-handoff .handoff-panel { padding: 20px 16px; }
+    .handoff-settings, .handoff-fields { grid-template-columns: minmax(0, 1fr); }
+    .handoff-secret { padding: 16px; }
+    .handoff-actions .button { flex: 1 1 100%; justify-content: center; }
+}

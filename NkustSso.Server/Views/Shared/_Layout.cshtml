@@ -1,0 +1,23 @@
+@* 前台共用版型與必要資源。 *@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] · 國立高雄科技大學</title>
+    <link rel="stylesheet" href="/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="/systems.css" asp-append-version="true" />
+    <link rel="stylesheet" href="/clean-layout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="/header.css" asp-append-version="true" />
+    @await RenderSectionAsync("head", required: false)
+</head>
+<body class="site-clean" data-english-enabled="@(ViewData["SupportsEnglish"] is true ? "true" : "false")">
+    <a class="skip-link" href="#main-content">跳至主要內容</a>
+    <partial name="_SiteHeader" />
+    <main id="main-content" tabindex="-1">@RenderBody()</main>
+    <partial name="_SiteFooter" />
+    <script src="/portal-language.js" asp-append-version="true" defer></script>
+    <script src="/header.js" asp-append-version="true" defer></script>
+    @await RenderSectionAsync("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,3 @@
+@* 確認是否結束中央 OIDC 登入。 *@
+@{ ViewData["SupportsEnglish"] = true; ViewData["Title"] = "登出"; }
+<section class="panel narrow"><h1>結束中央登入？</h1><p>這會結束 SSO 的登入狀態。其他已登入系統的狀態，依各系統的登出及到期設定處理。</p><form method="post">@Html.AntiForgeryToken()<button class="button primary" type="submit">確認登出</button></form><a href="/">回到入口</a></section>

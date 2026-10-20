@@ -1,0 +1,38 @@
+@* JSON 帳密驗證 API 的呼叫方式及欄位說明。 *@
+@model JsonApiGuideViewModel
+@{ Layout = null; }
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>JSON API 串接說明與測試 · 國立高雄科技大學</title><link rel="stylesheet" href="/soap-help.css" asp-append-version="true" /></head>
+<body>
+<a class="skip-link" href="#service-content">跳至介面說明</a>
+<header class="help-header"><a href="/"><img src="/nkust-logo-horizontal.png" alt="國立高雄科技大學" width="2048" height="379" /></a><nav aria-label="服務導覽"><a href="/KuasSSOWebService.asmx">SOAP 說明</a><a href="/api/integration" aria-current="page">JSON API</a></nav></header>
+<div class="help-shell">
+<aside class="help-sidebar"><details open><summary>JSON API</summary><nav class="method-list" aria-label="API 說明目錄"><a href="#overview">開始串接</a><a href="#request">請求格式</a><a href="#response">回傳結果</a><a href="#testing">線上測試</a></nav></details></aside>
+<main id="service-content" tabindex="-1"><div class="eyebrow">NKUST / INTEGRATION API</div><h1>帳密驗證 API</h1><p class="lead">各系統共用驗證網址，以獨立的系統代碼與密鑰識別，分別記錄呼叫結果。</p>
+<div class="status-row"><span class="badge ready">已實作</span><span class="badge @(Model.Enabled ? "ready" : "pending")">@(Model.Enabled ? "服務已開啟" : "服務尚未開啟")</span><span class="muted">POST · JSON · v1</span></div>
+<section class="card" id="overview"><h2>開始串接</h2><ol><li>由管理者登記系統、允許來源 IP，並授權「帳密驗證」。</li><li>安全取得自己的 <code>X-Client-Id</code> 與 <code>X-Client-Secret</code>。</li><li>由接收系統的伺服器送出 HTTPS POST，先確認 HTTP 狀態，再讀取 <code>verified</code>。</li><li>驗證通過後，由接收系統建立登入狀態及處理自己的權限。</li></ol><p class="muted">正式程式的密鑰應放在伺服器設定，不寫入網頁程式碼。此介面目前只回傳驗證結果，不提供姓名、信箱或資料同步。</p></section>
+<section class="card" id="request"><h2>請求格式</h2><pre><code>POST @Model.Address
+Content-Type: application/json
+X-Client-Id: your-system-id
+X-Client-Secret: YOUR_SERVER_SECRET
+
+{
+  "userName": "測試帳號",
+  "password": "測試密碼"
+}</code></pre>
+<div class="table-scroll"><table><thead><tr><th>位置</th><th>名稱</th><th>說明</th></tr></thead><tbody><tr><td>Header</td><td><code>X-Client-Id</code></td><td>後台登記的系統代碼。</td></tr><tr><td>Header</td><td><code>X-Client-Secret</code></td><td>系統密鑰，建立或更新時只顯示一次。</td></tr><tr><td>JSON</td><td><code>userName</code></td><td>要驗證的使用者帳號，最多 100 字。</td></tr><tr><td>JSON</td><td><code>password</code></td><td>使用者密碼，最多 256 字。</td></tr></tbody></table></div></section>
+<section class="card" id="response"><h2>回傳結果</h2><p>帳密通過：<code>{"verified":true}</code>；帳密不通過：<code>{"verified":false}</code>。兩者均為 HTTP 200。</p><div class="notice">只有 HTTP 200 且 <code>verified</code> 是布林值 <code>true</code> 才能視為驗證成功。連線錯誤或其他狀態碼都不能當成登入成功。</div>
+<div class="table-scroll"><table><thead><tr><th>HTTP</th><th>意義</th></tr></thead><tbody><tr><td>400</td><td>JSON 格式錯誤。</td></tr><tr><td>403</td><td>系統停用、來源 IP 不符、密鑰錯誤或未授權服務。</td></tr><tr><td>413／415</td><td>請求超過大小限制，或內容不是支援的 JSON 格式。</td></tr><tr><td>429</td><td>呼叫頻率超過限制，稍後再試。</td></tr><tr><td>503</td><td>服務尚未開啟，或帳號來源暫時不可用。</td></tr></tbody></table></div></section>
+<section class="card" id="testing"><h2>線上測試</h2><p>由目前瀏覽器直接呼叫同站 API，仍檢查系統密鑰、來源 IP 與服務授權。瀏覽器來源 IP 可能與正式串接主機不同。</p>
+@if (!Model.Enabled) { <p class="notice">服務尚未開啟，目前只能查閱格式；啟用後才能送出測試。</p> }
+<form id="json-test" action="/api/integration/v1/verify" method="post" autocomplete="off" data-enabled="@(Model.Enabled ? "true" : "false")">
+<label for="json-client">X-Client-Id · 系統代碼</label><input id="json-client" value="@Model.ClientId" maxlength="100" required autocomplete="off" />
+<label for="json-secret">X-Client-Secret · 系統密鑰</label><input id="json-secret" type="password" minlength="32" maxlength="100" required autocomplete="off" />
+<label for="json-user">userName · 測試帳號</label><input id="json-user" maxlength="100" required autocomplete="off" />
+<label for="json-password">password · 測試密碼</label><input id="json-password" type="password" maxlength="256" required autocomplete="off" />
+<p class="muted">密鑰與密碼只在按下測試時送出，不放入網址、範例或瀏覽器儲存；送出後清空敏感欄位。</p>
+<button type="submit" class="primary" disabled>送出測試</button><noscript><p>線上測試需要啟用 JavaScript。</p></noscript></form>
+<div id="test-result" class="test-result" hidden><h3>測試結果</h3><p id="test-status" role="status" aria-live="polite"></p><pre><code id="test-response"></code></pre></div>
+</section></main></div><footer>© @DateTime.Now.Year 國立高雄科技大學｜<a href="https://cc.nkust.edu.tw" target="_blank" rel="noopener">電算中心</a> 版權所有</footer>
+<script src="/json-help.js" asp-append-version="true" defer></script></body></html>

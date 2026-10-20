@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="NkustSso.Server/NkustSso.Server.csproj" />
+  <Folder Name="/tests/">
+    <Project Path="tests/NkustSso.StorageChecks/NkustSso.StorageChecks.csproj" />
+  </Folder>
+</Solution>

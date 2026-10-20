@@ -1,0 +1,20 @@
+@* 設定服務入口可見的身分與條件。 *@
+@model SsoSystemEditViewModel
+<section class="panel audience-editor" id="audience-editor" data-catalog="@System.Text.Json.JsonSerializer.Serialize(Model.IdentityCatalog, PortalAudienceSelection.JsonOptions)">
+    <div class="audience-toolbar"><div><h2>首頁入口開放身分</h2><p class="muted">適用於「登入後才顯示」及未指定公開專區的私人入口。符合任一組條件才可看見及開啟；公開項目的名稱不受此條件隱藏，實際使用權限由接收系統決定。</p></div><a href="/admin/identity-catalog" target="_blank" rel="noopener">查詢身分分類 ↗</a></div>
+    @if (Model.IdentityCatalog.SourceError is string error) { <p class="validation" role="alert">@error</p> }
+    <input asp-for="AudienceJson" type="hidden" />
+    <fieldset class="audience-mode"><legend>開放範圍</legend>
+        <label><input type="radio" name="audience-mode" value="all" /> <span>全部身分<small>所有已登入使用者，包括未來新增的身分。</small></span></label>
+        <label><input type="radio" name="audience-mode" value="rules" /> <span>指定身分群體<small>選擇學生、教職員或其他身分，分組設定條件。</small></span></label>
+    </fieldset>
+    <div id="audience-rules">
+        <div id="audience-groups"></div>
+        <div class="audience-add"><span>新增一組開放對象</span><button type="button" class="button" data-add-family="student">＋ 學生</button><button type="button" class="button" data-add-family="employee">＋ 教職員</button><button type="button" class="button" data-add-family="other">＋ 其他身分</button></div>
+        <p class="fine">同一組內要全部符合；同一條件可複選。每組須由同一筆身分完整符合，不會混用不同身分的資料。</p>
+    </div>
+    <div id="audience-error" class="validation" role="alert" hidden></div>
+    <aside class="audience-preview" aria-live="polite"><strong>這個入口會顯示給</strong><ol id="audience-summary"></ol><p class="fine">沒有指定的條件代表全部；已指定的選項只包含目前勾選的代碼。</p></aside>
+    <p class="fine">此處只控制首頁入口顯示。直接登入與系統內功能權限仍由原有流程處理。身分資料缺少時，不符合已指定的條件。</p>
+    <noscript><p class="validation">請啟用 JavaScript 後編輯身分群組；目前保存的規則不會自動變更。</p></noscript>
+</section>

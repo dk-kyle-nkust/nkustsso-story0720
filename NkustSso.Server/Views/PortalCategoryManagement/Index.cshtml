@@ -1,0 +1,44 @@
+@* 維護前台服務分類與顯示順序：清單頁。 *@
+@model PortalCategoryListViewModel
+@inject AdminAuthorizationService RoleAccess
+@{ var canManage = (await RoleAccess.LoadAsync(User)).CanManage("categories"); }
+@{ ViewData["Title"] = "首頁分類管理"; }
+<div class="admin-head"><div><span class="eyebrow">WORKSPACE / CATEGORIES</span><h1>首頁分類</h1><p>整理服務所屬分類，讓師生更快找到需要的入口。</p></div>@if (canManage) { <div class="admin-head-actions"><a class="button primary" href="/admin/categories/new">新增分類</a></div> }</div>
+@if (TempData["Message"] is string message) { <div class="info-strip" role="status">@message</div> }
+@if (TempData["Error"] is string error) { <div class="validation" role="alert">@error</div> }
+<section class="panel"><h2>分類清單</h2><p class="muted">排序數字越小越前面；沒有可見系統的分類不會出現在首頁。使用中的分類需先移出所屬系統，才能刪除。</p>
+<div class="table-wrap"><table class="session-table" data-datatable data-no-sort="3"><thead><tr><th>排序</th><th>分類</th><th>系統數</th><th>操作</th></tr></thead><tbody>
+@foreach (var category in Model.Categories)
+{
+    var count = Model.Counts.GetValueOrDefault(category.Key);
+    <tr><td data-label="排序">@category.SortOrder</td><td data-label="分類"><span class="cat-mark accent-@category.Accent" aria-hidden="true"></span><strong>@category.Name</strong><br /><code>@category.Key</code></td>
+    <td data-label="系統數"><a asp-controller="SsoSystemManagement" asp-action="Index" asp-route-category="@category.Key">@count 個系統</a></td>
+    <td data-label="操作">@if (canManage) { <a asp-action="Edit" asp-route-id="@category.Key">編輯</a>
+    @if (category.Key == PortalCategoryService.DefaultKey) { <span class="fine">預設分類，不可刪除</span> }
+    else if (count > 0) { <span class="fine">請先移轉所屬系統</span> }
+    else
+    {
+        <details class="device-detail"><summary>刪除分類</summary><p>確定刪除「@category.Name」？</p>
+        <form method="post" asp-action="Delete" asp-route-id="@category.Key">
+            <input type="hidden" name="revision" value="@category.Revision" /><button class="button" type="submit">確認刪除</button>
+        </form></details>
+    }
+    } else { <span class="fine">僅查詢</span> }</td></tr>
+}
+</tbody></table></div></section>
+<section class="panel"><h2>最近分類異動</h2>
+@if (Model.Audits.Count == 0) { <p class="system-empty">尚無分類異動紀錄。</p> }
+else
+{
+    <div class="table-wrap"><table class="session-table" data-datatable data-page-length="10" data-no-sort="4"><thead><tr><th>時間</th><th>分類代碼</th><th>管理者</th><th>來源 IP</th><th>內容</th></tr></thead><tbody>
+    @foreach (var audit in Model.Audits)
+    {
+        <tr><td data-label="時間">@LoginSessionListViewModel.Time(audit.OccurredAt)</td><td data-label="分類代碼">@audit.CategoryKey</td><td data-label="管理者">@audit.ActorId</td><td data-label="來源 IP">@audit.RemoteIp</td>
+        <td data-label="內容"><details class="device-detail"><summary>@(audit.Action switch { "create" => "新增", "delete" => "刪除", _ => "修改" })</summary><p>變更前</p><code>@audit.BeforeJson</code><p>變更後</p><code>@audit.AfterJson</code></details></td></tr>
+    }
+    </tbody></table></div>
+}
+</section>
+
+@section head { <partial name="_AdminStyles" /> }
+@section scripts { <partial name="_AdminScripts" /> }

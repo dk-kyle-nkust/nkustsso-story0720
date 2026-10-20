@@ -1,0 +1,8 @@
+@* 呈現後台設定的異動紀錄。 *@
+@model List<AdminManagementAudit>
+<details class="panel admin-delete"><summary>最近異動紀錄</summary><div class="table-scroll"><table class="session-table"><thead><tr><th>時間</th><th>操作人</th><th>項目</th><th>操作</th><th>變更內容</th></tr></thead><tbody>
+@foreach (var audit in Model)
+{
+    <tr><td data-label="時間">@DateTimeOffset.FromUnixTimeMilliseconds(audit.OccurredAt).ToOffset(TimeSpan.FromHours(8)).ToString("yyyy-MM-dd HH:mm:ss")</td><td data-label="操作人">@audit.ActorId</td><td data-label="項目">@audit.TargetId</td><td data-label="操作">@(audit.Action switch { "create" => "新增", "update" => "修改", "delete" => "刪除", "provision-member" => "建立校務帳號", _ => audit.Action })</td><td data-label="變更內容"><details><summary>查看變更</summary><p>變更前</p><pre>@audit.BeforeJson</pre><p>變更後</p><pre>@audit.AfterJson</pre></details></td></tr>
+}
+</tbody></table></div></details>
