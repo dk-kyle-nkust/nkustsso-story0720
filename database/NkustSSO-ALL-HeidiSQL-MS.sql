@@ -13,7 +13,8 @@ GO
 
 IF DB_ID(N'NkustSSO') IS NULL
 BEGIN
-    CREATE DATABASE [NkustSSO] COLLATE Latin1_General_100_BIN2;
+    -- CREATE DATABASE [NkustSSO] COLLATE Latin1_General_100_BIN2;
+	CREATE DATABASE [NkustSSO];
 END
 GO
 
@@ -274,7 +275,7 @@ GO
 
 -- 傾印資料表 [dbo].[AspNetUsers] 資料：1 筆
 INSERT INTO [dbo].[AspNetUsers] ([Id], [UserName], [NormalizedUserName], [Email], [NormalizedEmail], [EmailConfirmed], [PasswordHash], [SecurityStamp], [ConcurrencyStamp], [PhoneNumber], [PhoneNumberConfirmed], [TwoFactorEnabled], [LockoutEnd], [LockoutEnabled], [AccessFailedCount], [AuthenticationSource], [SourceAccountId], [DisplayName], [IdentityType], [SourceStatusCode], [SourceStatusName], [UnitCode], [UnitName], [ClassCode], [ClassName], [StudentStatusCode], [StudentStatusName], [EducationLevelCode], [EducationLevelName], [Enabled]) VALUES
-	(N'af9675f4741849d4a2c0b4873ccd0c27', N'42893', N'42893', NULL, NULL, 0, N'AQAAAAIAAYagAAAAEM0FPtbvMLAuz1lLDafUpVZ9gYLd5pdP7q81eJXl+ixo/PH0Rw3yOdQGGcp8cDlMLw==', N'66cc0bcb-4ddb-4619-b275-0b60740e0768', N'eaa77aa1-3b1a-4344-afef-ee4dd9144327', NULL, 0, 0, NULL, 1, 0, N'', NULL, N'Kyle', N'teacher', NULL, NULL, N'CS', N'資訊工程系', NULL, NULL, NULL, NULL, NULL, NULL, 1);
+	(N'af9675f4741849d4a2c0b4873ccd0c27', N'42893', N'42893', NULL, NULL, 0, N'AQAAAAIAAYagAAAAEM0FPtbvMLAuz1lLDafUpVZ9gYLd5pdP7q81eJXl+ixo/PH0Rw3yOdQGGcp8cDlMLw==', N'66cc0bcb-4ddb-4619-b275-0b60740e0768', N'eaa77aa1-3b1a-4344-afef-ee4dd9144327', NULL, 0, 0, NULL, 1, 0, N'', NULL, N'施登凱', N'約用技術人員', NULL, NULL, N'Software Deveolpment', N'電算中心軟體組', NULL, NULL, NULL, NULL, NULL, NULL, 1);
 GO
 
 -- --------------------------------------------------------
