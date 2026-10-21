@@ -129,20 +129,30 @@
 
 ---
 
-## 五、2026-10-20 在 NkustSSO 方案執行紀錄 (NkustSSO Ingestion Run)
+## 五、2026-10-21 在 NkustSSO 方案執行紀錄 (NkustSSO Ingestion & Verification Run)
 
 - **目標方案**：`NkustSSO.slnx` (.NET 10 LTS, 2 個專案，167 個 C# 檔案，17,153 行程式碼)
 - **實測命令與執行結果**：
-  1. **資安防衛邊界檢測**：`powershell -ExecutionPolicy Bypass -File scripts/Inspect-SecurityBoundaries.ps1` -> 100% 通過，0 違規。
-  2. **方案架構與規模分析**：`powershell -ExecutionPolicy Bypass -File scripts/Analyze-ProjectStructure.ps1` -> 成功解析 `NkustSso.Server` (139 cs, 14,252 lines) 與 `NkustSso.StorageChecks` (28 cs, 2,901 lines)。
+  1. **資安防衛邊界檢測**：`powershell -ExecutionPolicy Bypass -File .agents/skills/nkust-codebase-ingestion-v1/scripts/Inspect-SecurityBoundaries.ps1` -> 100% 通過，0 違規。
+  2. **方案架構與規模分析**：`powershell -ExecutionPolicy Bypass -File .agents/skills/nkust-codebase-ingestion-v1/scripts/Analyze-ProjectStructure.ps1` -> 成功解析 `NkustSso.Server` (139 cs, 14,252 lines) 與 `NkustSso.StorageChecks` (28 cs, 2,901 lines)。
   3. **物料清單提取與檢驗**：
      - `Extract-DotnetBOM.ps1` -> 提取 8 筆 Server-side NuGet 套件與 4 筆 Client-side 函式庫 (jQuery 4.0.0, DataTables 3.1.4, tom-select 2.6.2)。
      - `BomValidator.ps1` -> 0 棄用告警，100% 通過。
   4. **.NET 10 LTS 現代化相容性檢驗**：`Verify-UpgradeCompatibility.ps1` -> 0 棄用項目，符合 .NET 10 LTS 基準。
   5. **Mermaid 拓撲生成**：`Generate-MermaidTopology.ps1` -> 產出方案依賴圖。
-  6. **Roslyn AST 語意掃描**：`CodebaseAstScanner` -> 完整剖析 Models (74 類別)、Services (87 類別)、ViewModels (26 類別)、Controllers (17 類別)。
-  7. **產出文件矩陣**：全數交付至 `output/` 與 `README/`：
-     - `output/README/PROJECT_ARCHITECTURE.md`：專案架構分層、5 大 SSO 憑證交換協定全時序圖與資安橫切防護規格書。
-     - `output/README/PROJECT_DATABASE.md`：雙模儲存架構、28 張主表 + 8 張會話票券表 Schema、校務唯讀模型與原子性事務機制規格書。
-     - 同步更新 `output/README.md` 建立全域索引連結。
+  6. **Roslyn AST 語意掃描**：`CodebaseAstScanner` -> 完整剖析 Models、Services、ViewModels、Controllers，萃取 209 個類別與介面。
+  7. **建置專案 (Build Project)**：
+     - `dotnet restore NkustSSO.slnx`
+     - `dotnet build tests/NkustSso.StorageChecks/NkustSso.StorageChecks.csproj --no-restore -o .local/agent-check-build` -> 0 警告、0 錯誤，建置成功！
+  8. **測試專案 (Test Run Project)**：
+     - `dotnet .local/agent-check-build/NkustSso.StorageChecks.dll` -> 26 項儲存與協定整合測試案例（涵蓋帳號鎖定、OIDC Concurrency、Session 滑動更新、SAML 簽章、9 大 SOAP 方法轉譯等）全數通過（PASS），100% 成功！
+  9. **產出文件矩陣**：全數交付至 `output/` 與 `README/`：
+     - [output/README.md](../output/README.md) & [README.md](../../README.md)：專案結構、拓撲與規模統計總覽與全域導覽。
+     - [output/README/PROJECT_BOM.md](../output/README/PROJECT_BOM.md) & [README/PROJECT_BOM.md](../../README/PROJECT_BOM.md)：前後端 BOM 物料清單。
+     - [output/README/PROJECT_BOM_UPGRADE.md](../output/README/PROJECT_BOM_UPGRADE.md) & [README/PROJECT_BOM_UPGRADE.md](../../README/PROJECT_BOM_UPGRADE.md)：.NET 10 LTS 升級相容性審核。
+     - [output/README/PROJECT_REPORT.md](../output/README/PROJECT_REPORT.md) & [README/PROJECT_REPORT.md](../../README/PROJECT_REPORT.md)：全系統逆向工程報告、風險評估與 5 大重構建議。
+     - [output/README/PROJECT_ARCHITECTURE.md](../output/README/PROJECT_ARCHITECTURE.md) & [README/PROJECT_ARCHITECTURE.md](../../README/PROJECT_ARCHITECTURE.md)：專案架構分層、5 大 SSO 憑證交換協定全時序圖與資安橫切防護規格書。
+     - [output/README/PROJECT_DATABASE.md](../output/README/PROJECT_DATABASE.md) & [README/PROJECT_DATABASE.md](../../README/PROJECT_DATABASE.md)：雙模儲存架構、30 張主表 + 8 張會話票券表 Schema、校務唯讀模型與分散式鎖機制規格書。
+     - 各子模組架構報告 (`output/NKUST_MODEL/`, `output/NKUST_SERVICE/`, `output/NKUST_VIEWMODEL/`, `output/NKUST_WEB/`)。
+
 

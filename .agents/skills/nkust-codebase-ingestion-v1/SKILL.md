@@ -176,7 +176,7 @@ graph TD
 3. [README/PROJECT_BOM_UPGRADE.md](output/README/PROJECT_BOM_UPGRADE.md) - .NET 10 LTS 升級相容性與 Deprecated 套件檢測。
 4. [README/PROJECT_REPORT.md](output/README/PROJECT_REPORT.md) - 風險邊際、Code Smells 與重構建議報告。
 5. [README/PROJECT_ARCHITECTURE.md](output/README/PROJECT_ARCHITECTURE.md) - 專案架構與 SSO 憑證交換機制。
-6. [README/PORJECT_DATABASE.md](output/README/PROJECT_DATABASE.md) - 專案資料庫結構與 SSO 憑證交換機制，含 SQL Server 與 SQLite雙模儲存結構。
+6. [README/PROJECT_DATABASE.md](output/README/PROJECT_DATABASE.md) - 專案資料庫結構與 SSO 憑證交換機制，含 SQL Server 與 SQLite雙模儲存結構。
 7. [各子模組之 REPORT.md](output/*/REPORT.md) - Roslyn AST 靜態語法樹分析報告。
 8. [各子模組之 ENV.md](output/*/ENV.md) - 專案依賴拓撲、分層架構圖與 SSO 時序圖。
 9. [各子模組之 README.md](output/*/README.md) - 專案子模組結構、拓撲與規模統計。

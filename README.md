@@ -357,3 +357,21 @@ python tests/saml.py
 | 服務選單 | [PortalServicesController](NkustSso.Server/Controllers/PortalServicesController.cs) | [PortalDirectoryService](NkustSso.Server/Services/PortalDirectoryService.cs) |
 
 `LoginSessionStore` 保存及驗證瀏覽器的中央登入狀態；`LoginTicketService` 處理交給接收系統兌換的一次性登入票券。兩者職責不同。`LoginSessionLifetimeService` 計算期限，`ExpiredTicketCleanupService` 負責過期資料清理。
+
+## 系統逆向架構與技術文件清冊 (Living Documentation)
+
+由 `nkust-codebase-ingestion-v1` 逆向架構分析技能自動化產出與維護之標準技術文件：
+
+### 全系統架構與規格報告
+- 📋 [PROJECT_BOM.md](README/PROJECT_BOM.md) - 前後端完整技術物料清單 (BOM / LibMan / NuGet)
+- 🚀 [PROJECT_BOM_UPGRADE.md](README/PROJECT_BOM_UPGRADE.md) - .NET 10 LTS 升級相容性比對、已棄用 (Deprecated) 元件檢測矩陣與行動指引
+- 🔍 [PROJECT_REPORT.md](README/PROJECT_REPORT.md) - 全系統架構逆向工程報告、跨模組職責劃分、潛在風險邊際與 5 大現代化重構建議
+- 🏛️ [PROJECT_ARCHITECTURE.md](README/PROJECT_ARCHITECTURE.md) - 系統分層架構圖、5 大 SSO 憑證交換協定全時序圖與資安橫切防護規格書
+- 💾 [PROJECT_DATABASE.md](README/PROJECT_DATABASE.md) - SQL Server 與 SQLite 雙模儲存架構、30 張主表 + 8 張會話票券表 Schema、校務唯讀模型與分散式鎖機制
+
+### 各子模組架構報告
+- 📦 **NKUST_MODEL**：[架構報告](README/NKUST_MODEL/NKUST_MODEL_REPORT.md) ｜ [相依環境](README/NKUST_MODEL/NKUST_MODEL_ENV.md) ｜ [模組說明](README/NKUST_MODEL/README.md)
+- ⚙️ **NKUST_SERVICE**：[架構報告](README/NKUST_SERVICE/NKUST_SERVICE_REPORT.md) ｜ [相依環境](README/NKUST_SERVICE/NKUST_SERVICE_ENV.md) ｜ [模組說明](README/NKUST_SERVICE/README.md)
+- 📑 **NKUST_VIEWMODEL**：[架構報告](README/NKUST_VIEWMODEL/NKUST_VIEWMODEL_REPORT.md) ｜ [相依環境](README/NKUST_VIEWMODEL/NKUST_VIEWMODEL_ENV.md) ｜ [模組說明](README/NKUST_VIEWMODEL/README.md)
+- 🌐 **NKUST_WEB**：[架構報告](README/NKUST_WEB/NKUST_WEB_REPORT.md) ｜ [相依環境](README/NKUST_WEB/NKUST_WEB_ENV.md) ｜ [模組說明](README/NKUST_WEB/README.md)
+
